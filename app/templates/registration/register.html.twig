@@ -7,7 +7,7 @@
         <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
     {% endfor %}
 
-    <h1>Crea una cuenta</h1>
+    <h1>Regístrate</h1>
 
     {{ form_errors(registrationForm) }}
 
@@ -20,8 +20,4 @@
 
         <button type="submit" class="btn btn-success">Crear cuenta</button>
     {{ form_end(registrationForm) }}
-
-    <p>
-        Ir a la página de <a href="{{ path('app_inicio') }}">Inicio</a>
-    </p>
 {% endblock %}
