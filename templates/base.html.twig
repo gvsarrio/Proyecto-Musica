@@ -34,20 +34,30 @@
                                     class="nav-link"
                                 {% endif %}
                             >Inicio</a>
-                            <a href="{{ path('app_register') }}"
-                                {% if app.request.attributes.get('_route') == 'app_register' %}
-                                    class="nav-link active" aria-current="page"
-                                {% else %}
-                                    class="nav-link"
-                                {% endif %}
-                            >Registro</a>
-                            <a href="{{ path('app_login') }}"
-                                {% if app.request.attributes.get('_route') == 'app_login' %}
-                                    class="nav-link active" aria-current="page"
-                                {% else %}
-                                    class="nav-link"
-                                {% endif %}
-                            >Login</a>
+                            {# Si estamos autenticados, mostramos el enlace a '/logout' #}
+                            {% if is_granted('IS_AUTHENTICATED') %}
+                                <a href="{{ path('app_logout') }}" class="nav-link">Salir</a>
+                            {# Pero si no lo estamos, no mostramos '/logout' pero sí '/register' y '/login' #}
+                            {% else %}
+                                <a href="{{ path('app_register') }}"
+                                    {% if app.request.attributes.get('_route') == 'app_register' %}
+                                        class="nav-link active" aria-current="page"
+                                    {% else %}
+                                        class="nav-link"
+                                    {% endif %}
+                                >Registro</a>
+                                <a href="{{ path('app_login') }}"
+                                    {% if app.request.attributes.get('_route') == 'app_login' %}
+                                        class="nav-link active" aria-current="page"
+                                    {% else %}
+                                        class="nav-link"
+                                    {% endif %}
+                                >Iniciar sesión</a>
+                            {% endif %}
+                            {# Si estamos autenticados con rol ADMIN, mostramos el enlace a '/admin' #}
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <a href="{{ path('admin') }}" class="nav-link">Administrar usuarios</a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

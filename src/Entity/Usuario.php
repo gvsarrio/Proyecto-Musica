@@ -36,6 +36,11 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private bool $isVerified = false;
 
+
+    // Esta propiedad no se guarda en la BD (es usada para hashear contraseña en '/admin'):
+    private ?string $plainPassword = null;
+
+
     public function getId(): ?int
     {
         return $this->id;
@@ -122,4 +127,19 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+
+
+    // Métodos getter y setter de la propiedad 'plainPassword' usada para hashear contraseña en '/admin':
+
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword(?string $plainPassword): void
+    {
+        $this->plainPassword = $plainPassword;
+    }
+    
 }
