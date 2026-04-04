@@ -15,7 +15,7 @@ class Musico
     private ?int $id = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(name: 'user_id', nullable: false)]
     private ?Usuario $user_id = null;
 
     #[ORM\Column(length: 100)]
