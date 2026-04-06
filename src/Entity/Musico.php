@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\MusicoRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -44,6 +46,17 @@ class Musico
 
     #[ORM\Column]
     private ?bool $es_banda = null;
+
+    /**
+     * @var Collection<int, MiembroBanda>
+     */
+    #[ORM\OneToMany(targetEntity: MiembroBanda::class, mappedBy: 'musico')]
+    private Collection $miembroBandas;
+
+    public function __construct()
+    {
+        $this->miembroBandas = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -166,6 +179,36 @@ class Musico
     public function setEsBanda(bool $es_banda): static
     {
         $this->es_banda = $es_banda;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MiembroBanda>
+     */
+    public function getMiembroBandas(): Collection
+    {
+        return $this->miembroBandas;
+    }
+
+    public function addMiembroBanda(MiembroBanda $miembroBanda): static
+    {
+        if (!$this->miembroBandas->contains($miembroBanda)) {
+            $this->miembroBandas->add($miembroBanda);
+            $miembroBanda->setMusico($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMiembroBanda(MiembroBanda $miembroBanda): static
+    {
+        if ($this->miembroBandas->removeElement($miembroBanda)) {
+            // set the owning side to null (unless already changed)
+            if ($miembroBanda->getMusico() === $this) {
+                $miembroBanda->setMusico(null);
+            }
+        }
 
         return $this;
     }
