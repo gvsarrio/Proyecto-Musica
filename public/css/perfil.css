@@ -1,0 +1,211 @@
+/* ============================================
+   GOOGLE FONTS - Poppins
+   ============================================ */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+/* ============================================
+   VARIABLES
+   ============================================ */
+:root {
+    --mh-bg:           #050509;
+    --mh-bg-card:      #0a0a18;
+    --mh-bg-input:     #0e0e22;
+    --mh-border:       #2d1260;
+    --mh-border-card:  #3d1a7a;
+    --mh-purple:       #9b30ff;
+    --mh-purple-light: #d966ff;
+    --mh-cyan:         #00f0ff;
+    --mh-cyan-soft:    #00d4e8;
+    --mh-text:         #f0f0ff;
+    --mh-text-muted:   #5050a0;
+    --mh-placeholder:  #7070a0;
+}
+
+/* ============================================
+   BASE PÁGINA
+   ============================================ */
+body {
+    background-color: var(--mh-bg);
+    font-family: 'Poppins', sans-serif;
+    color: var(--mh-text);
+    min-height: 100vh;
+}
+
+
+
+/* ============================================
+   TARJETA
+   ============================================ */
+.mh-card {
+    background: var(--mh-bg-card);
+    border: 1px solid var(--mh-border-card);
+    border-radius: 20px;
+    padding: 32px;
+    box-shadow:
+        0 0 60px rgba(123,47,247,0.25),
+        0 0 120px rgba(123,47,247,0.1);
+}
+
+.mh-accent-bar {
+    height: 3px;
+    background: linear-gradient(90deg, var(--mh-purple), var(--mh-cyan));
+    border-radius: 20px 20px 0 0;
+    margin: -32px -32px 32px;
+    box-shadow:
+        0 0 16px rgba(155,48,255,0.8),
+        0 0 32px rgba(0,240,255,0.4);
+}
+
+/* ============================================
+   AVATAR
+   ============================================ */
+.mh-avatar {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background: #0d0d20;
+    border: 2px solid var(--mh-purple);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow:
+        0 0 20px rgba(155,48,255,0.9),
+        0 0 50px rgba(155,48,255,0.4);
+}
+
+.mh-avatar-btn {
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--mh-cyan);
+    background: none;
+    border: 1px solid var(--mh-cyan);
+    border-radius: 20px;
+    padding: 4px 16px;
+    cursor: pointer;
+    text-shadow: 0 0 10px rgba(0,240,255,0.9);
+    box-shadow: 0 0 10px rgba(0,240,255,0.4);
+    transition: all 0.2s;
+}
+
+/* ============================================
+   TIPOGRAFÍA
+   ============================================ */
+.mh-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: 1px;
+    text-shadow: 0 0 20px rgba(255,255,255,0.3);
+    margin: 0;
+}
+
+.mh-subtitle {
+    font-family: 'Poppins', sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--mh-cyan-soft);
+    text-shadow: 0 0 8px rgba(0,212,232,0.4);
+}
+
+.mh-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--mh-purple), var(--mh-cyan), transparent);
+    border: none;
+    box-shadow: 0 0 8px rgba(155,48,255,0.5);
+    margin: 0 0 24px;
+}
+
+/* ============================================
+   FORMULARIO
+   ============================================ */
+.form-label {
+    font-family: 'Poppins', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--mh-purple-light);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    text-shadow: 0 0 10px rgba(217,102,255,0.8);
+}
+
+.form-control {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--mh-bg-input) !important;
+    border: 1px solid var(--mh-border) !important;
+    border-radius: 12px !important;
+    color: var(--mh-text) !important;
+    padding: 10px 16px !important;
+    font-size: 14px;
+}
+
+.form-control::placeholder {
+    color: var(--mh-placeholder);
+    font-style: italic;
+    font-size: 13px;
+}
+
+.form-control:focus {
+    box-shadow: 0 0 16px rgba(155,48,255,0.5) !important;
+    border-color: var(--mh-purple) !important;
+}
+
+.form-check-input:checked {
+    background-color: var(--mh-purple);
+    border-color: var(--mh-purple);
+}
+
+.form-check-label {
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    color: var(--mh-text);
+}
+
+.mh-check-desc {
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px;
+    color: var(--mh-cyan-soft);
+    text-shadow: 0 0 6px rgba(0,212,232,0.4);
+}
+
+/* ============================================
+   BOTÓN
+   ============================================ */
+.btn-mh {
+    font-family: 'Poppins', sans-serif;
+    background: var(--mh-purple);
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    padding: 10px 24px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    box-shadow:
+        0 0 24px rgba(155,48,255,0.8),
+        0 0 60px rgba(155,48,255,0.3);
+    transition: all 0.2s;
+    width: 100%;
+}
+
+.btn-mh:hover {
+    background: #8020ee;
+    color: #fff;
+    box-shadow:
+        0 0 36px rgba(155,48,255,1),
+        0 0 80px rgba(155,48,255,0.5);
+}
+
+/* ============================================
+   ALERTA ÉXITO
+   ============================================ */
+.alert-mh-success {
+    font-family: 'Poppins', sans-serif;
+    background: rgba(0,240,255,0.06);
+    border: 1px solid rgba(0,240,255,0.4);
+    border-radius: 12px;
+    color: var(--mh-cyan);
+    text-shadow: 0 0 10px rgba(0,240,255,0.8);
+    box-shadow: 0 0 20px rgba(0,240,255,0.1);
+}
