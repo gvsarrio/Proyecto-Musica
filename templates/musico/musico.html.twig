@@ -1,88 +1,90 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Editar perfil
-{% endblock %}
+{% block title %}Editar perfil{% endblock %}
 
 {% block stylesheets %}
-	{{ parent() }}
-	<link rel="stylesheet" href="{{ asset('css/perfil.css') }}">
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/perfil.css') }}">
 {% endblock %}
 
 {% block body %}
-	<div class="container py-4">
-		<div class="row justify-content-center">
-			<div class="col-12 col-md-10 col-lg-8">
+    <div class="container py-4">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-10 col-lg-8">
 
-				{% for message in app.flashes('success') %}
-					<div class="alert alert-mh-success mb-4">✓
-						{{ message }}</div>
-				{% endfor %}
+                {% for message in app.flashes('success') %}
+                    <div class="alert alert-mh-success mb-4">✓ {{ message }}</div>
+                {% endfor %}
 
-				<div class="mh-card">
-					<div class="mh-accent-bar"></div>
+                <div class="mh-card">
+                    <div class="mh-accent-bar"></div>
 
-					{# Avatar #}
-					<div class="d-flex flex-column align-items-center mb-4">
-						<div class="mh-avatar mb-2">
-							{% if musico.imagenUrl %}
-								<img src="{{ asset('uploads/profile/' ~ musico.imagenUrl) }}" alt="Foto de perfil" style="width:90px; height:90px; border-radius:50%; object-fit:cover;">
-							{% else %}
-								<svg width="38" height="38" viewbox="0 0 24 24" fill="none" stroke="#9b30ff" stroke-width="1.5">
-									<path d="M9 18V5l12-2v13"/>
-									<circle cx="6" cy="18" r="3"/>
-									<circle cx="18" cy="16" r="3"/>
-								</svg>
-							{% endif %}
-						</div>
-					</div>
+                    {# Avatar #}
+                    <div class="d-flex flex-column align-items-center mb-4">
+                        <div class="mh-avatar mb-2">
+                            {% if musico.imagenUrl %}
+                                <img src="{{ asset('uploads/profile/' ~ musico.imagenUrl) }}"
+                                     alt="Foto de perfil"
+                                     style="width:90px; height:90px; border-radius:50%; object-fit:cover;">
+                            {% else %}
+                                <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#9b30ff" stroke-width="1.5">
+                                    <path d="M9 18V5l12-2v13"/>
+                                    <circle cx="6" cy="18" r="3"/>
+                                    <circle cx="18" cy="16" r="3"/>
+                                </svg>
+                            {% endif %}
+                        </div>
+                    </div>
 
-					<h1 class="mh-title mb-1">Editar perfil</h1>
-					<p class="mh-subtitle mb-4">Completa tu perfil para conectar con bandas de música</p>
-					<hr class="mh-divider">
+                    <h1 class="mh-title mb-1">Editar perfil</h1>
+                    <p class="mh-subtitle mb-4">Completa tu perfil para conectar con bandas de música</p>
+                    <hr class="mh-divider">
 
-					{{ form_start(form, {'attr': {'novalidate': 'novalidate', 'enctype': 'multipart/form-data'}}) }}
-					<div class="row g-3">
-						<div class="col-12">
-							{{ form_label(form.nombre) }}
-							{{ form_widget(form.nombre, {'attr': {'class': 'form-control', 'placeholder': 'Ej: The Neon Wolves'}}) }}
-						</div>
-						<div class="col-md-6">
-							{{ form_label(form.telefono) }}
-							{{ form_widget(form.telefono, {'attr': {'class': 'form-control', 'placeholder': 'Ej: 612 345 678'}}) }}
-						</div>
-						<div class="col-md-6">
-							{{ form_label(form.anyos_experiencia) }}
-							{{ form_widget(form.anyos_experiencia, {'attr': {'class': 'form-control', 'placeholder': 'Ej: 5'}}) }}
-						</div>
-						<div class="col-12">
-							{{ form_label(form.ubicacion) }}
-							{{ form_widget(form.ubicacion, {'attr': {'class': 'form-control', 'placeholder': 'Ej: Valencia, España'}}) }}
-						</div>
-						<div class="col-12">
-							{{ form_label(form.biografia) }}
-							{{ form_widget(form.biografia, {'attr': {'class': 'form-control', 'rows': '4', 'placeholder': 'Ej: Guitarrista con 5 años de experiencia, busco banda de rock...'}}) }}
-						</div>
-						<div class="col-12">
-							{{ form_label(form.imagen_url) }}
-							{{ form_widget(form.imagen_url, {'attr': {'class': 'form-control'}}) }}
-						</div>
-						<div class="col-12">
-							<div class="d-flex align-items-center gap-3 p-3 rounded" style="background: #0e0e22; border: 1px solid #2d1260;">
-								{{ form_widget(form.es_banda, {'attr': {'class': 'form-check-input'}}) }}
-								{{ form_label(form.es_banda, null, {'label_attr': {'class': 'form-check-label'}}) }}
-								<span class="mh-check-desc ms-auto">Cambiar a perfil de banda</span>
-							</div>
-						</div>
-					</div>
+                    {{ form_start(form, {'attr': {'novalidate': 'novalidate', 'enctype': 'multipart/form-data'}}) }}
+                        <div class="row g-3">
+                            <div class="col-12">
+                                {{ form_label(form.nombre) }}
+                                {{ form_widget(form.nombre, {'attr': {'class': 'form-control', 'placeholder': 'Ej: The Neon Wolves'}}) }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form_label(form.telefono) }}
+                                {{ form_widget(form.telefono, {'attr': {'class': 'form-control', 'placeholder': 'Ej: 612 345 678'}}) }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form_label(form.anyos_experiencia) }}
+                                {{ form_widget(form.anyos_experiencia, {'attr': {'class': 'form-control', 'placeholder': 'Ej: 5'}}) }}
+                            </div>
+                            <div class="col-12">
+                                {{ form_label(form.ubicacion) }}
+                                {{ form_widget(form.ubicacion, {'attr': {'class': 'form-control', 'placeholder': 'Ej: Valencia, España'}}) }}
+                            </div>
+                            <div class="col-12">
+                                {{ form_label(form.biografia) }}
+                                {{ form_widget(form.biografia, {'attr': {'class': 'form-control', 'rows': '4', 'placeholder': 'Ej: Guitarrista con 5 años de experiencia, busco banda de rock...'}}) }}
+                            </div>
+                            <div class="col-12">
+                                {{ form_label(form.imagen_url) }}
+                                {{ form_widget(form.imagen_url, {'attr': {'class': 'form-control'}}) }}
+                            </div>
+                            <div class="col-12">
+                                {{ form_row(form.instrumentos) }}
+                                <small style="color: #7070a0;">Mantén Ctrl para seleccionar varios instrumentos</small>
+                            </div>
+                            <div class="col-12">
+                                <div class="d-flex align-items-center gap-3 p-3 rounded" style="background: #0e0e22; border: 1px solid #2d1260;">
+                                    {{ form_widget(form.es_banda, {'attr': {'class': 'form-check-input'}}) }}
+                                    {{ form_label(form.es_banda, null, {'label_attr': {'class': 'form-check-label'}}) }}
+                                    <span class="mh-check-desc ms-auto">Cambiar a perfil de banda</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-center mt-4">
+                            <button type="submit" class="btn btn-mh" style="max-width: 200px;">GUARDAR CAMBIOS</button>
+                        </div>
+                    {{ form_end(form) }}
 
-					<div class="d-flex justify-content-center mt-4">
-						<button type="submit" class="btn btn-mh" style="max-width: 200px;">GUARDAR CAMBIOS</button>
-					</div>
-					{{ form_end(form) }}
-
-				</div>
-
-			</div>
-		</div>
-	</div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

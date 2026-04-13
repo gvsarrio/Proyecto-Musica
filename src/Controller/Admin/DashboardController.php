@@ -57,5 +57,6 @@ class DashboardController extends AbstractDashboardController
             $this->generateUrl('app_inicio', [], UrlGeneratorInterface::ABSOLUTE_PATH)
         );
         yield MenuItem::linkToRoute('Usuarios', 'fa fa-users', 'admin_usuario_index');
+        yield MenuItem::linkToRoute('Instrumentos', 'fa fa-music', 'admin_instrumento_index');
     }
 }
