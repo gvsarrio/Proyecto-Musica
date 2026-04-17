@@ -1,20 +1,51 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello MusicoController!{% endblock %}
+{% block title %}Musico index{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    <h1>Musico index</h1>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nombre</th>
+                <th>Telefono</th>
+                <th>Biografia</th>
+                <th>Ubicacion</th>
+                <th>Anyos_experiencia</th>
+                <th>Imagen_url</th>
+                <th>Creado_en</th>
+                <th>Actualizado_en</th>
+                <th>Es_banda</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for musico in musicos %}
+            <tr>
+                <td>{{ musico.id }}</td>
+                <td>{{ musico.nombre }}</td>
+                <td>{{ musico.telefono }}</td>
+                <td>{{ musico.biografia }}</td>
+                <td>{{ musico.ubicacion }}</td>
+                <td>{{ musico.anyosExperiencia }}</td>
+                <td>{{ musico.imagenUrl }}</td>
+                <td>{{ musico.creadoEn ? musico.creadoEn|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ musico.actualizadoEn ? musico.actualizadoEn|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ musico.esBanda ? 'Yes' : 'No' }}</td>
+                <td>
+                    <a href="{{ path('app_musico_show', {'id': musico.id}) }}">show</a>
+                    <a href="{{ path('app_musico_edit', {'id': musico.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="11">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>/var/www/html/Github/Proyecto-Musica/src/Controller/MusicoController.php</code></li>
-        <li>Your template at <code>/var/www/html/Github/Proyecto-Musica/templates/musico/index.html.twig</code></li>
-    </ul>
-</div>
+    <a href="{{ path('app_musico_new') }}">Create new</a>
 {% endblock %}
