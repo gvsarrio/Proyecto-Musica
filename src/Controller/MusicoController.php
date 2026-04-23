@@ -3,10 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Musico;
+use App\Entity\InstrumentoMusico;
 use App\Form\MusicoType;
 use App\Repository\MusicoRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -30,10 +32,47 @@ final class MusicoController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $musico = $form->getData();
+
+            // 1. Guardamos el músico primero para que Doctrine genere su ID
             $entityManager->persist($musico);
+
+            // 2. Extraemos los instrumentos del campo NO mapeado
+            $instrumentosSeleccionados = $form->get('instrumentos')->getData();
+
+            // 3. Creamos manualmente las relaciones en la tabla intermedia
+            foreach ($instrumentosSeleccionados as $instrumento) {
+                $relacion = new InstrumentoMusico();
+                $relacion->setMusico($musico);
+                $relacion->setInstrumento($instrumento);
+
+                $entityManager->persist($relacion);
+            }
+
+            // 4. Ejecutamos todo en la base de datos
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_musico_index', [], Response::HTTP_SEE_OTHER);
+            $fotoArchivo = $form->get('imagen_url')->getData();
+
+            if ($fotoArchivo) {
+                // 1. Crear un nombre único para que no se machaquen fotos con el mismo nombre
+                $nuevoNombre = uniqid() . '.' . $fotoArchivo->guessExtension();
+
+                // 2. Mover el archivo a la carpeta deseada (definida en el paso 3)
+                try {
+                    $fotoArchivo->move(
+                        $this->getParameter('perfiles_directory'),
+                        $nuevoNombre
+                    );
+                    // 3. Guardar el nombre en la base de datos
+                    $musico->setImagenUrl($nuevoNombre);
+                } catch (FileException $e) {
+                    // ... gestionar error si falla la subida
+                }
+            }
+
+            $this->addFlash('success', '¡Perfil creado con éxito!');
+            return $this->redirectToRoute('app_musico_index'); // Ajusta a tu ruta
         }
 
         return $this->render('musico/new.html.twig', [
@@ -71,7 +110,7 @@ final class MusicoController extends AbstractController
     #[Route('/{id}', name: 'app_musico_delete', methods: ['POST'])]
     public function delete(Request $request, Musico $musico, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$musico->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $musico->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($musico);
             $entityManager->flush();
         }

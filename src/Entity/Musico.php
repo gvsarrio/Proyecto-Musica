@@ -31,6 +31,7 @@ class Musico
 
     #[ORM\Column(length: 255)]
     private ?string $ubicacion = null;
+    
 
     #[ORM\Column]
     private ?int $anyos_experiencia = null;
