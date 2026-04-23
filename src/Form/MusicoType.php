@@ -3,11 +3,13 @@
 namespace App\Form;
 
 use App\Entity\Musico;
-use App\Entity\Usuario;
+use App\Entity\Instrumento;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
 
 class MusicoType extends AbstractType
 {
@@ -19,13 +21,34 @@ class MusicoType extends AbstractType
             ->add('biografia')
             ->add('ubicacion')
             ->add('anyos_experiencia')
-            ->add('imagen_url')
-            ->add('creado_en')
-            ->add('actualizado_en')
-            ->add('es_banda')
-            ->add('user_id', EntityType::class, [
-                'class' => Usuario::class,
-                'choice_label' => 'id',
+            
+            // Campo de imagen corregido con sintaxis PHP 8
+            ->add('imagen_url', FileType::class, [
+                'label' => 'Foto de perfil (JPG, PNG, WEBP)',
+                'mapped' => false,
+                'required' => false,
+                'constraints' => [
+                    new File(
+                        maxSize: '2M',
+                        mimeTypes: [
+                            'image/jpeg',
+                            'image/png',
+                            'image/webp',
+                        ],
+                        mimeTypesMessage: 'Por favor, sube una imagen válida (JPG, PNG, WEBP)'
+                    )
+                ],
+            ])
+
+            // Campo de instrumentos configurado como Checkboxes
+            ->add('instrumentos', EntityType::class, [
+                'class' => Instrumento::class,
+                'choice_label' => 'nombre',
+                'multiple' => true,
+                'expanded' => true, // Transforma el select en checkboxes
+                'mapped' => false,  // Se gestiona manualmente en el Controlador
+                'required' => false,
+                'label' => 'Instrumentos que tocas',
             ])
         ;
     }
