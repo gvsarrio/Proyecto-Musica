@@ -1,16 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Musico{% endblock %}
+{% block title %}Ver Músicos{% endblock %}
 
 {% block body %}
-    <h1>Musico</h1>
+    <h1>Músicos</h1>
 
     <table class="table">
         <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ musico.id }}</td>
-            </tr>
             <tr>
                 <th>Nombre</th>
                 <td>{{ musico.nombre }}</td>
@@ -24,35 +20,35 @@
                 <td>{{ musico.biografia }}</td>
             </tr>
             <tr>
-                <th>Ubicacion</th>
+                <th>Ubicación: </th>
                 <td>{{ musico.ubicacion }}</td>
             </tr>
             <tr>
-                <th>Anyos_experiencia</th>
+                <th>Años de experiencia: </th>
                 <td>{{ musico.anyosExperiencia }}</td>
             </tr>
             <tr>
-                <th>Imagen_url</th>
+                <th>Imagen: </th>
                 <td>{{ musico.imagenUrl }}</td>
             </tr>
             <tr>
-                <th>Creado_en</th>
+                <th>Perfil creado: </th>
                 <td>{{ musico.creadoEn ? musico.creadoEn|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
             <tr>
-                <th>Actualizado_en</th>
+                <th>Perfil actualizado:</th>
                 <td>{{ musico.actualizadoEn ? musico.actualizadoEn|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
             <tr>
-                <th>Es_banda</th>
+                <th>Es una banda: </th>
                 <td>{{ musico.esBanda ? 'Yes' : 'No' }}</td>
             </tr>
         </tbody>
     </table>
 
-    <a href="{{ path('app_musico_index') }}">back to list</a>
+    <a href="{{ path('app_musico_index') }}">Volver</a>
 
-    <a href="{{ path('app_musico_edit', {'id': musico.id}) }}">edit</a>
+    <a href="{{ path('app_musico_edit', {'id': musico.id}) }}">Editar</a>
 
     {{ include('musico/_delete_form.html.twig') }}
 {% endblock %}

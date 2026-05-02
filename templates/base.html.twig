@@ -9,7 +9,7 @@
             {# CSS Bootswatch Vapor #}
             <link href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.3/dist/vapor/bootstrap.min.css" rel="stylesheet">
             {# Estilos propios #}
-            <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+            <link rel="stylesheet" href="{{ asset('css/base.css') }}?v=20260502-colors">
         {% endblock %}
 
         {% block javascripts %}
@@ -19,9 +19,14 @@
         {% endblock %}
     </head>
     <body>
+        <!-- Fondo líquido animado -->
+        <div id="liquid-background"></div>
+
+        <!-- Contenido principal -->
+        <div id="main-content" style="position: relative; z-index: 1;">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
             <div class="container-fluid">
-                <a class="navbar-brand" href="{{ path('app_inicio') }}">Music Match</a>
+                <a class="navbar-brand" href="{{ path('app_inicio') }}">Music Hub</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -31,7 +36,8 @@
 
                         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                             {% if not is_granted('ROLE_ADMIN') %}
-                                <a href="{{ path('app_musico_index') }}" class="nav-link {{ app.request.attributes.get('_route') == 'app_musico_index' ? 'active' : '' }}">Listar perfiles</a>
+                                <a href="{{ path('app_musico_new') }}" class="nav-link {{ app.request.attributes.get('_route') == 'app_musico_new' ? 'active' : '' }}">Crear perfil</a> 
+                                <a href="{{ path('app_musico_index') }}" class="nav-link {{ app.request.attributes.get('_route') == 'app_musico_index' ? 'active' : '' }}">Ver perfiles</a>
                             {% endif %}
                             
                             {% if is_granted('ROLE_ADMIN') %}
@@ -60,5 +66,76 @@
 
             {% block body %}{% endblock %}
         </div>
+        </div> <!-- Cierre de main-content -->
+
+        <!-- Script para animar el fondo líquido -->
+        <script>
+            function initLiquidBackground() {
+                const liquidBackground = document.getElementById('liquid-background');
+                if (!liquidBackground) return false;
+                
+                const colors = [
+                    'rgba(12, 255, 220, 0.7)',   
+                    'rgba(255, 0, 255, 0.7)',    
+                    'rgba(66, 0, 255, 0.7)'      
+                ];
+                
+                // Limpiar blobs anteriores si existen
+                liquidBackground.innerHTML = '';
+                
+                // Crear blobs
+                for (let i = 0; i < 4; i++) {
+                    const blob = document.createElement('div');
+                    blob.classList.add('liquid-blob');
+                    
+                    const size = Math.random() * 250 + 200;
+                    const color = colors[Math.floor(Math.random() * colors.length)];
+                    
+                    blob.style.width = size + 'px';
+                    blob.style.height = size + 'px';
+                    blob.style.left = (Math.random() * 100) + '%';
+                    blob.style.top = (Math.random() * 100) + '%';
+                    blob.style.background = color;
+                    
+                    liquidBackground.appendChild(blob);
+                }
+                
+                // Animar blobs
+                function animateBlobs() {
+                    const blobs = document.querySelectorAll('.liquid-blob');
+                    blobs.forEach(blob => {
+                        const newX = (Math.random() * 100);
+                        const newY = (Math.random() * 100);
+                        blob.style.left = newX + '%';
+                        blob.style.top = newY + '%';
+                    });
+                }
+                
+                // Primera animación inmediata
+                setTimeout(animateBlobs, 100);
+                
+                // Continuar animación cada 6 segundos
+                setInterval(animateBlobs, 6000);
+                
+                return true;
+            }
+            
+            // Intentar inicializar cuando el DOM esté listo
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initLiquidBackground);
+            } else {
+                initLiquidBackground();
+            }
+            
+            // También intentar después de que Bootstrap cargue
+            setTimeout(initLiquidBackground, 500);
+            
+            // Reintentar cada 2 segundos si no se ha inicializado
+            setInterval(function() {
+                if (document.getElementById('liquid-background')?.children.length === 0) {
+                    initLiquidBackground();
+                }
+            }, 2000);
+        </script>
     </body>
 </html>

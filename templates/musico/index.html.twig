@@ -1,30 +1,28 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Musico index{% endblock %}
+{% block title %}Musico{% endblock %}
 
 {% block body %}
-    <h1>Musico index</h1>
+    <h1>Musico</h1>
 
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Nombre</th>
-                <th>Telefono</th>
-                <th>Biografia</th>
-                <th>Ubicacion</th>
-                <th>Anyos_experiencia</th>
-                <th>Imagen_url</th>
-                <th>Creado_en</th>
-                <th>Actualizado_en</th>
-                <th>Es_banda</th>
-                <th>actions</th>
+                <th>Nombre: </th>
+                <th>Teléfono: </th>
+                <th>Biografía: </th>
+                <th>Ubicación: </th>
+                <th>Años de experiencia: </th>
+                <th>Imagen: </th>
+                <th>Perfil creado:</th>
+                <th>Perfil actualizado: </th>
+                <th>Es una banda: </th>
+                <th>Acciones: </th>
             </tr>
         </thead>
         <tbody>
         {% for musico in musicos %}
             <tr>
-                <td>{{ musico.id }}</td>
                 <td>{{ musico.nombre }}</td>
                 <td>{{ musico.telefono }}</td>
                 <td>{{ musico.biografia }}</td>
@@ -35,17 +33,17 @@
                 <td>{{ musico.actualizadoEn ? musico.actualizadoEn|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ musico.esBanda ? 'Yes' : 'No' }}</td>
                 <td>
-                    <a href="{{ path('app_musico_show', {'id': musico.id}) }}">show</a>
-                    <a href="{{ path('app_musico_edit', {'id': musico.id}) }}">edit</a>
+                    <a href="{{ path('app_musico_show', {'id': musico.id}) }}">Mostrar</a>
+                    <a href="{{ path('app_musico_edit', {'id': musico.id}) }}">Editar</a>
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="11">no records found</td>
+                <td colspan="11">No se han encontrado resultados</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <a href="{{ path('app_musico_new') }}">Create new</a>
+    <a href="{{ path('app_musico_new') }}">Crear un nuevo perfil</a>
 {% endblock %}
