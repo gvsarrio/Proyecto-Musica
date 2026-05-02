@@ -53,8 +53,8 @@
                     
                     <div class="row g-3">
                         <div class="col-12">
-                            {{ form_label(form.nombre, 'Nombre artístico / Banda', {'label_attr': {'class': 'text-white'}}) }}
-                            {{ form_widget(form.nombre, {'attr': {'class': 'form-control', 'placeholder': 'Ej: The Neon Wolves'}}) }}
+                            {{ form_label(form.nombre, 'Nombre artístico ', {'label_attr': {'class': 'text-white'}}) }}
+                            {{ form_widget(form.nombre, {'attr': {'class': 'form-control', 'placeholder': 'Ej: Sharknado'}}) }}
                             {{ form_errors(form.nombre) }}
                         </div>
 
@@ -82,7 +82,7 @@
 
                         <div class="col-12">
                             {{ form_label(form.ubicacion, 'Ubicación', {'label_attr': {'class': 'text-white'}}) }}
-                            {{ form_widget(form.ubicacion, {'attr': {'class': 'form-control', 'placeholder': 'Ej: Valencia, España'}}) }}
+                            {{ form_widget(form.ubicacion, {'attr': {'class': 'form-control', 'placeholder': 'Ej: Murcia, España'}}) }}
                             {{ form_errors(form.ubicacion) }}
                         </div>
 

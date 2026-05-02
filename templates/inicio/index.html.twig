@@ -1,11 +1,31 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Página de Inicio{% endblock %}
+{% block title %}MusicHub — Conecta con tu banda{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/home.css') }}">
+{% endblock %}
 
 {% block body %}
-    <h1>¡Bienvenido/a!</h1>
-    
-    <br><br>
+<div class="hero">
+    <span class="hero-badge">🎵 Donde la música encuentra su lugar</span>
 
-    <p>Página de inicio.</p>
+    <h1 class="hero-title">
+        Music<span class="glitch" data-text="Hub">Hub</span>
+    </h1>
+
+    <p class="hero-subtitle">
+        Conecta músicos con bandas. Encuentra a quienes comparten tu sonido.
+    </p>
+
+    <div class="hero-actions">
+        {% if is_granted('IS_AUTHENTICATED') %}
+            <a href="{{ path('app_musico_index') }}" class="btn-hero-primary">Ver perfiles</a>
+        {% else %}
+            <a href="{{ path('app_register') }}" class="btn-hero-primary">Únete ahora</a>
+            <a href="{{ path('app_login') }}" class="btn-hero-secondary">Iniciar sesión</a>
+        {% endif %}
+    </div>
+</div>
 {% endblock %}

@@ -1,23 +1,43 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Crear cuenta{% endblock %}
+{% block title %}Crear cuenta — MusicHub{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/auth.css') }}">
+{% endblock %}
 
 {% block body %}
-    {% for flash_error in app.flashes('verify_email_error') %}
-        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
-    {% endfor %}
+<div class="auth-wrapper">
+    <div class="auth-card-container">
+        <div class="auth-card-header-accent-bar"></div>
 
-    <h1>Regístrate</h1>
+        {% for flash_error in app.flashes('verify_email_error') %}
+            <div class="auth-error-alert" role="alert">{{ flash_error }}</div>
+        {% endfor %}
 
-    {{ form_errors(registrationForm) }}
+        <h1>Regístrate</h1>
+        <hr class="auth-form-divider">
 
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
+        {{ form_errors(registrationForm) }}
 
-        <button type="submit" class="btn btn-success">Crear cuenta</button>
-    {{ form_end(registrationForm) }}
+        {{ form_start(registrationForm) }}
+            {{ form_row(registrationForm.email, {
+                attr: { placeholder: 'usuario@ejemplo.com' }
+            }) }}
+            {{ form_row(registrationForm.plainPassword, {
+                label: 'Contraseña',
+                attr: { placeholder: '••••••••' }
+            }) }}
+            {{ form_row(registrationForm.agreeTerms, {
+                label: 'Aceptar términos y condiciones'
+            }) }}
+
+            <button type="submit" class="auth-submit-button">Crear cuenta</button>
+        {{ form_end(registrationForm) }}
+
+        <p class="auth-alternate-action-text">¿Ya tienes cuenta? <a href="{{ path('app_login') }}">Inicia sesión</a></p>
+    </div>
+</div>
 {% endblock %}
+

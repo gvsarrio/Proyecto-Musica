@@ -1,42 +1,51 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Iniciar sesión{% endblock %}
+{% block title %}Iniciar sesión — MusicHub{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/auth.css') }}">
+{% endblock %}
 
 {% block body %}
-    <form method="post">
-        {% if error %}
-            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-        {% endif %}
+<div class="auth-wrapper">
+    <div class="auth-card-container">
+        <div class="auth-card-header-accent-bar"></div>
 
-        {% if app.user %}
+        <form method="post">
+            {% if error %}
+                <div class="auth-error-alert">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            {% endif %}
+
+            {% if app.user %}
+                <div class="alert alert-success">
+                    Estás conectado como {{ app.user.userIdentifier }}.
+                    <a href="{{ logout_path() }}">Cerrar sesión</a>
+                </div>
+            {% endif %}
+
+            <h1>Inicia sesión</h1>
+            <hr class="auth-form-divider">
+
             <div class="mb-3">
-                You are logged in as {{ app.user.userIdentifier }}, <a href="{{ logout_path() }}">Logout</a>
+                <label for="username" class="auth-form-label">Email</label>
+                <input type="email" value="{{ last_username }}" name="_username" id="username"
+                       class="auth-form-input" autocomplete="email" required autofocus
+                       placeholder="usuario@ejemplo.com">
             </div>
-        {% endif %}
-
-        <h1>Inicia sesión</h1>
-        <div class="mb-3">
-            <label for="username" class="form-label">Email</label>
-            <input type="email" value="{{ last_username }}" name="_username" id="username" class="form-control" autocomplete="email" required autofocus>
-        </div>
-        <div class="mb-3">
-            <label for="password" class="form-label">Password</label>
-            <input type="password" name="_password" id="password" class="form-control" autocomplete="current-password" required>
-            <input type="hidden" name="_csrf_token" data-controller="csrf-protection" value="{{ csrf_token('authenticate') }}">
-        </div>
-
-        {#
-            Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
-            See https://symfony.com/doc/current/security/remember_me.html
-
-            <div class="checkbox mb-3">
-                <input type="checkbox" name="_remember_me" id="_remember_me">
-                <label for="_remember_me">Remember me</label>
+            <div class="mb-3">
+                <label for="password" class="auth-form-label">Contraseña</label>
+                <input type="password" name="_password" id="password"
+                       class="auth-form-input" autocomplete="current-password" required
+                       placeholder="••••••••">
+                <input type="hidden" name="_csrf_token" data-controller="csrf-protection"
+                       value="{{ csrf_token('authenticate') }}">
             </div>
-        #}
 
-        <button class="btn btn-primary" type="submit">
-            Iniciar sesión
-        </button>
-    </form>
+            <button class="auth-submit-button" type="submit">Iniciar sesión</button>
+        </form>
+
+        <p class="auth-alternate-action-text">¿Sin cuenta? <a href="{{ path('app_register') }}">Regístrate aquí</a></p>
+    </div>
+</div>
 {% endblock %}
