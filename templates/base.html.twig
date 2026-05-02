@@ -19,6 +19,8 @@
         {% endblock %}
     </head>
     <body>
+
+		{# Menú de la aplicación #}
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
             <div class="container-fluid">
                 <a class="navbar-brand" href="{{ path('app_inicio') }}">Music Match</a>
@@ -29,16 +31,32 @@
                     <div class="navbar-nav ms-auto">
                         <a href="{{ path('app_inicio') }}" class="nav-link {{ app.request.attributes.get('_route') == 'app_inicio' ? 'active' : '' }}">Inicio</a>
 
-                        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                            {% if not is_granted('ROLE_ADMIN') %}
-                                <a href="{{ path('app_musico_index') }}" class="nav-link {{ app.request.attributes.get('_route') == 'app_musico_index' ? 'active' : '' }}">Listar perfiles</a>
-                            {% endif %}
+						{# MENÚ DINÁMICO #}
+						{# Si está autenticado, mostramos diversas opciones, también según los roles asignados #}
+                        {% if app.user %}
                             
+							{# Si tiene asignado el ROLE_ADMIN #}
                             {% if is_granted('ROLE_ADMIN') %}
+								{# Mostramos enlace a '/admin' (panel de administración de usuarios) #}
                                 <a href="{{ path('admin') }}" class="nav-link">Administrar usuarios</a>
-                            {% endif %}
+
+							{# Si no tiene asignado el ROLE_ADMIN #}
+							{% else %}
+
+                                {# Si aún no tiene creado perfil de MUSICO, mostramos enlace a '/musico/new' #}
+                                {% if app.user and app.user.musico is null %}
+									<a href="{{ path('app_musico_new') }}" class="nav-link {{ app.request.attributes.get('_route') == 'app_musico_new' ? 'active' : '' }}">Crear perfil</a>
+                            	
+								{# Si ya tiene creado perfil, mostramos enlace a '/musico/{id}' (ver perfil) #}
+								{% else %}
+									<a <a href="{{ path('app_musico_show', {id: app.user.musico.id}) }}" class="nav-link {{ app.request.attributes.get('_route') == 'app_musico_show' ? 'active' : '' }}">Ver mi perfil</a>
+								{% endif %}
+							{% endif %}
                             
+							{# Mostramos enlace a '/logout' #}
                             <a href="{{ path('app_logout') }}" class="nav-link">Salir</a>
+
+						{# Si no está autenticado, no mostramos '/logout' pero sí '/register' y '/login' #}
                         {% else %}
                             <a href="{{ path('app_register') }}" class="nav-link {{ app.request.attributes.get('_route') == 'app_register' ? 'active' : '' }}">Registro</a>
                             <a href="{{ path('app_login') }}" class="nav-link {{ app.request.attributes.get('_route') == 'app_login' ? 'active' : '' }}">Iniciar sesión</a>

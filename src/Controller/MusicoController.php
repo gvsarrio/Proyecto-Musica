@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/musico')]
 final class MusicoController extends AbstractController
 {
-    #[Route(name: 'app_musico_index', methods: ['GET'])]
+    #[Route('/list', name: 'app_musico_index', methods: ['GET'])]
     public function index(MusicoRepository $musicoRepository): Response
     {
         return $this->render('musico/index.html.twig', [
@@ -27,12 +27,29 @@ final class MusicoController extends AbstractController
     #[Route('/new', name: 'app_musico_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
+        // Obtener el usuario logueado:
+        $usuario = $this->getUser();
+
+        // Si no hay usuario logueado, lanza excepción:
+        if (!$usuario) {
+            throw $this->createAccessDeniedException();
+        }
+
+        // Comprobar que el usuario no tiene ya un perfil creado. Si lo tiene, lanza excepción:
+        if ($usuario->getMusico() !== null) {
+            throw $this->createAccessDeniedException('Ya existe un perfil creado por este usuario');
+        }
+
         $musico = new Musico();
         $form = $this->createForm(MusicoType::class, $musico);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $musico = $form->getData();
+
+            // ASOCIAMOS EL USUARIO LOGUEADO CON EL PERFIL DE MUSICO QUE ESTAMOS CREANDO:
+            $musico->setUsuario($usuario);
+
 
             // 1. Guardamos el músico primero para que Doctrine genere su ID
             $entityManager->persist($musico);
@@ -49,7 +66,8 @@ final class MusicoController extends AbstractController
                 $entityManager->persist($relacion);
             }
 
-            // 4. Ejecutamos todo en la base de datos
+
+            // Ejecutamos todo en la base de datos
             $entityManager->flush();
 
             $fotoArchivo = $form->get('imagen_url')->getData();

@@ -18,6 +18,9 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $id = null;
 
+    #[ORM\OneToOne(mappedBy: 'usuario', targetEntity: Musico::class)]
+    private ?Musico $musico = null;
+
     #[ORM\Column(length: 180)]
     private ?string $email = null;
 
@@ -44,6 +47,17 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getMusico(): ?Musico
+    {
+        return $this->musico;
+    }
+
+    public function setMusico(Musico $musico): self
+    {
+        $this->musico = $musico;
+        return $this;
     }
 
     public function getEmail(): ?string
