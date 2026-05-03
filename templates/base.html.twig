@@ -1,70 +1,81 @@
 <!DOCTYPE html>
 <html lang="es">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>{% block title %}Music Match{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>🎵</text></svg>">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>
+			{% block title %}Music Match
+			{% endblock %}
+		</title>
+		<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>🎵</text></svg>">
 
-        {% block stylesheets %}
-            {# Bootstrap primero — responsive y componentes base #}
-            <link href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.3/dist/vapor/bootstrap.min.css" rel="stylesheet">
-            {# Tu CSS encima — sobreescribe lo que necesites #}
-            <link rel="stylesheet" href="{{ asset('css/base.css') }}">
-        {% endblock %}
+		{% block stylesheets %}
+			{# Bootstrap primero — responsive y componentes base #}
+			<link
+			href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.3/dist/vapor/bootstrap.min.css" rel="stylesheet">
+			{# Tu CSS encima — sobreescribe lo que necesites #}
+			<link rel="stylesheet" href="{{ asset('css/base.css') }}">
+		{% endblock %}
 
-        {% block javascripts %}
-            {% block importmap %}{{ importmap('app') }}{% endblock %}
-            {# Bootstrap JS para collapse del navbar, alerts, etc. #}
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-        {% endblock %}
-    </head>
-    <body>
+		{% block javascripts %}
+			{% block importmap %}
+				{{ importmap('app') }}
+			{% endblock %}
+			{# Bootstrap JS para collapse del navbar, alerts, etc. #}
+			<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+		{% endblock %}
+	</head>
+	<body>
 
-        {# Páginas que quieran fondo líquido sobreescriben este bloque #}
-        {% block liquid_background %}{% endblock %}
+		{# Páginas que quieran fondo líquido sobreescriben este bloque #}
+		{% block liquid_background %}{% endblock %}
 
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="{{ path('app_inicio') }}" data-text="Music Hub">Music Hub</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <div class="navbar-nav ms-auto">
-                        <a href="{{ path('app_inicio') }}" class="nav-link {{ app.request.attributes.get('_route') == 'app_inicio' ? 'active' : '' }}">Inicio</a>
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+			<div class="container-fluid">
+				<a class="navbar-brand" href="{{ path('app_inicio') }}" data-text="Music Hub">Music Hub</a>
+				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarNav">
+					<div class="navbar-nav ms-auto">
+						<a href="{{ path('app_inicio') }}" class="nav-link {{ app.request.attributes.get('_route') == 'app_inicio' ? 'active' : '' }}">Inicio</a>
 
-                        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                            {% if not is_granted('ROLE_ADMIN') %}
-                                <a href="{{ path('app_musico_new') }}" class="nav-link {{ app.request.attributes.get('_route') == 'app_musico_new' ? 'active' : '' }}">Crear perfil</a>
-                                <a href="{{ path('app_musico_index') }}" class="nav-link {{ app.request.attributes.get('_route') == 'app_musico_index' ? 'active' : '' }}">Ver perfiles</a>
-                            {% endif %}
+						{% if is_granted('IS_AUTHENTICATED_FULLY') %}
 
-                            {% if is_granted('ROLE_ADMIN') %}
-                                <a href="{{ path('admin') }}" class="nav-link">Administrar usuarios</a>
-                            {% endif %}
+							{% if is_granted('ROLE_ADMIN') %}
+								{# Admin: solo ve el panel de administración #}
+								<a href="{{ path('admin') }}" class="nav-link">Administrar usuarios</a>
 
-                            <a href="{{ path('app_logout') }}" class="nav-link">Salir</a>
-                        {% else %}
-                            <a href="{{ path('app_register') }}" class="nav-link {{ app.request.attributes.get('_route') == 'app_register' ? 'active' : '' }}">Registro</a>
-                            <a href="{{ path('app_login') }}" class="nav-link {{ app.request.attributes.get('_route') == 'app_login' ? 'active' : '' }}">Iniciar sesión</a>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-        </nav>
+							{% else %}
+								{# Si el usuario aún no tiene perfil de músico #}
+								{% if app.user.musico is null %}
+									<a href="{{ path('app_musico_new') }}" class="nav-link {{ app.request.attributes.get('_route') == 'app_musico_new' ? 'active' : '' }}">Crear perfil</a>
 
-        <div class="container">
-            {% for label, messages in app.flashes %}
-                {% for message in messages %}
-                    <div class="alert alert-{{ label }} alert-dismissible fade show">
-                        {{ message }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                    </div>
-                {% endfor %}
-            {% endfor %}
+									{# Si ya tiene perfil creado, enlace directo a su perfil #}
+								{% else %}
+									<a href="{{ path('app_musico_show', {id: app.user.musico.id}) }}" class="nav-link {{ app.request.attributes.get('_route') == 'app_musico_show' ? 'active' : '' }}">Ver mi perfil</a>
+								{% endif %}
 
-            {% block body %}{% endblock %}
-        </div>
-    </body>
+								{# Siempre puede ver el listado de músicos #}
+								<a href="{{ path('app_musico_index') }}" class="nav-link {{ app.request.attributes.get('_route') == 'app_musico_index' ? 'active' : '' }}">Ver perfiles</a>
+							{% endif %}
+						</div>
+					</div>
+				</div>
+			</nav>
+
+			<div class="container">
+				{% for label, messages in app.flashes %}
+					{% for message in messages %}
+						<div class="alert alert-{{ label }} alert-dismissible fade show">
+							{{ message }}
+							<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+						</div>
+					{% endfor %}
+				{% endfor %}
+
+				{% block body %}{% endblock %}
+			</div>
+		</body>
+	</body>
 </html>
