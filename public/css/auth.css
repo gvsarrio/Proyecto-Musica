@@ -46,7 +46,7 @@
     font-family: var(--font-display);
     font-size: 24px;
     font-weight: 700;
-    color: #e8e0ff;
+    color: #ffffff;
     letter-spacing: 1px;
     text-shadow: 0 0 20px rgba(255,255,255,0.2);
     margin-top: 8px;
@@ -103,7 +103,7 @@ textarea {
 .form-control::placeholder,
 .auth-form-input::placeholder,
 input::placeholder {
-    color: var(rgba(200, 180, 255, 0.5));
+    color: var(--mh-placeholder);
     font-style: italic;
 }
 
@@ -253,4 +253,12 @@ input[type="checkbox"] {
     padding: 10px 14px;
     margin-bottom: 16px;
     backdrop-filter: blur(4px);
+}
+
+/* ================== RESPONSIVE (MÓVIL) ================== */
+/* Ajustes de tamaños y espaciados para pantallas pequeñas */
+@media (max-width: 520px) {
+    .auth-wrapper { padding: 2rem 0.75rem 1.5rem; }
+    .auth-card-container { padding: 28px 20px 22px; border-radius: 16px; }
+    .auth-card-container h1 { font-size: 20px; }
 }
