@@ -36,7 +36,6 @@
                 <td>{{ musico.esBanda ? 'Yes' : 'No' }}</td>
                 <td>
                     <a href="{{ path('app_musico_show', {'id': musico.id}) }}">show</a>
-                    <a href="{{ path('app_musico_edit', {'id': musico.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}
@@ -47,5 +46,4 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_musico_new') }}">Create new</a>
 {% endblock %}

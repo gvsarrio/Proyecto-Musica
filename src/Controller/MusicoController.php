@@ -110,13 +110,26 @@ final class MusicoController extends AbstractController
     #[Route('/{id}/edit', name: 'app_musico_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Musico $musico, EntityManagerInterface $entityManager): Response
     {
+        // Obtener usuario logueado:
+        $usuario = $this->getUser();
+
+        // Comprobar si el usuario es el propietario del perfil a editar; si no, se lanza excepción:
+        if ($musico->getUsuario() !== $usuario) {
+            throw $this->createAccessDeniedException('No se puede editar este perfil desde este usuario.');
+        }
+
         $form = $this->createForm(MusicoType::class, $musico);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_musico_index', [], Response::HTTP_SEE_OTHER);
+            // Muestra mensaje, y redirige al perfil que acaba de modificarse:
+            $this->addFlash('success', 'Perfil actualizado.');
+            
+            return $this->redirectToRoute('app_musico_show', [
+                'id' => $musico->getId(),
+            ], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('musico/edit.html.twig', [
@@ -128,11 +141,24 @@ final class MusicoController extends AbstractController
     #[Route('/{id}', name: 'app_musico_delete', methods: ['POST'])]
     public function delete(Request $request, Musico $musico, EntityManagerInterface $entityManager): Response
     {
+        // Obtener usuario logueado:
+        $usuario = $this->getUser();
+
+        // Comprobar si el usuario es el propietario del perfil a borrar; si no, se lanza excepción:
+        if ($musico->getUsuario() !== $usuario) {
+            throw $this->createAccessDeniedException('No se puede borrar este perfil desde este usuario.');
+        }
+        
         if ($this->isCsrfTokenValid('delete' . $musico->getId(), $request->getPayload()->getString('_token'))) {
+            // Romper la relación con la tabla de Usuario, antes de borrar el perfil:
+            $usuario->setMusico(null);
+
             $entityManager->remove($musico);
             $entityManager->flush();
+
+            $this->addFlash('success', 'Perfil borrado correctamente.');
         }
 
-        return $this->redirectToRoute('app_musico_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_inicio', [], Response::HTTP_SEE_OTHER);
     }
 }
