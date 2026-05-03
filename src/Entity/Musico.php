@@ -16,9 +16,9 @@ class Musico
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(name: 'user_id', nullable: false)]
-    private ?Usuario $user_id = null;
+    #[ORM\OneToOne(targetEntity: Usuario::class, inversedBy: 'musico')]
+    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false, unique: true)]
+    private ?Usuario $usuario = null;
 
     #[ORM\Column(length: 100)]
     private ?string $nombre = null;
@@ -64,14 +64,14 @@ class Musico
         return $this->id;
     }
 
-    public function getUserId(): ?Usuario
+    public function getUsuario(): ?Usuario
     {
-        return $this->user_id;
+        return $this->usuario;
     }
 
-    public function setUserId(Usuario $user_id): static
+    public function setUsuario(Usuario $usuario): static
     {
-        $this->user_id = $user_id;
+        $this->usuario = $usuario;
 
         return $this;
     }
