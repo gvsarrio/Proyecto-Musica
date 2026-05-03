@@ -7,6 +7,52 @@
     <link rel="stylesheet" href="{{ asset('css/home.css') }}">
 {% endblock %}
 
+{% block liquid_background %}
+<div id="liquid-background"></div>
+<script>
+(function() {
+    var bg = document.getElementById('liquid-background');
+    var colors = ['rgba(12,255,220,0.7)', 'rgba(255,0,255,0.7)', 'rgba(66,0,255,0.7)', 'rgba(155,48,255,0.7)'];
+    var blobs = [];
+
+    for (var i = 0; i < 4; i++) {
+        var blob = document.createElement('div');
+        blob.classList.add('liquid-blob');
+        var size = Math.random() * 250 + 200;
+        blob.style.width  = size + 'px';
+        blob.style.height = size + 'px';
+        blob.style.left   = (Math.random() * 100) + '%';
+        blob.style.top    = (Math.random() * 100) + '%';
+        blob.style.background = colors[Math.floor(Math.random() * colors.length)];
+        bg.appendChild(blob);
+        blobs.push(blob);
+    }
+
+    function animateBlobs() {
+        blobs.forEach(function(blob) {
+            blob.style.left = (Math.random() * 100) + '%';
+            blob.style.top  = (Math.random() * 100) + '%';
+        });
+    }
+
+    setTimeout(animateBlobs, 100);
+    setInterval(animateBlobs, 6000);
+
+    // Reacción suave al ratón
+    document.addEventListener('mousemove', function(e) {
+        var mx = e.clientX / window.innerWidth;
+        var my = e.clientY / window.innerHeight;
+        blobs.forEach(function(blob, i) {
+            var dir = (i % 2 === 0) ? 1 : -1;
+            var ox = (mx - 0.5) * 30 * dir;
+            var oy = (my - 0.5) * 30 * dir;
+            blob.style.transform = 'translate(calc(-50% + ' + ox + 'px), calc(-50% + ' + oy + 'px))';
+        });
+    });
+})();
+</script>
+{% endblock %}
+
 {% block body %}
 <div class="hero">
     <span class="hero-badge">🎵 Donde la música encuentra su lugar</span>
@@ -29,3 +75,4 @@
     </div>
 </div>
 {% endblock %}
+
