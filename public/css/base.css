@@ -56,7 +56,7 @@ html, body {
 }
 
 body {
-    background: linear-gradient(135deg, #050714 0%, #0d0520 50%, #050714 100%) !important;
+    background: linear-gradient(135deg, #170153 0%, #2d0068 50%, #591b94 100%) !important;
     background-attachment: fixed !important;
     font-family: var(--font-body) !important;
     font-weight: 400;
@@ -168,6 +168,7 @@ a:hover { color: var(--mh-cyan); text-shadow: 0 0 8px rgba(0,212,232,0.4); }
     font-weight: 600 !important;
     color: rgba(240,240,255,0.75) !important;
     position: relative;
+    margin: 0 8px !important;
     transition: all 0.2s;
 }
 
