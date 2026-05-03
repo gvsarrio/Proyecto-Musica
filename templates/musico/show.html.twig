@@ -50,9 +50,16 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_musico_index') }}">back to list</a>
+    <a href="{{ path('app_musico_index') }}">Ir al listado de perfiles</a>
 
-    <a href="{{ path('app_musico_edit', {'id': musico.id}) }}">edit</a>
+    {# Solo se muestra el botón para EDITAR cuando el perfil es del propio usuario logueado #}
+    {% if app.user == musico.usuario %}
+        <a href="{{ path('app_musico_edit', {'id': musico.id}) }}">Editar perfil</a>
+    {% endif %}
 
-    {{ include('musico/_delete_form.html.twig') }}
+    {# Solo se muestra el botón para BORRAR cuando el perfil es del propio usuario logueado #}
+    {% if app.user == musico.usuario %}
+        {{ include('musico/_delete_form.html.twig') }}
+    {% endif %}
+
 {% endblock %}

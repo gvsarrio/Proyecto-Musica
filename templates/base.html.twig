@@ -51,6 +51,9 @@
 								{% else %}
 									<a <a href="{{ path('app_musico_show', {id: app.user.musico.id}) }}" class="nav-link {{ app.request.attributes.get('_route') == 'app_musico_show' ? 'active' : '' }}">Ver mi perfil</a>
 								{% endif %}
+
+                                {# Mostramos enlace a '/musico/list' #}
+                                <a href="{{ path('app_musico_index') }}" class="nav-link">Listar músicos</a>
 							{% endif %}
                             
 							{# Mostramos enlace a '/logout' #}
