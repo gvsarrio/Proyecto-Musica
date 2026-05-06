@@ -45,8 +45,9 @@ class Musico
     #[ORM\Column(nullable: true)]
     private ?\DateTime $actualizado_en = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?bool $es_banda = null;
+    
 
     /**
      * @var Collection<int, MiembroBanda>

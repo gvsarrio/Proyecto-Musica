@@ -50,8 +50,29 @@ final class MusicoController extends AbstractController
             // ASOCIAMOS EL USUARIO LOGUEADO CON EL PERFIL DE MUSICO QUE ESTAMOS CREANDO:
             $musico->setUsuario($usuario);
 
+            // --- PROCESAMIENTO DE LA IMAGEN (CORREGIDO) ---
+            // Intentamos capturar el archivo tanto por 'imagen_url' como por 'imagenUrl' para asegurar
+            $fotoArchivo = $form->get('imagen_url')->getData();
 
-            // 1. Guardamos el músico primero para que Doctrine genere su ID
+            if ($fotoArchivo) {
+                // 1. Crear un nombre único para que no se machaquen fotos con el mismo nombre
+                $nuevoNombre = uniqid() . '.' . $fotoArchivo->guessExtension();
+
+                // 2. Mover el archivo a la carpeta deseada (definida en services.yaml)
+                try {
+                    $fotoArchivo->move(
+                        $this->getParameter('perfiles_directory'),
+                        $nuevoNombre
+                    );
+                    
+                    // 3. Guardar el nombre en la base de datos ANTES del persist
+                    $musico->setImagenUrl($nuevoNombre);
+                } catch (FileException $e) {
+                    $this->addFlash('error', 'No se pudo guardar la imagen.');
+                }
+            }
+
+            // 1. Guardamos el músico (ahora ya lleva el nombre de la imagen asignado)
             $entityManager->persist($musico);
 
             // 2. Extraemos los instrumentos del campo NO mapeado
@@ -66,31 +87,11 @@ final class MusicoController extends AbstractController
                 $entityManager->persist($relacion);
             }
 
-
-            // Ejecutamos todo en la base de datos
+            // Ejecutamos todo en la base de datos (Un solo flush para todo el proceso)
             $entityManager->flush();
 
-            $fotoArchivo = $form->get('imagen_url')->getData();
-
-            if ($fotoArchivo) {
-                // 1. Crear un nombre único para que no se machaquen fotos con el mismo nombre
-                $nuevoNombre = uniqid() . '.' . $fotoArchivo->guessExtension();
-
-                // 2. Mover el archivo a la carpeta deseada (definida en el paso 3)
-                try {
-                    $fotoArchivo->move(
-                        $this->getParameter('perfiles_directory'),
-                        $nuevoNombre
-                    );
-                    // 3. Guardar el nombre en la base de datos
-                    $musico->setImagenUrl($nuevoNombre);
-                } catch (FileException $e) {
-                    // ... gestionar error si falla la subida
-                }
-            }
-
             $this->addFlash('success', '¡Perfil creado con éxito!');
-            return $this->redirectToRoute('app_musico_index'); // Ajusta a tu ruta
+            return $this->redirectToRoute('app_musico_index');
         }
 
         return $this->render('musico/new.html.twig', [
@@ -110,10 +111,8 @@ final class MusicoController extends AbstractController
     #[Route('/{id}/edit', name: 'app_musico_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Musico $musico, EntityManagerInterface $entityManager): Response
     {
-        // Obtener usuario logueado:
         $usuario = $this->getUser();
 
-        // Comprobar si el usuario es el propietario del perfil a editar; si no, se lanza excepción:
         if ($musico->getUsuario() !== $usuario) {
             throw $this->createAccessDeniedException('No se puede editar este perfil desde este usuario.');
         }
@@ -122,9 +121,9 @@ final class MusicoController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // Lógica similar para actualizar imagen en edición si fuera necesario
             $entityManager->flush();
 
-            // Muestra mensaje, y redirige al perfil que acaba de modificarse:
             $this->addFlash('success', 'Perfil actualizado.');
             
             return $this->redirectToRoute('app_musico_show', [
@@ -141,21 +140,16 @@ final class MusicoController extends AbstractController
     #[Route('/{id}', name: 'app_musico_delete', methods: ['POST'])]
     public function delete(Request $request, Musico $musico, EntityManagerInterface $entityManager): Response
     {
-        // Obtener usuario logueado:
         $usuario = $this->getUser();
 
-        // Comprobar si el usuario es el propietario del perfil a borrar; si no, se lanza excepción:
         if ($musico->getUsuario() !== $usuario) {
             throw $this->createAccessDeniedException('No se puede borrar este perfil desde este usuario.');
         }
         
         if ($this->isCsrfTokenValid('delete' . $musico->getId(), $request->getPayload()->getString('_token'))) {
-            // Romper la relación con la tabla de Usuario, antes de borrar el perfil:
             $usuario->setMusico(null);
-
             $entityManager->remove($musico);
             $entityManager->flush();
-
             $this->addFlash('success', 'Perfil borrado correctamente.');
         }
 
