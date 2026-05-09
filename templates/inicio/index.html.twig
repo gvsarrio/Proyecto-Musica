@@ -1,23 +1,19 @@
 {% extends 'base.html.twig' %}
-
 {% block title %}MusicHub — Conecta con tu banda{% endblock %}
-
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/home.css') }}">
 {% endblock %}
-
 {% block liquid_background %}
-<div id="liquid-background"></div>
+<div id="home-background"></div>
 <script>
 (function() {
-    var bg = document.getElementById('liquid-background');
+    var bg = document.getElementById('home-background');
     var colors = ['rgba(12,255,220,0.7)', 'rgba(255,0,255,0.7)', 'rgba(66,0,255,0.7)', 'rgba(155,48,255,0.7)'];
     var blobs = [];
-
     for (var i = 0; i < 4; i++) {
         var blob = document.createElement('div');
-        blob.classList.add('liquid-blob');
+        blob.classList.add('home-blob');
         var size = Math.random() * 250 + 200;
         blob.style.width  = size + 'px';
         blob.style.height = size + 'px';
@@ -27,17 +23,14 @@
         bg.appendChild(blob);
         blobs.push(blob);
     }
-
     function animateBlobs() {
         blobs.forEach(function(blob) {
             blob.style.left = (Math.random() * 100) + '%';
             blob.style.top  = (Math.random() * 100) + '%';
         });
     }
-
     setTimeout(animateBlobs, 100);
     setInterval(animateBlobs, 6000);
-
     // Reacción suave al ratón
     document.addEventListener('mousemove', function(e) {
         var mx = e.clientX / window.innerWidth;
@@ -52,19 +45,15 @@
 })();
 </script>
 {% endblock %}
-
 {% block body %}
 <div class="hero">
     <span class="hero-badge">🎵 Donde la música encuentra su lugar</span>
-
     <h1 class="hero-title">
         Music<span class="glitch" data-text="Hub">Hub</span>
     </h1>
-
     <p class="hero-subtitle">
         Conecta músicos con bandas. Encuentra a quienes comparten tu sonido.
     </p>
-
     <div class="hero-actions">
         {% if is_granted('IS_AUTHENTICATED') %}
             <a href="{{ path('app_musico_index') }}" class="btn-hero-primary">Ver perfiles</a>
@@ -75,4 +64,3 @@
     </div>
 </div>
 {% endblock %}
-
