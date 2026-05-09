@@ -56,7 +56,7 @@ html, body {
 }
 
 body {
-    background: linear-gradient(135deg, #170153 0%, #2d0068 50%, #591b94 100%) !important;
+    background: linear-gradient(135deg, #010253 0%, #000768 50%, #1b1d94 100%) !important;
     background-attachment: fixed !important;
     font-family: var(--font-body) !important;
     font-weight: 400;
@@ -64,29 +64,6 @@ body {
     line-height: 1.6;
     overflow-x: hidden;
     position: relative;
-}
-
-/* ================== FONDO LÍQUIDO (solo para páginas que lo activen) ================== */
-#liquid-background {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    pointer-events: none;
-    overflow: hidden;
-    /* El fondo oscuro también aquí para que no se vea blanco mientras cargan los blobs */
-    background: rgb(47,16,95);
-}
-
-.liquid-blob {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(60px) brightness(1.3);
-    opacity: 0.25;
-    mix-blend-mode: screen;
-    transition: all 6s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 /* ================== SCROLLBAR ================== */
