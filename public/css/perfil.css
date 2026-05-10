@@ -190,47 +190,78 @@
 
 /* ================== INSTRUMENTOS ================== */
 .perfil-instrumentos-container {
-    background: rgba(155, 48, 255, 0.06);
+    background: rgba(155, 48, 255, 0.04);
     border: 1px solid rgba(155, 48, 255, 0.2);
-    border-radius: 10px;
-    padding: 15px;
-    max-height: 200px;
+    border-radius: 12px;
+    padding: 20px 10px 5px 20px; /* Ajustamos el padding para compensar el margen */
+    max-height: 250px;
     overflow-y: auto;
+    overflow-x: hidden;
     backdrop-filter: blur(4px);
+    
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+.perfil-instrumentos-container .form-check {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    
+    /* GAP MANUAL: Usamos margen en lugar de la propiedad gap */
+    margin-right: 15px !important; 
+    margin-bottom: 15px !important;
+    
+    /* Reparto de espacio: 4 por fila aprox */
+    flex: 1 0 calc(25% - 20px); 
+    min-width: 130px;
+    max-width: 200px;
+    padding: 0 !important;
 }
 
 /* ================== CHECKBOX ================== */
-.perfil-card .form-check {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 8px;
-    padding: 6px 10px;
-    background: rgba(155, 48, 255, 0.04);
-    border: 1px solid rgba(155, 48, 255, 0.15);
-    border-radius: 8px;
+.perfil-instrumentos-container input[type="checkbox"] {
+    display: none !important;
 }
 
-.perfil-card .form-check-input,
-.perfil-card input[type="checkbox"] {
-    width: 17px !important;
-    height: 17px !important;
-    border-radius: 5px !important;
-    padding: 0 !important;
-    accent-color: var(--mh-purple);
-    flex-shrink: 0;
-    cursor: pointer;
-}
-
-.perfil-card .form-check-label {
+.perfil-instrumentos-container label {
     font-family: var(--font-body);
     font-size: 13px;
     font-weight: 500;
     color: #c0b0e0;
-    text-transform: none;
-    letter-spacing: 0;
-    text-shadow: none;
+    background: rgba(155, 48, 255, 0.08);
+    border: 1px solid rgba(155, 48, 255, 0.3);
+    border-radius: 50px;
+    padding: 10px 15px;
     cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    white-space: nowrap;
+    margin: 0 !important;
+    width: 100%; /* Ocupa el hueco repartido */
+    text-align: center;
+    display: block;
+}
+
+.perfil-instrumentos-container input[type="checkbox"]:checked + label {
+    background: var(--mh-purple) !important;
+    color: #fff !important;
+    border-color: #d966ff !important;
+    box-shadow: 0 0 15px rgba(155, 48, 255, 0.5);
+}
+
+.perfil-instrumentos-container label:hover {
+    background: rgba(155, 48, 255, 0.2);
+    border-color: var(--mh-purple);
+}
+
+.perfil-instrumentos-container::-webkit-scrollbar {
+    width: 6px;
+}
+.perfil-instrumentos-container::-webkit-scrollbar-thumb {
+    background: rgba(155, 48, 255, 0.3);
+    border-radius: 10px;
 }
 
 /* ================== BOTÓN ================== */
