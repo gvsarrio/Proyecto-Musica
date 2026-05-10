@@ -33,7 +33,7 @@
                 <td>{{ musico.actualizadoEn ? musico.actualizadoEn|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ musico.esBanda ? 'Yes' : 'No' }}</td>
                 <td>
-                    <a href="{{ path('app_musico_show', {'id': musico.id}) }}">show</a>
+                    <a href="{{ path('app_musico_show', {'id': musico.id}) }}">Ver</a>
                 </td>
             </tr>
         {% else %}
