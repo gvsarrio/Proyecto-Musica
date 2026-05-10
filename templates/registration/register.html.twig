@@ -1,23 +1,19 @@
 {% extends 'base.html.twig' %}
-
 {% block title %}Crear cuenta — MusicHub{% endblock %}
-
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/auth.css') }}">
 {% endblock %}
-
 {% block liquid_background %}
-<div id="liquid-background"></div>
+<div id="auth-background"></div>
 <script>
 (function() {
-    var bg = document.getElementById('liquid-background');
+    var bg = document.getElementById('auth-background');
     var colors = ['rgba(12,255,220,0.7)', 'rgba(255,0,255,0.7)', 'rgba(66,0,255,0.7)', 'rgba(155,48,255,0.7)'];
     var blobs = [];
-
     for (var i = 0; i < 4; i++) {
         var blob = document.createElement('div');
-        blob.classList.add('liquid-blob');
+        blob.classList.add('auth-blob');
         var size = Math.random() * 250 + 200;
         blob.style.width  = size + 'px';
         blob.style.height = size + 'px';
@@ -27,17 +23,14 @@
         bg.appendChild(blob);
         blobs.push(blob);
     }
-
     function animateBlobs() {
         blobs.forEach(function(blob) {
             blob.style.left = (Math.random() * 100) + '%';
             blob.style.top  = (Math.random() * 100) + '%';
         });
     }
-
     setTimeout(animateBlobs, 100);
     setInterval(animateBlobs, 6000);
-
     document.addEventListener('mousemove', function(e) {
         var mx = e.clientX / window.innerWidth;
         var my = e.clientY / window.innerHeight;
@@ -51,21 +44,16 @@
 })();
 </script>
 {% endblock %}
-
 {% block body %}
 <div class="auth-wrapper">
     <div class="auth-card-container">
         <div class="auth-card-header-accent-bar"></div>
-
         {% for flash_error in app.flashes('verify_email_error') %}
             <div class="auth-error-alert" role="alert">{{ flash_error }}</div>
         {% endfor %}
-
         <h1>Regístrate</h1>
         <hr class="auth-form-divider">
-
         {{ form_errors(registrationForm) }}
-
         {{ form_start(registrationForm) }}
             {{ form_row(registrationForm.email, {
             label_attr: { class: 'auth-form-label' },
@@ -80,10 +68,8 @@
                 label: 'Aceptar términos y condiciones',
                 label_attr: { class: 'auth-checkbox-label' }
             }) }}
-
             <button type="submit" class="auth-submit-button">Crear cuenta</button>
         {{ form_end(registrationForm) }}
-
         <p class="auth-alternate-action-text">¿Ya tienes cuenta? <a href="{{ path('app_login') }}">Inicia sesión</a></p>
     </div>
 </div>
