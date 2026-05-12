@@ -27,15 +27,12 @@ final class MusicoController extends AbstractController
     #[Route('/new', name: 'app_musico_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
-        // Obtener el usuario logueado:
         $usuario = $this->getUser();
 
-        // Si no hay usuario logueado, lanza excepción:
         if (!$usuario) {
             throw $this->createAccessDeniedException();
         }
 
-        // Comprobar que el usuario no tiene ya un perfil creado. Si lo tiene, lanza excepción:
         if ($usuario->getMusico() !== null) {
             throw $this->createAccessDeniedException('Ya existe un perfil creado por este usuario');
         }
@@ -46,48 +43,35 @@ final class MusicoController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $musico = $form->getData();
-
-            // ASOCIAMOS EL USUARIO LOGUEADO CON EL PERFIL DE MUSICO QUE ESTAMOS CREANDO:
             $musico->setUsuario($usuario);
 
-            // --- PROCESAMIENTO DE LA IMAGEN (CORREGIDO) ---
-            // Intentamos capturar el archivo tanto por 'imagen_url' como por 'imagenUrl' para asegurar
             $fotoArchivo = $form->get('imagen_url')->getData();
 
             if ($fotoArchivo) {
-                // 1. Crear un nombre único para que no se machaquen fotos con el mismo nombre
                 $nuevoNombre = uniqid() . '.' . $fotoArchivo->guessExtension();
 
-                // 2. Mover el archivo a la carpeta deseada (definida en services.yaml)
                 try {
                     $fotoArchivo->move(
                         $this->getParameter('perfiles_directory'),
                         $nuevoNombre
                     );
-                    
-                    // 3. Guardar el nombre en la base de datos ANTES del persist
                     $musico->setImagenUrl($nuevoNombre);
                 } catch (FileException $e) {
                     $this->addFlash('error', 'No se pudo guardar la imagen.');
                 }
             }
 
-            // 1. Guardamos el músico (ahora ya lleva el nombre de la imagen asignado)
             $entityManager->persist($musico);
 
-            // 2. Extraemos los instrumentos del campo NO mapeado
             $instrumentosSeleccionados = $form->get('instrumentos')->getData();
 
-            // 3. Creamos manualmente las relaciones en la tabla intermedia
             foreach ($instrumentosSeleccionados as $instrumento) {
                 $relacion = new InstrumentoMusico();
                 $relacion->setMusico($musico);
                 $relacion->setInstrumento($instrumento);
-
                 $entityManager->persist($relacion);
             }
 
-            // Ejecutamos todo en la base de datos (Un solo flush para todo el proceso)
             $entityManager->flush();
 
             $this->addFlash('success', '¡Perfil creado con éxito!');
@@ -117,11 +101,54 @@ final class MusicoController extends AbstractController
             throw $this->createAccessDeniedException('No se puede editar este perfil desde este usuario.');
         }
 
+        // --- LÓGICA DE CARGA DE INSTRUMENTOS ---
+        // Extraemos los instrumentos actuales de la tabla intermedia para que aparezcan marcados en el form
+        $instrumentosActuales = [];
+        foreach ($musico->getInstrumentoMusicos() as $relacion) {
+            $instrumentosActuales[] = $relacion->getInstrumento();
+        }
+
         $form = $this->createForm(MusicoType::class, $musico);
+        
+        // Seteamos los datos en el campo NO mapeado 'instrumentos'
+        $form->get('instrumentos')->setData($instrumentosActuales);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Lógica similar para actualizar imagen en edición si fuera necesario
+            
+            // --- PROCESAMIENTO DE IMAGEN EN EDICIÓN ---
+            $fotoArchivo = $form->get('imagen_url')->getData();
+            if ($fotoArchivo) {
+                $nuevoNombre = uniqid() . '.' . $fotoArchivo->guessExtension();
+                try {
+                    $fotoArchivo->move(
+                        $this->getParameter('perfiles_directory'),
+                        $nuevoNombre
+                    );
+                    $musico->setImagenUrl($nuevoNombre);
+                } catch (FileException $e) {
+                    $this->addFlash('error', 'No se pudo actualizar la imagen.');
+                }
+            }
+
+            // --- ACTUALIZACIÓN DE INSTRUMENTOS (BORRAR Y CREAR) ---
+            // 1. Borramos las relaciones antiguas
+            foreach ($musico->getInstrumentoMusicos() as $relacionAntigua) {
+                $entityManager->remove($relacionAntigua);
+            }
+            // Hacemos un flush intermedio para evitar conflictos de claves únicas si los hubiera
+            $entityManager->flush();
+
+            // 2. Creamos las nuevas relaciones seleccionadas
+            $instrumentosSeleccionados = $form->get('instrumentos')->getData();
+            foreach ($instrumentosSeleccionados as $instrumento) {
+                $relacion = new InstrumentoMusico();
+                $relacion->setMusico($musico);
+                $relacion->setInstrumento($instrumento);
+                $entityManager->persist($relacion);
+            }
+
             $entityManager->flush();
 
             $this->addFlash('success', 'Perfil actualizado.');

@@ -31,7 +31,6 @@ class Musico
 
     #[ORM\Column(length: 255)]
     private ?string $ubicacion = null;
-    
 
     #[ORM\Column]
     private ?int $anyos_experiencia = null;
@@ -47,7 +46,6 @@ class Musico
 
     #[ORM\Column(nullable: true)]
     private ?bool $es_banda = null;
-    
 
     /**
      * @var Collection<int, MiembroBanda>
@@ -55,163 +53,57 @@ class Musico
     #[ORM\OneToMany(targetEntity: MiembroBanda::class, mappedBy: 'musico')]
     private Collection $miembroBandas;
 
+    /**
+     * @var Collection<int, InstrumentoMusico>
+     */
+    #[ORM\OneToMany(targetEntity: InstrumentoMusico::class, mappedBy: 'musico', cascade: ['remove'])]
+    private Collection $instrumentoMusicos;
+
     public function __construct()
     {
         $this->miembroBandas = new ArrayCollection();
+        $this->instrumentoMusicos = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getId(): ?int { return $this->id; }
+    public function getUsuario(): ?Usuario { return $this->usuario; }
+    public function setUsuario(Usuario $usuario): static { $this->usuario = $usuario; return $this; }
+    public function getNombre(): ?string { return $this->nombre; }
+    public function setNombre(string $nombre): static { $this->nombre = $nombre; return $this; }
+    public function getTelefono(): ?int { return $this->telefono; }
+    public function setTelefono(?int $telefono): static { $this->telefono = $telefono; return $this; }
+    public function getBiografia(): ?string { return $this->biografia; }
+    public function setBiografia(string $biografia): static { $this->biografia = $biografia; return $this; }
+    public function getUbicacion(): ?string { return $this->ubicacion; }
+    public function setUbicacion(string $ubicacion): static { $this->ubicacion = $ubicacion; return $this; }
+    public function getAnyosExperiencia(): ?int { return $this->anyos_experiencia; }
+    public function setAnyosExperiencia(int $anyos_experiencia): static { $this->anyos_experiencia = $anyos_experiencia; return $this; }
+    public function getImagenUrl(): ?string { return $this->imagen_url; }
+    public function setImagenUrl(?string $imagen_url): static { $this->imagen_url = $imagen_url; return $this; }
+    public function getCreadoEn(): ?\DateTime { return $this->creado_en; }
+    public function setCreadoEn(?\DateTime $creado_en): static { $this->creado_en = $creado_en; return $this; }
+    public function getActualizadoEn(): ?\DateTime { return $this->actualizado_en; }
+    public function setActualizadoEn(?\DateTime $actualizado_en): static { $this->actualizado_en = $actualizado_en; return $this; }
+    public function isEsBanda(): ?bool { return $this->es_banda; }
+    public function setEsBanda(bool $es_banda): static { $this->es_banda = $es_banda; return $this; }
+
+    public function getMiembroBandas(): Collection { return $this->miembroBandas; }
+
+    /**
+     * @return Collection<int, InstrumentoMusico>
+     */
+    public function getInstrumentoMusicos(): Collection
     {
-        return $this->id;
-    }
-
-    public function getUsuario(): ?Usuario
-    {
-        return $this->usuario;
-    }
-
-    public function setUsuario(Usuario $usuario): static
-    {
-        $this->usuario = $usuario;
-
-        return $this;
-    }
-
-    public function getNombre(): ?string
-    {
-        return $this->nombre;
-    }
-
-    public function setNombre(string $nombre): static
-    {
-        $this->nombre = $nombre;
-
-        return $this;
-    }
-
-    public function getTelefono(): ?int
-    {
-        return $this->telefono;
-    }
-
-    public function setTelefono(?int $telefono): static
-    {
-        $this->telefono = $telefono;
-
-        return $this;
-    }
-
-    public function getBiografia(): ?string
-    {
-        return $this->biografia;
-    }
-
-    public function setBiografia(string $biografia): static
-    {
-        $this->biografia = $biografia;
-
-        return $this;
-    }
-
-    public function getUbicacion(): ?string
-    {
-        return $this->ubicacion;
-    }
-
-    public function setUbicacion(string $ubicacion): static
-    {
-        $this->ubicacion = $ubicacion;
-
-        return $this;
-    }
-
-    public function getAnyosExperiencia(): ?int
-    {
-        return $this->anyos_experiencia;
-    }
-
-    public function setAnyosExperiencia(int $anyos_experiencia): static
-    {
-        $this->anyos_experiencia = $anyos_experiencia;
-
-        return $this;
-    }
-
-    public function getImagenUrl(): ?string
-    {
-        return $this->imagen_url;
-    }
-
-    public function setImagenUrl(?string $imagen_url): static
-    {
-        $this->imagen_url = $imagen_url;
-
-        return $this;
-    }
-
-    public function getCreadoEn(): ?\DateTime
-    {
-        return $this->creado_en;
-    }
-
-    public function setCreadoEn(?\DateTime $creado_en): static
-    {
-        $this->creado_en = $creado_en;
-
-        return $this;
-    }
-
-    public function getActualizadoEn(): ?\DateTime
-    {
-        return $this->actualizado_en;
-    }
-
-    public function setActualizadoEn(?\DateTime $actualizado_en): static
-    {
-        $this->actualizado_en = $actualizado_en;
-
-        return $this;
-    }
-
-    public function isEsBanda(): ?bool
-    {
-        return $this->es_banda;
-    }
-
-    public function setEsBanda(bool $es_banda): static
-    {
-        $this->es_banda = $es_banda;
-
-        return $this;
+        return $this->instrumentoMusicos;
     }
 
     /**
-     * @return Collection<int, MiembroBanda>
+     * @return Collection<int, Instrumento>
      */
-    public function getMiembroBandas(): Collection
+    public function getInstrumentos(): Collection
     {
-        return $this->miembroBandas;
-    }
-
-    public function addMiembroBanda(MiembroBanda $miembroBanda): static
-    {
-        if (!$this->miembroBandas->contains($miembroBanda)) {
-            $this->miembroBandas->add($miembroBanda);
-            $miembroBanda->setMusico($this);
-        }
-
-        return $this;
-    }
-
-    public function removeMiembroBanda(MiembroBanda $miembroBanda): static
-    {
-        if ($this->miembroBandas->removeElement($miembroBanda)) {
-            // set the owning side to null (unless already changed)
-            if ($miembroBanda->getMusico() === $this) {
-                $miembroBanda->setMusico(null);
-            }
-        }
-
-        return $this;
+        return new ArrayCollection(
+            $this->instrumentoMusicos->map(fn(InstrumentoMusico $im) => $im->getInstrumento())->getValues()
+        );
     }
 }
