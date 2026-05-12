@@ -21,7 +21,7 @@ class MusicoType extends AbstractType
             ->add('biografia')
             ->add('ubicacion')
             ->add('anyos_experiencia')
-            
+
             // Campo de imagen corregido con sintaxis PHP 8
             ->add('imagen_url', FileType::class, [
                 'label' => 'Foto de perfil (JPG, PNG, WEBP)',
@@ -45,12 +45,17 @@ class MusicoType extends AbstractType
                 'class' => Instrumento::class,
                 'choice_label' => 'nombre',
                 'multiple' => true,
-                'expanded' => true, // Transforma el select en checkboxes
-                'mapped' => false,  // Se gestiona manualmente en el Controlador
+                'expanded' => true,
+                'mapped' => false,
                 'required' => false,
-                'label' => 'Instrumentos que tocas',
-            ])
-        ;
+                'label' => '¿Qué instrumentos tocas?',
+                'attr' => [
+                    'class' => 'perfil-instrumentos-container' // <-- ESTA ES LA CLAVE
+                ],
+                'row_attr' => [
+                    'id' => 'musico_instrumentos' // <-- ESTO ACTIVA VUESTROS ESTILOS POR ID
+                ]
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

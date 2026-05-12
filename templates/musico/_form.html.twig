@@ -1,4 +1,61 @@
+{# templates/musico/_form.html.twig #}
+
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+    <div class="row g-3">
+        <div class="col-12">
+            {{ form_label(form.nombre, 'Nombre artístico: ') }}
+            {{ form_widget(form.nombre, {'attr': {'class': 'form-control', 'placeholder': 'Ej: Sharknado'}}) }}
+            {{ form_errors(form.nombre) }}
+        </div>
+
+        <div class="col-md-6">
+            {{ form_label(form.telefono, 'Teléfono de contacto: ') }}
+            {{ form_widget(form.telefono, {'attr': {'class': 'form-control', 'placeholder': 'Ej: 612 345 678'}}) }}
+            {{ form_errors(form.telefono) }}
+        </div>
+
+        <div class="col-md-6">
+            {{ form_label(form.anyos_experiencia, 'Años de experiencia: ') }}
+            {{ form_widget(form.anyos_experiencia, {'attr': {'class': 'form-control', 'placeholder': 'Ej: 5'}}) }}
+            {{ form_errors(form.anyos_experiencia) }}
+        </div>
+
+        {# SECCIÓN DE INSTRUMENTOS (Checkboxes) #}
+        <div class="col-12">
+            {{ form_label(form.instrumentos, '¿Qué instrumentos tocas?') }}
+            <div class="perfil-instrumentos-container">
+                {{ form_widget(form.instrumentos) }}
+            </div>
+            <small style="color: var(--mh-text-muted);">Selecciona todos los que apliquen</small>
+            {{ form_errors(form.instrumentos) }}
+        </div>
+
+        <div class="col-12">
+            {{ form_label(form.ubicacion, 'Ubicación') }}
+            {{ form_widget(form.ubicacion, {'attr': {'class': 'form-control', 'placeholder': 'Ej: Murcia, España'}}) }}
+            {{ form_errors(form.ubicacion) }}
+        </div>
+
+        <div class="col-12">
+            {{ form_label(form.biografia, 'Tu biografía: ') }}
+            {{ form_widget(form.biografia, {'attr': {'class': 'form-control', 'rows': '4', 'placeholder': 'Cuéntanos sobre tu estilo, influencias...'}}) }}
+            {{ form_errors(form.biografia) }}
+        </div>
+
+        {# SUBIDA DE IMAGEN #}
+        <div class="col-12">
+            {{ form_label(form.imagen_url, 'Foto de perfil: ') }}
+            {{ form_widget(form.imagen_url, {'attr': {'class': 'form-control'}}) }}
+            <small style="color: var(--mh-text-muted);">Formatos permitidos: JPG, PNG o WEBP (Máx. 2MB)</small>
+            {{ form_errors(form.imagen_url) }}
+        </div>
+    </div>
+
+    {{ form_rest(form) }}
+
+    <div class="mt-4">
+        <button class="btn btn-primary">
+            {{ button_label|default('Guardar Cambios') }}
+        </button>
+    </div>
 {{ form_end(form) }}

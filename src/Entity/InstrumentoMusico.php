@@ -13,7 +13,7 @@ class InstrumentoMusico
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(targetEntity: Musico::class, inversedBy: 'instrumentoMusicos')]
     #[ORM\JoinColumn(name: 'musico_id', nullable: false)]
     private ?Musico $musico = null;
 
@@ -21,32 +21,9 @@ class InstrumentoMusico
     #[ORM\JoinColumn(name: 'instrumento_id', nullable: false)]
     private ?Instrumento $instrumento = null;
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function getMusico(): ?Musico
-    {
-        return $this->musico;
-    }
-
-    public function setMusico(?Musico $musico): static
-    {
-        $this->musico = $musico;
-
-        return $this;
-    }
-
-    public function getInstrumento(): ?Instrumento
-    {
-        return $this->instrumento;
-    }
-
-    public function setInstrumento(?Instrumento $instrumento): static
-    {
-        $this->instrumento = $instrumento;
-
-        return $this;
-    }
+    public function getId(): ?int { return $this->id; }
+    public function getMusico(): ?Musico { return $this->musico; }
+    public function setMusico(?Musico $musico): static { $this->musico = $musico; return $this; }
+    public function getInstrumento(): ?Instrumento { return $this->instrumento; }
+    public function setInstrumento(?Instrumento $instrumento): static { $this->instrumento = $instrumento; return $this; }
 }
