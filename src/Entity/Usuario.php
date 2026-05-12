@@ -54,7 +54,7 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->musico;
     }
 
-    public function setMusico(Musico $musico): self
+    public function setMusico(?Musico $musico): self
     {
         $this->musico = $musico;
         return $this;
