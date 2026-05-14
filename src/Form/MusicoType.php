@@ -7,20 +7,41 @@ use App\Entity\Instrumento;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Validator\Constraints\Count;
 
 class MusicoType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('nombre')
-            ->add('telefono')
-            ->add('biografia')
-            ->add('ubicacion')
-            ->add('anyos_experiencia')
+            ->add('nombre', TextType::class, [
+                'label' => 'Nombre',
+                'attr' => ['placeholder' => 'Tu nombre completo'],
+            ])
+            ->add('telefono', TelType::class, [
+                'label' => 'Teléfono',
+                'required' => false,
+                'attr' => ['placeholder' => '000000000'],
+            ])
+            ->add('biografia', TextareaType::class, [
+                'label' => 'Biografía',
+                'attr' => ['placeholder' => 'Cuéntanos sobre ti...', 'rows' => 5],
+            ])
+            ->add('ubicacion', TextType::class, [
+                'label' => 'Ubicación',
+                'attr' => ['placeholder' => 'Ciudad o región'],
+            ])
+            ->add('anyos_experiencia', IntegerType::class, [
+                'label' => 'Años de experiencia',
+                'attr' => ['placeholder' => '0'],
+            ])
 
             // Campo de imagen corregido con sintaxis PHP 8
             ->add('imagen_url', FileType::class, [
@@ -49,6 +70,12 @@ class MusicoType extends AbstractType
                 'mapped' => false,
                 'required' => false,
                 'label' => '¿Qué instrumentos tocas?',
+                'constraints' => [
+                    new Count(
+                        min: 1,
+                        minMessage: 'Debes seleccionar al menos un instrumento'
+                    )
+                ],
                 'attr' => [
                     'class' => 'perfil-instrumentos-container' // <-- ESTA ES LA CLAVE
                 ],
