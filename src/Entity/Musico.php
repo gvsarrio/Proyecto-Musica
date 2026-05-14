@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: MusicoRepository::class)]
 class Musico
@@ -21,18 +22,28 @@ class Musico
     private ?Usuario $usuario = null;
 
     #[ORM\Column(length: 100)]
+    #[Assert\NotBlank(message: 'El nombre no puede estar vacío')]
+    #[Assert\Length(min: 2, minMessage: 'El nombre debe tener al menos 2 caracteres')]
     private ?string $nombre = null;
 
     #[ORM\Column(nullable: true)]
+    #[Assert\PositiveOrZero(message: 'El teléfono debe ser un número positivo')]
     private ?int $telefono = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\NotBlank(message: 'La biografía no puede estar vacía')]
+    #[Assert\Length(min: 10, minMessage: 'La biografía debe tener al menos 10 caracteres')]
     private ?string $biografia = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'La ubicación no puede estar vacía')]
+    #[Assert\Length(min: 3, minMessage: 'La ubicación debe tener al menos 3 caracteres')]
     private ?string $ubicacion = null;
 
     #[ORM\Column]
+    #[Assert\NotNull(message: 'Los años de experiencia no pueden estar vacíos')]
+    #[Assert\PositiveOrZero(message: 'Los años de experiencia no pueden ser negativos')]
+    #[Assert\Range(max: 100, maxMessage: 'Los años de experiencia no pueden superar 100')]
     private ?int $anyos_experiencia = null;
 
     #[ORM\Column(length: 255, nullable: true)]
