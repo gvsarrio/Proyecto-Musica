@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Musico;
 use App\Entity\InstrumentoMusico;
+use App\Entity\Usuario;
 use App\Form\MusicoType;
 use App\Repository\MusicoRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -27,6 +28,7 @@ final class MusicoController extends AbstractController
     #[Route('/new', name: 'app_musico_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
+        /** @var Usuario $usuario */
         $usuario = $this->getUser();
 
         if (!$usuario) {
@@ -95,6 +97,7 @@ final class MusicoController extends AbstractController
     #[Route('/{id}/edit', name: 'app_musico_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Musico $musico, EntityManagerInterface $entityManager): Response
     {
+        /** @var Usuario $usuario */
         $usuario = $this->getUser();
 
         if ($musico->getUsuario() !== $usuario) {
@@ -167,6 +170,7 @@ final class MusicoController extends AbstractController
     #[Route('/{id}', name: 'app_musico_delete', methods: ['POST'])]
     public function delete(Request $request, Musico $musico, EntityManagerInterface $entityManager): Response
     {
+        /** @var Usuario $usuario */
         $usuario = $this->getUser();
 
         if ($musico->getUsuario() !== $usuario) {
