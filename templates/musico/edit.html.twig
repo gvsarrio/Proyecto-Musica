@@ -133,7 +133,7 @@
 
 				<div class="col-12"
 					data-controller="google-places-autocomplete"
-					data-google-places-autocomplete-api-key-value="AIzaSyCfdUJNXWgS8OrvL6s5MljyX1FvtwTq59c">
+					data-google-places-autocomplete-api-key-value="{{ google_places_api_key }}">
 					{{ form_label(form.ubicacion, 'Ubicación') }}
 					{{ form_widget(form.ubicacion, {'attr': {'class': 'form-control', 'placeholder': 'Ej: Murcia, España'}}) }}
 					{{ form_errors(form.ubicacion) }}
