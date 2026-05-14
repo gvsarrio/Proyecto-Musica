@@ -40,6 +40,12 @@ class Musico
     #[Assert\Length(min: 3, minMessage: 'La ubicación debe tener al menos 3 caracteres')]
     private ?string $ubicacion = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?float $latitud = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?float $longitud = null;
+
     #[ORM\Column]
     #[Assert\NotNull(message: 'Los años de experiencia no pueden estar vacíos')]
     #[Assert\PositiveOrZero(message: 'Los años de experiencia no pueden ser negativos')]
@@ -87,6 +93,10 @@ class Musico
     public function setBiografia(string $biografia): static { $this->biografia = $biografia; return $this; }
     public function getUbicacion(): ?string { return $this->ubicacion; }
     public function setUbicacion(string $ubicacion): static { $this->ubicacion = $ubicacion; return $this; }
+    public function getLatitud(): ?float { return $this->latitud; }
+    public function setLatitud(?float $latitud): static { $this->latitud = $latitud; return $this; }
+    public function getLongitud(): ?float { return $this->longitud; }
+    public function setLongitud(?float $longitud): static { $this->longitud = $longitud; return $this; }
     public function getAnyosExperiencia(): ?int { return $this->anyos_experiencia; }
     public function setAnyosExperiencia(int $anyos_experiencia): static { $this->anyos_experiencia = $anyos_experiencia; return $this; }
     public function getImagenUrl(): ?string { return $this->imagen_url; }

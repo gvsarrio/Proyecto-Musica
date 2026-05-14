@@ -8,6 +8,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
@@ -37,6 +38,12 @@ class MusicoType extends AbstractType
             ->add('ubicacion', TextType::class, [
                 'label' => 'Ubicación',
                 'attr' => ['placeholder' => 'Ciudad o región'],
+            ])
+            ->add('latitud', HiddenType::class, [
+                'required' => false,
+            ])
+            ->add('longitud', HiddenType::class, [
+                'required' => false,
             ])
             ->add('anyos_experiencia', IntegerType::class, [
                 'label' => 'Años de experiencia',
