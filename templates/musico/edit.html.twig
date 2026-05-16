@@ -14,62 +14,65 @@
 	<div id="perfil-background"></div>
 	<script>
 		(function () {
-			var bg = document.getElementById('perfil-background');
-			var colors = [
-				'rgba(175, 79, 254, 0.7)',
-				'rgba(0, 242, 255, 0.7)',
-				'rgba(66,0,255,0.7)',
-				'rgba(222, 106, 251, 0.7)',
-				'rgba(0, 255, 136, 0.7)',
-				'rgba(155,48,255,0.7)'
-			];
+var bg = document.getElementById('perfil-background');
+var colors = [
+'rgba(175, 79, 254, 0.7)',
+'rgba(0, 242, 255, 0.7)',
+'rgba(66,0,255,0.7)',
+'rgba(222, 106, 251, 0.7)',
+'rgba(0, 255, 136, 0.7)',
+'rgba(155,48,255,0.7)'
+];
 
-		function createBlob() {
-			var blob = document.createElement('div');
-			blob.classList.add('perfil-blob');
-			var size = Math.random() * 300 + 150;
-			blob.style.width = size + 'px';
-			blob.style.height = size + 'px';
-			blob.style.left = (Math.random() * 100) + '%';
-			blob.style.top = (Math.random() * 100) + '%';
-			blob.style.background = colors[Math.floor(Math.random() * colors.length)];
-			bg.appendChild(blob);
-			animateBlob(blob);
-		}
+function createBlob() {
+var blob = document.createElement('div');
+blob.classList.add('perfil-blob');
+var size = Math.random() * 300 + 150;
+blob.style.width = size + 'px';
+blob.style.height = size + 'px';
+blob.style.left = (Math.random() * 100) + '%';
+blob.style.top = (Math.random() * 100) + '%';
+blob.style.background = colors[Math.floor(Math.random() * colors.length)];
+bg.appendChild(blob);
+animateBlob(blob);
+}
 
-		function animateBlob(blob) {
-			var speed = Math.random() * 60 + 20;
-		function move() {
-			var newSize = Math.random() * 300 + 150;
-			blob.style.transition = 'left ' + speed + 's ease-in-out, ' + 'top ' + speed + 's ease-in-out, ' + 'width ' + (
-			speed / 2
-			) + 's ease-in-out, ' + 'height ' + (
-			speed / 2
-			) + 's ease-in-out';
-			blob.style.left = (Math.random() * 100) + '%';
-			blob.style.top = (Math.random() * 100) + '%';
-			blob.style.width = newSize + 'px';
-			blob.style.height = newSize + 'px';
-			setTimeout(move, speed * 1000);
-			}
-			move();
-		}
+function animateBlob(blob) {
+var speed = Math.random() * 60 + 20;
+function move() {
+var newSize = Math.random() * 300 + 150;
+blob.style.transition = 'left ' + speed + 's ease-in-out, ' + 'top ' + speed + 's ease-in-out, ' + 'width ' + (
+speed / 2
+) + 's ease-in-out, ' + 'height ' + (
+speed / 2
+) + 's ease-in-out';
+blob.style.left = (Math.random() * 100) + '%';
+blob.style.top = (Math.random() * 100) + '%';
+blob.style.width = newSize + 'px';
+blob.style.height = newSize + 'px';
+setTimeout(move, speed * 1000);
+}
+move();
+}
 
-		for (var i = 0; i < 6; i++) createBlob();
+for (var i = 0; i < 6; i++) 
+createBlob();
 
-		document.addEventListener('mousemove', function(e) {
-			var mx = e.clientX / window.innerWidth;
-			var my = e.clientY / window.innerHeight;
-			var blobs = bg.querySelectorAll('.perfil-blob');
-			blobs.forEach(function(blob, i) {
-				var dir = (i % 2 === 0) ? 1 : -1;
-				var ox = (mx - 0.5) * 30 * dir;
-				var oy = (my - 0.5) * 30 * dir;
-				blob.style.transform = 'translate(calc(-50% + ' + ox + 'px), calc(-50% + ' + oy + 'px))';
-			});
-		});
-	})();
-</script>
+
+
+document.addEventListener('mousemove', function (e) {
+var mx = e.clientX / window.innerWidth;
+var my = e.clientY / window.innerHeight;
+var blobs = bg.querySelectorAll('.perfil-blob');
+blobs.forEach(function (blob, i) {
+var dir = (i % 2 === 0) ? 1 : -1;
+var ox = (mx - 0.5) * 30 * dir;
+var oy = (my - 0.5) * 30 * dir;
+blob.style.transform = 'translate(calc(-50% + ' + ox + 'px), calc(-50% + ' + oy + 'px))';
+});
+});
+})();
+	</script>
 {% endblock %}
 
 
@@ -87,17 +90,22 @@
 			{# Avatar / Icono decorativo #}
 			<div class="perfil-avatar-wrap">
 				<div class="perfil-avatar">
-					<svg width="45" height="45" viewbox="0 0 24 24" fill="none" stroke="#00b4ff" stroke-width="1.5">
-						<path d="M9 18V5l12-2v13"/>
-						<circle cx="6" cy="18" r="3"/>
-						<circle cx="18" cy="16" r="3"/>
-					</svg>
+					{% if musico.imagenUrl %}
+						<img src="{{ asset('uploads/perfiles/' ~ musico.imagenUrl) }}" alt="Foto de {{ musico.nombre }}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+					{% else %}
+						<svg width="45" height="45" viewbox="0 0 24 24" fill="none" stroke="#00b4ff" stroke-width="1.5">
+							<path d="M9 18V5l12-2v13"/>
+							<circle cx="6" cy="18" r="3"/>
+							<circle cx="18" cy="16" r="3"/>
+						</svg>
+					{% endif %}
 				</div>
 			</div>
 
 			<h1 class="perfil-title">Editar perfil</h1>
 			<p class="perfil-subtitle">Actualiza tu información para mejorar tu perfil</p>
-			<hr class="perfil-divider">
+			<hr
+			class="perfil-divider">
 
 			{# IMPORTANTE: enctype para permitir la subida de la foto #}
 			{{ form_start(form, {'attr': {'novalidate': 'novalidate', 'enctype': 'multipart/form-data'}}) }}
@@ -124,15 +132,15 @@
 				{# SECCIÓN DE INSTRUMENTOS (Checkboxes) #}
 				<div class="col-12">
 					{{ form_label(form.instrumentos, '¿Qué instrumentos tocas?') }}
+					<small style="color: var(--mh-text-muted);">Selecciona todos los que apliquen</small>
 					<div class="perfil-instrumentos-container">
 						{{ form_widget(form.instrumentos) }}
 					</div>
-					<small style="color: var(--mh-text-muted);">Selecciona todos los que apliquen</small>
 					{{ form_errors(form.instrumentos) }}
 				</div>
 
 				<div class="col-12">
-					{{ form_label(form.ubicacion, 'Ubicación') }}
+					{{ form_label(form.ubicacion, 'Ubicación: ') }}
 					{{ form_widget(form.ubicacion, {'attr': {'class': 'form-control', 'placeholder': 'Ej: Murcia, España'}}) }}
 					{{ form_errors(form.ubicacion) }}
 				</div>

@@ -37,7 +37,7 @@
 
                             {% else %}
                                 {% if app.user.musico is null %}
-                                    <a href="{{ path('app_musico_new') }}" class="nav-link {{ app.request.attributes.get('_route') == 'app_musico_new' ? 'active' : '' }}">Crear perfil</a>
+                                    <a href="{{ path('app_musico_new') }}" class="nav-link {{ app.request.attributes.get('_route') == 'app_musico_new' ? 'active' : '' }}">Crear Perfil</a>
                                 {% else %}
                                     <a href="{{ path('app_musico_show', {id: app.user.musico.id}) }}" class="nav-link {{ app.request.attributes.get('_route') == 'app_musico_show' ? 'active' : '' }}">Mi Perfil</a>
                                 {% endif %}
