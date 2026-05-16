@@ -436,7 +436,7 @@
 /* =======BOTONES======== */
 
 /* ================== BOTÓN PRINCIPAL (púrpura) ================== */
-.btn-perfil {
+.btn-principal {
     font-family: var(--font-body);
     font-weight: 700;
     font-size: 13px;
@@ -460,7 +460,7 @@
     line-height: 1.2;
 }
 
-.btn-perfil::before {
+.btn-principal::before {
     content: "";
     position: absolute;
     top: 0;
@@ -476,11 +476,11 @@
     transition: left 0.5s ease;
 }
 
-.btn-perfil:hover::before {
+.btn-principal:hover::before {
     left: 100%;
 }
 
-.btn-perfil:hover {
+.btn-principal:hover {
     background: linear-gradient(135deg, #b040ff, #6e20dd);
     color: #fff;
     box-shadow:
@@ -489,7 +489,52 @@
     transform: translateY(-2px);
 }
 
-/* ================== BOTÓN VER (tarjeta músico) ================== */
+
+/* ================== BOTÓN CONFIRMAR ================== */
+.btn-confirmar {
+  font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 1px;
+    background: linear-gradient(135deg, #0097e8, #009dff);
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    padding: 10px 30px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    box-shadow:
+        0 0 28px rgba(106, 251, 246, 0.6),
+        0 0 60px rgba(106, 236, 251, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    box-sizing: border-box;
+    line-height: 1.2;
+}
+.btn-confirmar::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+    transition: left 0.5s ease;
+}
+.btn-confirmar:hover::before { left: 100%; }
+.btn-confirmar:hover {
+    background: linear-gradient(135deg, #0097e8, #009dff);
+    color: #fff;
+    box-shadow:
+        0 0 40px rgba(106, 183, 251, 0.8),
+        0 0 80px rgba(106, 174, 251, 0.3);
+    transform: translateY(-2px);
+}
+
+/* ================== BOTÓN (tarjeta músico) ================== */
 .musico-card-btn {
     display: block;
     text-align: center;
@@ -515,32 +560,93 @@
     color: #fff;
 }
 
-/* ================== BOTÓN ELIMINAR (rojo) ================== */
-.btn-perfil-danger {
+/* ================== BOTÓN EDITAR  ================== */
+.btn-editar {
     font-family: var(--font-body);
     font-weight: 700;
     font-size: 13px;
     letter-spacing: 1px;
-    background: rgba(180, 20, 40, 0.25);
-    color: #ff6888;
-    border: 1px solid rgba(255, 60, 100, 0.4);
+    background: linear-gradient(135deg, #de6afb, #ff00ff);
+    color: #fff;
+    border: none;
     border-radius: 50px;
     padding: 10px 30px;
     cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    box-shadow:
+        0 0 28px rgba(222, 106, 251, 0.6),
+        0 0 60px rgba(222, 106, 251, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
     transition: all 0.3s ease;
-    box-shadow: 0 0 15px rgba(255, 60, 100, 0.15);
+    text-decoration: none;
+    display: inline-block;
     box-sizing: border-box;
     line-height: 1.2;
 }
-
-.btn-perfil-danger:hover {
-    background: rgba(200, 20, 40, 0.5);
-    border-color: rgba(255, 60, 100, 0.8);
-    box-shadow: 0 0 25px rgba(255, 60, 100, 0.4);
+.btn-editar::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+    transition: left 0.5s ease;
+}
+.btn-editar:hover::before { left: 100%; }
+.btn-editar:hover {
+    background: linear-gradient(135deg, #ee80ff, #bb30ee);
     color: #fff;
-    transform: translateY(-1px);
+    box-shadow:
+        0 0 40px rgba(222, 106, 251, 0.8),
+        0 0 80px rgba(222, 106, 251, 0.3);
+    transform: translateY(-2px);
 }
 
+/* ================== BOTÓN ELIMINAR (rojo) ================== */
+.btn-eliminar {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 1px;
+    background: linear-gradient(135deg, #ff1f44, #cc0022);
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    padding: 10px 30px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    box-shadow:
+        0 0 28px rgba(255, 31, 68, 0.6),
+        0 0 60px rgba(255, 31, 68, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    box-sizing: border-box;
+    line-height: 1.2;
+}
+.btn-eliminar::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+    transition: left 0.5s ease;
+}
+.btn-eliminar:hover::before { left: 100%; }
+.btn-eliminar:hover {
+    background: linear-gradient(135deg, #ff4466, #ee1133);
+    color: #fff;
+    box-shadow:
+        0 0 40px rgba(255, 31, 68, 0.8),
+        0 0 80px rgba(255, 31, 68, 0.3);
+    transform: translateY(-2px);
+}
 
 /* ============================================
    ALERTAS
