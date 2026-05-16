@@ -124,15 +124,15 @@
 				{# SECCIÓN DE INSTRUMENTOS (Checkboxes) #}
 				<div class="col-12">
 					{{ form_label(form.instrumentos, '¿Qué instrumentos tocas?') }}
+					<small style="color: var(--mh-text-muted);">Selecciona todos los que apliquen</small>
 					<div class="perfil-instrumentos-container">
 						{{ form_widget(form.instrumentos) }}
 					</div>
-					<small style="color: var(--mh-text-muted);">Selecciona todos los que apliquen</small>
 					{{ form_errors(form.instrumentos) }}
 				</div>
 
 				<div class="col-12">
-					{{ form_label(form.ubicacion, 'Ubicación') }}
+					{{ form_label(form.ubicacion, 'Ubicación: ') }}
 					{{ form_widget(form.ubicacion, {'attr': {'class': 'form-control', 'placeholder': 'Ej: Murcia, España'}}) }}
 					{{ form_errors(form.ubicacion) }}
 				</div>
