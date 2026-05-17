@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Musico;
-use App\Entity\Instrumento;
 use App\Entity\InstrumentoMusico;
 use App\Entity\Usuario;
 use App\Form\MusicoType;
@@ -12,7 +11,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -68,21 +66,6 @@ final class MusicoController extends AbstractController
             $entityManager->persist($musico);
 
             $instrumentosSeleccionados = $form->get('instrumentos')->getData();
-
-            // Si el usuario escribió un instrumento nuevo y no pulsó el botón AJAX,
-            // lo creamos aquí para asegurarnos de que exista y se asocie.
-            $nuevoInstrumento = trim($form->get('instrumentos_nuevos')->getData() ?? '');
-            if ($nuevoInstrumento !== '') {
-                $repoInstrumento = $entityManager->getRepository(Instrumento::class);
-                $instrumentoExistente = $repoInstrumento->findOneBy(['nombre' => $nuevoInstrumento]);
-                if (!$instrumentoExistente) {
-                    $instrumentoExistente = new Instrumento();
-                    $instrumentoExistente->setNombre($nuevoInstrumento);
-                    $entityManager->persist($instrumentoExistente);
-                    // flush later
-                }
-                $instrumentosSeleccionados[] = $instrumentoExistente;
-            }
 
             foreach ($instrumentosSeleccionados as $instrumento) {
                 $relacion = new InstrumentoMusico();
@@ -160,29 +143,14 @@ final class MusicoController extends AbstractController
             // Hacemos un flush intermedio para evitar conflictos de claves únicas si los hubiera
             $entityManager->flush();
 
-                        // 2. Creamos las nuevas relaciones seleccionadas
-                        $instrumentosSeleccionados = $form->get('instrumentos')->getData();
-
-                        // Si el usuario escribió un instrumento nuevo y no pulsó el botón AJAX,
-                        // lo creamos aquí para asegurarnos de que exista y se asocie.
-                        $nuevoInstrumento = trim($form->get('instrumentos_nuevos')->getData() ?? '');
-                        if ($nuevoInstrumento !== '') {
-                            $repoInstrumento = $entityManager->getRepository(Instrumento::class);
-                            $instrumentoExistente = $repoInstrumento->findOneBy(['nombre' => $nuevoInstrumento]);
-                            if (!$instrumentoExistente) {
-                                $instrumentoExistente = new Instrumento();
-                                $instrumentoExistente->setNombre($nuevoInstrumento);
-                                $entityManager->persist($instrumentoExistente);
-                            }
-                            $instrumentosSeleccionados[] = $instrumentoExistente;
-                        }
-
-                        foreach ($instrumentosSeleccionados as $instrumento) {
-                            $relacion = new InstrumentoMusico();
-                            $relacion->setMusico($musico);
-                            $relacion->setInstrumento($instrumento);
-                            $entityManager->persist($relacion);
-                        }
+            // 2. Creamos las nuevas relaciones seleccionadas
+            $instrumentosSeleccionados = $form->get('instrumentos')->getData();
+            foreach ($instrumentosSeleccionados as $instrumento) {
+                $relacion = new InstrumentoMusico();
+                $relacion->setMusico($musico);
+                $relacion->setInstrumento($instrumento);
+                $entityManager->persist($relacion);
+            }
 
             $entityManager->flush();
 
@@ -197,33 +165,6 @@ final class MusicoController extends AbstractController
             'musico' => $musico,
             'form' => $form,
         ]);
-    }
-
-    #[Route('/instrumento/add', name: 'app_instrumento_add', methods: ['POST'])]
-    public function addInstrument(Request $request, EntityManagerInterface $entityManager): JsonResponse
-    {
-        $token = $request->request->get('_token');
-        if (!$this->isCsrfTokenValid('add_instrument', $token)) {
-            return new JsonResponse(['error' => 'Invalid CSRF token'], Response::HTTP_FORBIDDEN);
-        }
-
-        $nombre = trim((string) $request->request->get('nombre', ''));
-        if ($nombre === '') {
-            return new JsonResponse(['error' => 'Nombre vacío'], Response::HTTP_BAD_REQUEST);
-        }
-
-        $repo = $entityManager->getRepository(Instrumento::class);
-        $existing = $repo->findOneBy(['nombre' => $nombre]);
-        if ($existing) {
-            return new JsonResponse(['id' => $existing->getId(), 'nombre' => $existing->getNombre(), 'exists' => true]);
-        }
-
-        $instrumento = new Instrumento();
-        $instrumento->setNombre($nombre);
-        $entityManager->persist($instrumento);
-        $entityManager->flush();
-
-        return new JsonResponse(['id' => $instrumento->getId(), 'nombre' => $instrumento->getNombre()]);
     }
 
     #[Route('/{id}', name: 'app_musico_delete', methods: ['POST'])]
