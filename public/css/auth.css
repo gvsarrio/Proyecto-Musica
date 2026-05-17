@@ -3,7 +3,23 @@
    Login y Registro con diseño Liquid Glass
    ============================================ */
 
-/* ================== CONTENEDOR PRINCIPAL ================== */
+
+/* ============================================
+   ANIMACIONES
+   ============================================ */
+
+@keyframes borderGlow {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+
+/* ============================================
+   LAYOUT — CONTENEDORES Y WRAPPERS
+   ============================================ */
+
+/* ================== WRAPPER PRINCIPAL ================== */
 .auth-wrapper {
     display: flex;
     justify-content: center;
@@ -12,7 +28,12 @@
     min-height: calc(100vh - 60px);
 }
 
-/* ================== TARJETA FORMULARIO (Glassmorphism) ================== */
+
+/* ============================================
+   TARJETA (Glassmorphism)
+   ============================================ */
+
+/* ================== CONTENEDOR DE LA TARJETA ================== */
 .auth-card-container {
     background: rgba(16, 5, 38, 0.55);
     border: 1px solid rgba(155, 48, 255, 0.35);
@@ -31,19 +52,7 @@
     overflow: hidden;
 }
 
-/* Barra decorativa superior con gradiente de colores */
-@keyframes borderGlow {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
-}
-
+/* ================== BARRA SUPERIOR ANIMADA ================== */
 .auth-card-header-accent-bar {
     height: 2px;
     background: linear-gradient(
@@ -65,7 +74,12 @@
         0 0 40px rgba(0, 240, 255, 0.3);
 }
 
-/* Título principal de la página de autenticación */
+
+/* ============================================
+   TIPOGRAFÍA
+   ============================================ */
+
+/* ================== TÍTULO ================== */
 .auth-card-container h1 {
     font-family: var(--font-display);
     font-size: 24px;
@@ -77,7 +91,7 @@
     margin-bottom: 20px;
 }
 
-/* Línea divisora degradada entre título y formulario */
+/* ================== DIVISOR ================== */
 .auth-form-divider {
     height: 1px;
     background: linear-gradient(
@@ -92,7 +106,29 @@
     margin: 0 0 24px;
 }
 
-/* Etiquetas de campos del formulario (Email, Contraseña, etc) */
+/* ================== TEXTO ALTERNATIVO (¿Ya tienes cuenta?) ================== */
+.auth-alternate-action-text,
+.auth-hint {
+    font-family: var(--font-body);
+    font-size: 16px;
+    color: var(--mh-text-muted);
+    text-align: center;
+    margin-top: 18px;
+}
+
+.auth-alternate-action-text a,
+.auth-hint a {
+    color: var(--mh-cyan-soft);
+    font-weight: 600;
+    text-shadow: 0 0 8px rgba(0, 212, 232, 0.4);
+}
+
+
+/* ============================================
+   FORMULARIO — ETIQUETAS E INPUTS
+   ============================================ */
+
+/* ================== ETIQUETAS ================== */
 .auth-form-label,
 .auth-form-label-text {
     font-family: var(--font-body);
@@ -106,8 +142,7 @@
     margin-bottom: 7px;
 }
 
-/* ================== CAMPOS DE ENTRADA ================== */
-/* Estilos para inputs de email, contraseña, texto, selects y textareas */
+/* ================== INPUTS ================== */
 .form-control,
 .auth-form-input,
 input[type="email"],
@@ -133,15 +168,13 @@ textarea {
     backdrop-filter: blur(8px);
 }
 
-/* Estilo del texto placeholder en inputs */
 .form-control::placeholder,
 .auth-form-input::placeholder,
 input::placeholder {
-    color: var(rgba(200, 180, 255, 0.5));
+    color: rgba(200, 180, 255, 0.5);
     font-style: italic;
 }
 
-/* Estado FOCUS (cuando está seleccionado) de los campos */
 .form-control:focus,
 .auth-form-input:focus,
 input[type="email"]:focus,
@@ -156,8 +189,12 @@ textarea:focus {
         0 0 20px rgba(155, 48, 255, 0.3) !important;
 }
 
-/* ================== CHECKBOX (Términos y condiciones) ================== */
-/* Contenedor del checkbox con fondo y borde */
+
+/* ============================================
+   CHECKBOX (Términos y condiciones)
+   ============================================ */
+
+/* ================== CONTENEDOR DEL CHECKBOX ================== */
 .form-check,
 .auth-checkbox-wrapper {
     display: flex;
@@ -165,26 +202,59 @@ textarea:focus {
     gap: 10px;
     margin-bottom: 12px;
     padding: 10px 14px;
-    background: rgba(155, 48, 255, 0.06);
-    border: 1px solid rgba(155, 48, 255, 0.2);
-    border-radius: 10px;
-    backdrop-filter: blur(4px);
+    background: transparent !important;
+    background-color: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border: none !important;
+    box-shadow: none !important;
 }
 
-/* Elemento del checkbox (cuadrado seleccionable) */
-.form-check-input,
-.auth-checkbox-input,
-input[type="checkbox"] {
-    width: 17px !important;
-    height: 17px !important;
-    border-radius: 5px !important;
+/* ================== ELEMENTO CHECKBOX (Optimizado por Clase) ================== */
+.auth-checkbox-input {
+    width: 18px !important;
+    height: 18px !important;
+    min-width: 18px !important;
+    border-radius: 6px !important;
     padding: 0 !important;
-    accent-color: var(--mh-purple);
+    margin: 0 !important;
+    -webkit-appearance: none !important;
+    appearance: none !important;
+    background: rgba(5, 2, 20, 0.6);
+    border: 1px solid rgba(200, 180, 255, 0.14);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
+    position: relative;
     flex-shrink: 0;
     cursor: pointer;
+    display: inline-block !important;
 }
 
-/* Texto label del checkbox ("Aceptar términos y condiciones") */
+.auth-checkbox-input::after {
+    content: "";
+    position: absolute;
+    left: 4px;
+    top: 2px;
+    width: 6px;
+    height: 10px;
+    border: solid rgba(232, 208, 255, 0.95);
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg) scale(0);
+    transition: transform 0.12s ease;
+}
+
+.auth-checkbox-input:checked {
+    background: linear-gradient(135deg, rgba(155, 48, 255, 0.22), rgba(123, 47, 247, 0.22)) !important;
+    border-color: rgba(155, 48, 255, 0.45) !important;
+}
+
+.auth-checkbox-input:checked::after {
+    transform: rotate(45deg) scale(1);
+    left: 5px;
+    top: 3px;
+    border-color: #e8d6ff;
+}
+
+/* ================== LABEL DEL CHECKBOX ================== */
 .form-check-label,
 .auth-checkbox-label {
     font-family: var(--font-body);
@@ -197,17 +267,21 @@ input[type="checkbox"] {
     cursor: pointer;
 }
 
-/* ================== ESPACIADORES DE MARGEN ================== */
-/* Clases de utilidad para separación vertical entre elementos */
-.mb-3 {
-    margin-bottom: 1.25rem;
-}
-.mb-4 {
-    margin-bottom: 1.5rem;
-}
 
-/* ================== BOTÓN PRINCIPAL (Crear cuenta / Iniciar sesión) ================== */
-.auth-submit-button,
+/* ============================================
+   ESPACIADORES
+   ============================================ */
+
+.mb-3 { margin-bottom: 1.25rem; }
+.mb-4 { margin-bottom: 1.5rem; }
+
+
+/* ============================================
+   BOTÓN
+   ============================================ */
+
+/* ================== BOTÓN PRINCIPAL ================== */
+.btn-auth-submit,
 .btn-mh {
     font-family: var(--font-body);
     font-weight: 700;
@@ -233,8 +307,7 @@ input[type="checkbox"] {
     text-align: center;
 }
 
-/* Efecto de brillo al pasar sobre el botón (pseudo-elemento) */
-.auth-submit-button::before,
+.btn-auth-submit::before,
 .btn-mh::before {
     content: "";
     position: absolute;
@@ -251,14 +324,12 @@ input[type="checkbox"] {
     transition: left 0.5s ease;
 }
 
-/* Activar efecto de brillo en hover */
-.auth-submit-button:hover::before,
+.btn-auth-submit:hover::before,
 .btn-mh:hover::before {
     left: 100%;
 }
 
-/* Estado HOVER (pasar ratón) del botón de envío */
-.auth-submit-button:hover,
+.btn-auth-submit:hover,
 .btn-mh:hover {
     background: linear-gradient(135deg, #b040ff, #6e20dd);
     color: #fff;
@@ -268,27 +339,11 @@ input[type="checkbox"] {
     transform: translateY(-2px);
 }
 
-/* ================== TEXTO DE ACCIÓN ALTERNATIVA ================== */
-/* Sección "¿Ya tienes cuenta? Inicia sesión" o "Crea una cuenta" */
-.auth-alternate-action-text,
-.auth-hint {
-    font-family: var(--font-body);
-    font-size: 16px;
-    color: var(--mh-text-muted);
-    text-align: center;
-    margin-top: 18px;
-}
 
-/* Enlace dentro del texto alternativo */
-.auth-alternate-action-text a,
-.auth-hint a {
-    color: var(--mh-cyan-soft);
-    font-weight: 600;
-    text-shadow: 0 0 8px rgba(0, 212, 232, 0.4);
-}
+/* ============================================
+   ALERTAS
+   ============================================ */
 
-/* ================== ALERTAS DE ERROR Y MENSAJES ================== */
-/* Contenedor de mensajes de error del formulario */
 .auth-error-alert,
 .alert-auth {
     font-family: var(--font-body);
@@ -302,7 +357,11 @@ input[type="checkbox"] {
     backdrop-filter: blur(4px);
 }
 
-/* ================== FONDO LÍQUIDO (login y registro) ================== */
+
+/* ============================================
+    FONDO LÍQUIDO Y BLOBS
+   ============================================ */
+
 #auth-background {
     position: fixed;
     top: 0;

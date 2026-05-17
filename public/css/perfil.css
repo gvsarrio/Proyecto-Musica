@@ -105,7 +105,7 @@
     border-radius: 20px 20px 0 0;
     box-shadow:
         0 0 20px rgba(155, 48, 255, 0.8),
-        0 0 40px rgba(0, 240, 255, 0.3);
+        0 0 40px rgba(0, 238, 255, 0.3);
 }
 
 /* ================== TARJETA MÚSICO (grid index) ================== */
@@ -116,16 +116,43 @@
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    position: relative;
+    z-index: 0;
+    isolation: isolate;
+    transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.2, 1), box-shadow 0.35s ease, border-color 0.35s ease;
     backdrop-filter: blur(12px);
 }
 
+.musico-card::after {
+    content: '';
+    position: absolute;
+    left: -10%;
+    bottom: -20%;
+    width: 140%;
+    height: 60%;
+    background: radial-gradient(600px 200px at 10% 90%, rgba(0,242,255,0.09), rgba(155,48,255,0.06), rgba(52,255,136,0.05), transparent 45%);
+    z-index: 0;
+    filter: blur(14px);
+    opacity: 0;
+    transition: opacity 0.45s ease, transform 0.45s ease;
+    pointer-events: none;
+}
+
 .musico-card:hover {
-    transform: translateY(-4px);
-    border-color: rgba(0, 242, 255, 0.5);
+    transform: translateY(-10px) scale(1.01);
+    border-color: rgba(0, 242, 255, 0.95);
     box-shadow:
-        0 8px 30px rgba(0, 0, 0, 0.4),
-        0 0 30px rgba(0, 242, 255, 0.15);
+        0 0 0 1px rgba(0, 242, 255, 0.95),
+        0 0 0 4px rgba(155, 48, 255, 0.22),
+        0 0 18px rgba(0, 242, 255, 0.9),
+        0 0 34px rgba(155, 48, 255, 0.55),
+        0 0 58px rgba(0, 242, 255, 0.32),
+        0 0 80px rgba(255, 0, 255, 0.14);
+}
+
+.musico-card:hover::after {
+    opacity: 1;
+    transform: translateY(-6px) scale(1.02);
 }
 
 .musico-card-img {
@@ -133,6 +160,8 @@
     aspect-ratio: 16 / 9;
     overflow: hidden;
     background: rgba(10, 3, 28, 0.9);
+    position: relative;
+    z-index: 1;
 }
 
 .musico-card-img img {
@@ -140,11 +169,11 @@
     height: 100%;
     object-fit: cover;
     display: block;
-    transition: transform 0.4s ease;
+    transition: transform 0.6s cubic-bezier(0.2, 0.9, 0.2, 1);
 }
 
 .musico-card:hover .musico-card-img img {
-    transform: scale(1.05);
+    transform: scale(1.08) translateZ(0);
 }
 
 .musico-card-img-placeholder {
@@ -159,6 +188,8 @@
 .musico-card-info {
     padding: 1rem 1rem 0.5rem;
     flex: 1;
+    position: relative;
+    z-index: 1;
 }
 
 .musico-card-footer {
@@ -167,7 +198,6 @@
 
 
 /* ======AVATAR======= */
-
 .perfil-avatar-wrap {
     display: flex;
     flex-direction: column;
@@ -433,106 +463,105 @@
 }
 
 
-/* =======BOTONES======== */
+/* ======= BOTONES OPTIMIZADOS (GLASS TRANSLÚCIDO Y LUMINOSO) ======== */
 
-/* ================== BOTÓN PRINCIPAL (púrpura) ================== */
-.btn-principal {
+/* Estilos base comunes para todos los botones de perfil */
+.btn-principal,
+.btn-confirmar,
+.btn-editar,
+.btn-eliminar,
+.btn-chat {
     font-family: var(--font-body);
     font-weight: 700;
     font-size: 13px;
     letter-spacing: 1px;
-    background: linear-gradient(135deg, var(--mh-purple), #5510cc);
-    color: #fff;
-    border: none;
     border-radius: 50px;
     padding: 10px 30px;
     cursor: pointer;
-    position: relative;
-    overflow: hidden;
-    box-shadow:
-        0 0 28px rgba(155, 48, 255, 0.6),
-        0 0 60px rgba(155, 48, 255, 0.2),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    transition: all 0.3s ease;
     text-decoration: none;
     display: inline-block;
     box-sizing: border-box;
     line-height: 1.2;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
 }
 
-.btn-principal::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(255, 255, 255, 0.15),
-        transparent
-    );
-    transition: left 0.5s ease;
+/* --- BOTÓN VER MÚSICOS / PRINCIPAL (Púrpura Translúcido) --- */
+.btn-principal {
+    color: #e8e0ff;
+    background: rgba(155, 48, 255, 0.12) !important; /* Fondo translúcido con tinte morado */
+    border: 1px solid rgba(155, 48, 255, 0.45);
+    box-shadow: inset 0 0 8px rgba(155, 48, 255, 0.15);
 }
-
-.btn-principal:hover::before {
-    left: 100%;
-}
-
 .btn-principal:hover {
-    background: linear-gradient(135deg, #b040ff, #6e20dd);
+    background: rgba(155, 48, 255, 0.3) !important;
     color: #fff;
-    box-shadow:
-        0 0 40px rgba(155, 48, 255, 0.8),
-        0 0 80px rgba(155, 48, 255, 0.3);
+    border-color: #b040ff;
+    box-shadow: 0 0 25px rgba(155, 48, 255, 0.6), inset 0 0 12px rgba(155, 48, 255, 0.4);
     transform: translateY(-2px);
 }
 
-
-/* ================== BOTÓN CONFIRMAR ================== */
+/* --- BOTÓN CONFIRMAR / GUARDAR (Cian Translúcido) --- */
 .btn-confirmar {
-  font-family: var(--font-body);
-    font-weight: 700;
-    font-size: 13px;
-    letter-spacing: 1px;
-    background: linear-gradient(135deg, #0097e8, #009dff);
-    color: #fff;
-    border: none;
-    border-radius: 50px;
-    padding: 10px 30px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-    box-shadow:
-        0 0 28px rgba(106, 251, 246, 0.6),
-        0 0 60px rgba(106, 236, 251, 0.2),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    transition: all 0.3s ease;
-    text-decoration: none;
-    display: inline-block;
-    box-sizing: border-box;
-    line-height: 1.2;
+    color: #d1f7ff;
+    background: rgba(0, 242, 255, 0.08) !important; /* Fondo translúcido con tinte cian */
+    border: 1px solid rgba(0, 242, 255, 0.45);
+    box-shadow: inset 0 0 8px rgba(0, 242, 255, 0.15);
 }
-.btn-confirmar::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
-    transition: left 0.5s ease;
-}
-.btn-confirmar:hover::before { left: 100%; }
 .btn-confirmar:hover {
-    background: linear-gradient(135deg, #0097e8, #009dff);
+    background: rgba(0, 242, 255, 0.25) !important;
     color: #fff;
-    box-shadow:
-        0 0 40px rgba(106, 183, 251, 0.8),
-        0 0 80px rgba(106, 174, 251, 0.3);
+    border-color: #57f7ff;
+    box-shadow: 0 0 25px rgba(0, 242, 255, 0.6), inset 0 0 12px rgba(0, 242, 255, 0.4);
     transform: translateY(-2px);
 }
+
+/* --- BOTÓN EDITAR (Magenta Translúcido) --- */
+.btn-editar {
+    color: #ffd6ff;
+    background: rgba(255, 0, 255, 0.08) !important; /* Fondo translúcido con tinte magenta */
+    border: 1px solid rgba(255, 0, 255, 0.45);
+    box-shadow: inset 0 0 8px rgba(255, 0, 255, 0.15);
+}
+.btn-editar:hover {
+    background: rgba(255, 0, 255, 0.25) !important;
+    color: #fff;
+    border-color: #ff66ff;
+    box-shadow: 0 0 25px rgba(255, 0, 255, 0.6), inset 0 0 12px rgba(255, 0, 255, 0.4);
+    transform: translateY(-2px);
+}
+
+/* --- BOTÓN ELIMINAR (Hot Pink Translúcido) --- */
+.btn-eliminar {
+    color: #ffdaea;
+    background: rgba(255, 42, 133, 0.1) !important; /* Fondo translúcido con tinte rosa-alerta */
+    border: 1px solid rgba(255, 42, 133, 0.45);
+    box-shadow: inset 0 0 8px rgba(255, 42, 133, 0.15);
+}
+.btn-eliminar:hover {
+    background: rgba(255, 42, 133, 0.3) !important;
+    color: #fff;
+    border-color: #ff60a3;
+    box-shadow: 0 0 25px rgba(255, 42, 133, 0.6), inset 0 0 12px rgba(255, 42, 133, 0.4);
+    transform: translateY(-2px);
+}
+
+/* --- BOTÓN CHAT (Verde Translúcido) --- */
+.btn-chat {
+    color: #fff;
+    background: rgba(34, 197, 94, 0.08) !important; /* Fondo translúcido con tinte verde */
+    border: 1px solid rgba(34, 197, 94, 0.45);
+    box-shadow: inset 0 0 8px rgba(34, 197, 94, 0.12);
+}
+.btn-chat:hover {
+    background: rgba(34, 197, 94, 0.28) !important;
+    color: #fff;
+    border-color: rgba(34, 197, 94, 0.8);
+    box-shadow: 0 0 30px rgba(34, 197, 94, 0.55), inset 0 0 14px rgba(34, 197, 94, 0.25);
+    transform: translateY(-2px);
+}
+
 
 /* ================== BOTÓN (tarjeta músico) ================== */
 .musico-card-btn {
@@ -560,93 +589,32 @@
     color: #fff;
 }
 
-/* ================== BOTÓN EDITAR  ================== */
-.btn-editar {
-    font-family: var(--font-body);
-    font-weight: 700;
-    font-size: 13px;
-    letter-spacing: 1px;
-    background: linear-gradient(135deg, #de6afb, #ff00ff);
-    color: #fff;
-    border: none;
-    border-radius: 50px;
-    padding: 10px 30px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-    box-shadow:
-        0 0 28px rgba(222, 106, 251, 0.6),
-        0 0 60px rgba(222, 106, 251, 0.2),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    transition: all 0.3s ease;
-    text-decoration: none;
-    display: inline-block;
-    box-sizing: border-box;
-    line-height: 1.2;
-}
-.btn-editar::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
-    transition: left 0.5s ease;
-}
-.btn-editar:hover::before { left: 100%; }
-.btn-editar:hover {
-    background: linear-gradient(135deg, #ee80ff, #bb30ee);
-    color: #fff;
-    box-shadow:
-        0 0 40px rgba(222, 106, 251, 0.8),
-        0 0 80px rgba(222, 106, 251, 0.3);
-    transform: translateY(-2px);
+
+/* ================== FOOTER TARJETA (Ver perfiles)— fila de botones ================== */
+.musico-card-footer {
+    padding: 0.75rem 1rem 1rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 0.5rem;
 }
 
-/* ================== BOTÓN ELIMINAR (rojo) ================== */
-.btn-eliminar {
-    font-family: var(--font-body);
-    font-weight: 700;
-    font-size: 13px;
-    letter-spacing: 1px;
-    background: linear-gradient(135deg, #ff1f44, #cc0022);
-    color: #fff;
-    border: none;
-    border-radius: 50px;
-    padding: 10px 30px;
-    cursor: pointer;
-    position: relative;
+/*Unifica el tamaño de los botones*/
+.musico-card-footer .btn-confirmar,
+.musico-card-footer .btn-chat {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1 1 140px;
+    min-width: 0;
+    max-width: 180px;
+    min-height: 44px;
+    padding: 0 20px;
+    white-space: nowrap;
     overflow: hidden;
-    box-shadow:
-        0 0 28px rgba(255, 31, 68, 0.6),
-        0 0 60px rgba(255, 31, 68, 0.2),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    transition: all 0.3s ease;
-    text-decoration: none;
-    display: inline-block;
-    box-sizing: border-box;
-    line-height: 1.2;
+    text-overflow: ellipsis;
 }
-.btn-eliminar::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
-    transition: left 0.5s ease;
-}
-.btn-eliminar:hover::before { left: 100%; }
-.btn-eliminar:hover {
-    background: linear-gradient(135deg, #ff4466, #ee1133);
-    color: #fff;
-    box-shadow:
-        0 0 40px rgba(255, 31, 68, 0.8),
-        0 0 80px rgba(255, 31, 68, 0.3);
-    transform: translateY(-2px);
-}
+
 
 /* ============================================
    ALERTAS
@@ -717,5 +685,15 @@
 @media (max-width: 480px) {
     .musicos-grid {
         grid-template-columns: 1fr;
+    }
+
+    .musico-card-footer {
+        gap: 0.4rem;
+    }
+
+    .musico-card-footer .btn-confirmar,
+    .musico-card-footer .btn-chat {
+        flex-basis: 0;
+        max-width: 100%;
     }
 }
