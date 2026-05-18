@@ -29,7 +29,7 @@
 
 /* ================== WRAPPER INDEX (grid de músicos) ================== */
 .musicos-wrapper {
-    padding: 2rem 1.5rem;
+    padding: 2rem 2rem;
     max-width: 1100px;
     margin: 0 auto;
 }
@@ -63,7 +63,7 @@
 .musicos-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
+    gap: 2rem;
 }
 
 
@@ -192,8 +192,29 @@
     z-index: 1;
 }
 
+/* ================== FOOTER TARJETA — fila de botones ================== */
 .musico-card-footer {
     padding: 0.75rem 1rem 1rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+/* Unifica el tamaño de los botones */
+.musico-card-footer .btn-confirmar,
+.musico-card-footer .btn-chat {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1 1 140px;
+    min-width: 0;
+    max-width: 180px;
+    min-height: 44px;
+    padding: 0 20px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 
@@ -490,7 +511,7 @@
 /* --- BOTÓN VER MÚSICOS / PRINCIPAL (Púrpura Translúcido) --- */
 .btn-principal {
     color: #e8e0ff;
-    background: rgba(155, 48, 255, 0.12) !important; /* Fondo translúcido con tinte morado */
+    background: rgba(155, 48, 255, 0.12) !important;
     border: 1px solid rgba(155, 48, 255, 0.45);
     box-shadow: inset 0 0 8px rgba(155, 48, 255, 0.15);
 }
@@ -505,7 +526,7 @@
 /* --- BOTÓN CONFIRMAR / GUARDAR (Cian Translúcido) --- */
 .btn-confirmar {
     color: #d1f7ff;
-    background: rgba(0, 242, 255, 0.08) !important; /* Fondo translúcido con tinte cian */
+    background: rgba(0, 242, 255, 0.08) !important;
     border: 1px solid rgba(0, 242, 255, 0.45);
     box-shadow: inset 0 0 8px rgba(0, 242, 255, 0.15);
 }
@@ -520,7 +541,7 @@
 /* --- BOTÓN EDITAR (Magenta Translúcido) --- */
 .btn-editar {
     color: #ffd6ff;
-    background: rgba(255, 0, 255, 0.08) !important; /* Fondo translúcido con tinte magenta */
+    background: rgba(255, 0, 255, 0.08) !important;
     border: 1px solid rgba(255, 0, 255, 0.45);
     box-shadow: inset 0 0 8px rgba(255, 0, 255, 0.15);
 }
@@ -535,7 +556,7 @@
 /* --- BOTÓN ELIMINAR (Hot Pink Translúcido) --- */
 .btn-eliminar {
     color: #ffdaea;
-    background: rgba(255, 42, 133, 0.1) !important; /* Fondo translúcido con tinte rosa-alerta */
+    background: rgba(255, 42, 133, 0.1) !important;
     border: 1px solid rgba(255, 42, 133, 0.45);
     box-shadow: inset 0 0 8px rgba(255, 42, 133, 0.15);
 }
@@ -550,7 +571,7 @@
 /* --- BOTÓN CHAT (Verde Translúcido) --- */
 .btn-chat {
     color: #fff;
-    background: rgba(34, 197, 94, 0.08) !important; /* Fondo translúcido con tinte verde */
+    background: rgba(34, 197, 94, 0.08) !important;
     border: 1px solid rgba(34, 197, 94, 0.45);
     box-shadow: inset 0 0 8px rgba(34, 197, 94, 0.12);
 }
@@ -561,7 +582,6 @@
     box-shadow: 0 0 30px rgba(34, 197, 94, 0.55), inset 0 0 14px rgba(34, 197, 94, 0.25);
     transform: translateY(-2px);
 }
-
 
 /* ================== BOTÓN (tarjeta músico) ================== */
 .musico-card-btn {
@@ -587,32 +607,6 @@
     box-shadow: 0 0 35px rgba(155, 48, 255, 0.7);
     transform: translateY(-1px);
     color: #fff;
-}
-
-
-/* ================== FOOTER TARJETA (Ver perfiles)— fila de botones ================== */
-.musico-card-footer {
-    padding: 0.75rem 1rem 1rem;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    gap: 0.5rem;
-}
-
-/*Unifica el tamaño de los botones*/
-.musico-card-footer .btn-confirmar,
-.musico-card-footer .btn-chat {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    flex: 1 1 140px;
-    min-width: 0;
-    max-width: 180px;
-    min-height: 44px;
-    padding: 0 20px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
 }
 
 
@@ -676,21 +670,31 @@
   RESPONSIVE
    ============================================ */
 
+@media (max-width: 1024px) {
+    .musicos-wrapper {
+        padding: 2rem 3rem;
+    }
+}
+
 @media (max-width: 768px) {
+    .musicos-wrapper {
+        padding: 2rem 1rem;
+    }
     .musicos-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: 1fr;
     }
 }
 
 @media (max-width: 480px) {
+    .musicos-wrapper {
+        padding: 1.5rem 0.75rem;
+    }
     .musicos-grid {
         grid-template-columns: 1fr;
     }
-
     .musico-card-footer {
         gap: 0.4rem;
     }
-
     .musico-card-footer .btn-confirmar,
     .musico-card-footer .btn-chat {
         flex-basis: 0;
