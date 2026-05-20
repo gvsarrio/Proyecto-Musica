@@ -128,16 +128,17 @@
 						{{ form_widget(form.instrumentos) }}
 					</div>
 					<small style="color: var(--mh-text-muted);">Selecciona todos los que apliquen</small>
-					{{ form_errors(form.instrumentos) }}
-					<div class="input-group mt-2">
-						{{ form_widget(form.instrumentos_nuevos, {'attr': {'class': 'form-control', 'placeholder': 'Ej: guitarra'}}) }}
-						<button id="btn-add-instrument" class="btn btn-outline-secondary" type="button">Añadir nuevo instrumento</button>
+						{{ form_errors(form.instrumentos) }}
+					<div class="instrumento-add-wrap">
+						{{ form_widget(form.instrumentos_nuevos, {'attr': {'class': 'instrumento-add-input', 'placeholder': 'Ej: Ukelele...'}}) }}
+						<button id="btn-add-instrument" class="btn-confirmar" type="button">Añadir Instrumento</button>
 					</div>
-					{{ form_errors(form.instrumentos_nuevos) }}
-					<small style="color: var(--mh-text-muted);">Añade un instrumento nuevo (uno a la vez). Se añadirá al listado global.</small>
+					<small style="color: var(--mh-text-muted);">
+						¿No encuentras tu instrumento? Escríbelo y pulsa Añadir Instrumento. Se añadirá al listado global.
+					</small>
 					<input type="hidden" id="csrf_add_instrument" value="{{ csrf_token('add_instrument') }}">
-				</div>
-
+				</div>  
+				
 				<div class="col-12">
 					{{ form_label(form.ubicacion, 'Ubicación: ') }}
 					{{ form_widget(form.ubicacion, {'attr': {'class': 'form-control', 'placeholder': 'Ej: Murcia, España'}}) }}
@@ -193,6 +194,13 @@
 			wrapper.appendChild(input); wrapper.appendChild(label);
 			container.appendChild(wrapper);
 			document.getElementById('{{ form.instrumentos_nuevos.vars.id }}').value = '';
+			var msg = document.createElement('div');
+			msg.className = 'instrumento-add';
+			msg.textContent = '✓ Instrumento "' + data.nombre + '" añadido correctamente';
+			var wrap = document.querySelector('.instrumento-add-wrap');
+			wrap.parentNode.insertBefore(msg, wrap.nextSibling);
+			setTimeout(function() { msg.style.opacity = '0'; }, 2000);
+			setTimeout(function() { msg.remove(); }, 3000);
 		}).catch(err => { console.error(err); alert('Error añadiendo instrumento'); });
 	});
 	</script>

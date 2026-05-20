@@ -67,6 +67,10 @@
 }
 
 
+/* ============================================
+   TARJETAS (Glassmorphism)
+   ============================================ */
+
 /* ================== TARJETA PERFIL (new / edit / show) ================== */
 .perfil-card {
     background: rgba(16, 5, 38, 0.55);
@@ -83,7 +87,7 @@
         0 0 50px rgba(123, 47, 247, 0.2),
         inset 0 1px 0 rgba(217, 102, 255, 0.1);
     position: relative;
-    overflow: hidden;
+    overflow: visible;  /* visible para no crear segunda scrollbar */
 }
 
 .perfil-accent-bar {
@@ -218,7 +222,10 @@
 }
 
 
-/* ======AVATAR======= */
+/* ============================================
+   AVATAR
+   ============================================ */
+
 .perfil-avatar-wrap {
     display: flex;
     flex-direction: column;
@@ -400,7 +407,7 @@
     background: transparent;
     border: none;
     padding: 8px 0;
-    max-height: 250px;
+    max-height: 158px;   /* 3 filas visibles antes del scroll */
     overflow-y: auto;
     overflow-x: hidden;
     display: flex;
@@ -413,7 +420,7 @@
     display: inline-flex !important;
     align-items: center;
     justify-content: center;
-    flex: 1 0 calc(25% - 10px);
+    flex: 1 0 calc(25% - 10px);   /* 4 por fila */
     min-width: 130px;
     max-width: 200px;
     padding: 0 !important;
@@ -457,6 +464,37 @@
     border-color: var(--mh-purple);
 }
 
+/* ================== INPUT + BOTÓN AÑADIR INSTRUMENTO ================== */
+.instrumento-add-wrap {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+    align-items: center;
+}
+
+.instrumento-add-input {
+    flex: 1;
+    font-family: var(--font-body);
+    font-size: 13px;
+    background: rgba(5, 2, 20, 0.6) !important;
+    border: 1px solid rgba(155, 48, 255, 0.4) !important;
+    border-radius: 50px !important;
+    color: #e8e0ff !important;
+    padding: 9px 16px !important;
+    outline: none;
+    transition: border-color 0.25s, box-shadow 0.25s;
+}
+
+.instrumento-add-input:focus {
+    border-color: var(--mh-purple) !important;
+    box-shadow: 0 0 0 1px rgba(155, 48, 255, 0.3), 0 0 12px rgba(155, 48, 255, 0.2) !important;
+}
+
+.instrumento-add-input::placeholder {
+    color: rgba(200, 180, 255, 0.5);
+    font-style: italic;
+}
+
 /* ================== PASTILLAS INSTRUMENTOS (vista show / index) ================== */
 .musico-card-instrumentos {
     display: flex;
@@ -483,10 +521,22 @@
     border-radius: 10px;
 }
 
+/* Evitar barras de scroll duplicadas: ocultar scrollbars de cualquier
+   elemento hijo dentro del contenedor*/
+.perfil-instrumentos-container *::-webkit-scrollbar {
+    display: none;
+}
+.perfil-instrumentos-container * {
+    -ms-overflow-style: none; /* IE/Edge */
+    scrollbar-width: none; /* Firefox */
+}
 
-/* ======= BOTONES OPTIMIZADOS (GLASS TRANSLÚCIDO Y LUMINOSO) ======== */
 
-/* Estilos base comunes para todos los botones de perfil */
+/* ============================================
+   BOTONES
+   ============================================ */
+
+/* ================== BASE COMPARTIDA ================== */
 .btn-principal,
 .btn-confirmar,
 .btn-editar,
@@ -508,7 +558,7 @@
     -webkit-backdrop-filter: blur(8px);
 }
 
-/* --- BOTÓN VER MÚSICOS / PRINCIPAL (Púrpura Translúcido) --- */
+/* --- BOTÓN PRINCIPAL (Púrpura Translúcido) --- */
 .btn-principal {
     color: #e8e0ff;
     background: rgba(155, 48, 255, 0.12) !important;
@@ -583,7 +633,7 @@
     transform: translateY(-2px);
 }
 
-/* ================== BOTÓN (tarjeta músico) ================== */
+/* ================== BOTÓN VER PERFIL (tarjeta músico) ================== */
 .musico-card-btn {
     display: block;
     text-align: center;
@@ -639,6 +689,16 @@
     backdrop-filter: blur(4px);
 }
 
+/* ================== MENSAJE INSTRUMENTO AÑADIDO ================== */
+.instrumento-add {
+    font-family: var(--font-body);
+    font-size: 12px;
+    color: var(--mh-cyan);
+    text-shadow: 0 0 8px rgba(0, 242, 255, 0.5);
+    margin-top: 6px;
+    transition: opacity 1s ease;
+}
+
 
 /* ============================================
     FONDO LÍQUIDO Y BLOBS
@@ -683,6 +743,10 @@
     .musicos-grid {
         grid-template-columns: 1fr;
     }
+    .perfil-instrumentos-container .form-check {
+        flex: 1 0 calc(50% - 10px);   /* 2 por fila en tablet */
+        max-width: 100%;
+    }
 }
 
 @media (max-width: 480px) {
@@ -699,5 +763,16 @@
     .musico-card-footer .btn-chat {
         flex-basis: 0;
         max-width: 100%;
+    }
+    .perfil-instrumentos-container .form-check {
+        flex: 1 0 100%;   /* 1 por fila en móvil */
+        max-width: 100%;
+    }
+    .instrumento-add-wrap {
+        flex-direction: column;
+    }
+    .instrumento-add-wrap .btn-confirmar {
+        width: 100%;
+        text-align: center;
     }
 }
