@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Banda{% endblock %}
+
+{% block body %}
+    <h1>Banda</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ banda.id }}</td>
+            </tr>
+            <tr>
+                <th>Biografia</th>
+                <td>{{ banda.biografia }}</td>
+            </tr>
+            <tr>
+                <th>Generos</th>
+                <td>{{ banda.generos }}</td>
+            </tr>
+            <tr>
+                <th>Anyo_formacion</th>
+                <td>{{ banda.anyoFormacion }}</td>
+            </tr>
+            <tr>
+                <th>Ubicacion</th>
+                <td>{{ banda.ubicacion }}</td>
+            </tr>
+            <tr>
+                <th>Imagen_url</th>
+                <td>{{ banda.imagenUrl }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_banda_index') }}">back to list</a>
+
+    <a href="{{ path('app_banda_edit', {'id': banda.id}) }}">edit</a>
+
+    {{ include('banda/_delete_form.html.twig') }}
+{% endblock %}

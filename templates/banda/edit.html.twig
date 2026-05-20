@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Banda{% endblock %}
+
+{% block body %}
+    <h1>Edit Banda</h1>
+
+    {{ include('banda/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_banda_index') }}">back to list</a>
+
+    {{ include('banda/_delete_form.html.twig') }}
+{% endblock %}
