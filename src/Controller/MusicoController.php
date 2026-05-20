@@ -40,7 +40,7 @@ final class MusicoController extends AbstractController
         }
 
         $musico = new Musico();
-        $form = $this->createForm(MusicoType::class, $musico);
+        $form = $this->createForm(MusicoType::class, $musico, ['usuario' => $usuario]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -111,8 +111,8 @@ final class MusicoController extends AbstractController
             $instrumentosActuales[] = $relacion->getInstrumento();
         }
 
-        $form = $this->createForm(MusicoType::class, $musico);
-        
+        $form = $this->createForm(MusicoType::class, $musico, ['usuario' => $usuario]);
+
         // Seteamos los datos en el campo NO mapeado 'instrumentos'
         $form->get('instrumentos')->setData($instrumentosActuales);
 

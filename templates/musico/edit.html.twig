@@ -137,6 +137,13 @@ blob.style.transform = 'translate(calc(-50% + ' + ox + 'px), calc(-50% + ' + oy 
 						{{ form_widget(form.instrumentos) }}
 					</div>
 					{{ form_errors(form.instrumentos) }}
+					<div class="input-group mt-2">
+						{{ form_widget(form.instrumentos_nuevos, {'attr': {'class': 'form-control', 'placeholder': 'Ej: guitarra'}}) }}
+						<button id="btn-add-instrument" class="btn btn-outline-secondary" type="button">Añadir nuevo instrumento</button>
+					</div>
+					{{ form_errors(form.instrumentos_nuevos) }}
+					<small style="color: var(--mh-text-muted);">Añade un instrumento nuevo (uno a la vez). Se añadirá al listado global.</small>
+					<input type="hidden" id="csrf_add_instrument" value="{{ csrf_token('add_instrument') }}">
 				</div>
 
 				<div class="col-12">
@@ -172,4 +179,33 @@ blob.style.transform = 'translate(calc(-50% + ' + ox + 'px), calc(-50% + ' + oy 
 
 		</div>
 	</div>
+
+	<script>
+	document.getElementById('btn-add-instrument').addEventListener('click', function() {
+		var nombre = document.getElementById('{{ form.instrumentos_nuevos.vars.id }}').value.trim();
+		if (!nombre) return alert('Introduce el nombre del instrumento');
+		var token = document.getElementById('csrf_add_instrument').value;
+		var formData = new FormData();
+		formData.append('nombre', nombre);
+		formData.append('_token', token);
+		fetch('{{ path('app_instrumento_add') }}', {
+			method: 'POST',
+			body: formData,
+			headers: { 'X-Requested-With': 'XMLHttpRequest' }
+		}).then(resp => resp.json()).then(data => {
+			if (data.error) return alert(data.error);
+			var container = document.querySelector('.perfil-instrumentos-container');
+			if (!container) return;
+			var id = 'musico_instrumentos_' + data.id;
+			var wrapper = document.createElement('div'); wrapper.className = 'form-check';
+			var input = document.createElement('input');
+			input.type = 'checkbox'; input.className = 'form-check-input'; input.name = '{{ form.instrumentos.vars.full_name }}[]';
+			input.id = id; input.value = data.id; input.checked = true;
+			var label = document.createElement('label'); label.className = 'form-check-label'; label.htmlFor = id; label.textContent = data.nombre;
+			wrapper.appendChild(input); wrapper.appendChild(label);
+			container.appendChild(wrapper);
+			document.getElementById('{{ form.instrumentos_nuevos.vars.id }}').value = '';
+		}).catch(err => { console.error(err); alert('Error añadiendo instrumento'); });
+	});
+	</script>
 {% endblock %}
