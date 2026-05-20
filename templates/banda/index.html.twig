@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Banda index{% endblock %}
+
+{% block body %}
+    <h1>Banda index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Biografia</th>
+                <th>Generos</th>
+                <th>Anyo_formacion</th>
+                <th>Ubicacion</th>
+                <th>Imagen_url</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for banda in bandas %}
+            <tr>
+                <td>{{ banda.id }}</td>
+                <td>{{ banda.biografia }}</td>
+                <td>{{ banda.generos }}</td>
+                <td>{{ banda.anyoFormacion }}</td>
+                <td>{{ banda.ubicacion }}</td>
+                <td>{{ banda.imagenUrl }}</td>
+                <td>
+                    <a href="{{ path('app_banda_show', {'id': banda.id}) }}">show</a>
+                    <a href="{{ path('app_banda_edit', {'id': banda.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_banda_new') }}">Create new</a>
+{% endblock %}

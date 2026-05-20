@@ -40,6 +40,8 @@ security:
         - { path: ^/admin, roles: ROLE_ADMIN }
         # Requerido ROLE_USER para ruta "/musico/*":
         - { path: ^/musico, roles: ROLE_USER }
+        # Requerido ROLE_USER para ruta "/banda/*":
+        - { path: ^/banda, roles: ROLE_USER }
 
     # Jerarquía de roles:
     role_hierarchy:
