@@ -128,9 +128,17 @@
 						{{ form_widget(form.instrumentos) }}
 					</div>
 					<small style="color: var(--mh-text-muted);">Selecciona todos los que apliquen</small>
-					{{ form_errors(form.instrumentos) }}
-				</div>
-
+						{{ form_errors(form.instrumentos) }}
+					<div class="instrumento-add-wrap">
+						{{ form_widget(form.instrumentos_nuevos, {'attr': {'class': 'instrumento-add-input', 'placeholder': 'Ej: Ukelele...'}}) }}
+						<button id="btn-add-instrument" class="btn-confirmar" type="button">Añadir Instrumento</button>
+					</div>
+					<small style="color: var(--mh-text-muted);">
+						¿No encuentras tu instrumento? Escríbelo y pulsa Añadir Instrumento. Se añadirá al listado global.
+					</small>
+					<input type="hidden" id="csrf_add_instrument" value="{{ csrf_token('add_instrument') }}">
+				</div>  
+				
 				<div class="col-12"
 					data-controller="google-places-autocomplete"
 					data-google-places-autocomplete-api-key-value="{{ google_places_api_key }}">
@@ -157,11 +165,47 @@
 			</div>
 
 			<div class="d-flex justify-content-center mt-4">
-				<button type="submit" class="btn-perfil">Crear Perfil</button>
+				<button type="submit" class="btn-principal">Crear Perfil</button>
 			</div>
 
 			{{ form_end(form) }}
 
 		</div>
 	</div>
+
+	<script>
+	document.getElementById('btn-add-instrument').addEventListener('click', function() {
+		var nombre = document.getElementById('{{ form.instrumentos_nuevos.vars.id }}').value.trim();
+		if (!nombre) return alert('Introduce el nombre del instrumento');
+		var token = document.getElementById('csrf_add_instrument').value;
+		var formData = new FormData();
+		formData.append('nombre', nombre);
+		formData.append('_token', token);
+		fetch('{{ path('app_instrumento_add') }}', {
+			method: 'POST',
+			body: formData,
+			headers: { 'X-Requested-With': 'XMLHttpRequest' }
+		}).then(resp => resp.json()).then(data => {
+			if (data.error) return alert(data.error);
+			var container = document.querySelector('.perfil-instrumentos-container');
+			if (!container) return;
+			var id = 'musico_instrumentos_' + data.id;
+			var wrapper = document.createElement('div'); wrapper.className = 'form-check';
+			var input = document.createElement('input');
+			input.type = 'checkbox'; input.className = 'form-check-input'; input.name = '{{ form.instrumentos.vars.full_name }}[]';
+			input.id = id; input.value = data.id; input.checked = true;
+			var label = document.createElement('label'); label.className = 'form-check-label'; label.htmlFor = id; label.textContent = data.nombre;
+			wrapper.appendChild(input); wrapper.appendChild(label);
+			container.appendChild(wrapper);
+			document.getElementById('{{ form.instrumentos_nuevos.vars.id }}').value = '';
+			var msg = document.createElement('div');
+			msg.className = 'instrumento-add';
+			msg.textContent = '✓ Instrumento "' + data.nombre + '" añadido correctamente';
+			var wrap = document.querySelector('.instrumento-add-wrap');
+			wrap.parentNode.insertBefore(msg, wrap.nextSibling);
+			setTimeout(function() { msg.style.opacity = '0'; }, 2000);
+			setTimeout(function() { msg.remove(); }, 3000);
+		}).catch(err => { console.error(err); alert('Error añadiendo instrumento'); });
+	});
+	</script>
 {% endblock %}

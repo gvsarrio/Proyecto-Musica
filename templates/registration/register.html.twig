@@ -66,9 +66,10 @@
             }) }}
             {{ form_row(registrationForm.agreeTerms, {
                 label: 'Aceptar términos y condiciones',
-                label_attr: { class: 'auth-checkbox-label' }
-            }) }}
-            <button type="submit" class="auth-submit-button">Crear cuenta</button>
+                label_attr: { class: 'auth-checkbox-label' }, 
+                attr: { class: 'auth-checkbox-input' }
+            }) }} {# Clase para evitar que el check tenga borde o estilos predeterminados que afecten a la estética #}
+            <button type="submit" class="btn-auth-submit">Crear cuenta</button>
         {{ form_end(registrationForm) }}
         <p class="auth-alternate-action-text">¿Ya tienes cuenta? <a href="{{ path('app_login') }}">Inicia sesión</a></p>
     </div>

@@ -146,10 +146,10 @@
 			<div class="d-flex justify-content-center gap-2 mt-4">
 				{# Solo se muestra el botón para EDITAR cuando el perfil es del propio usuario logueado #}
 				{% if app.user == musico.usuario %}
-					<a href="{{ path('app_musico_edit', {'id': musico.id}) }}" class="btn-perfil">Editar perfil</a>
+					<a href="{{ path('app_musico_edit', {'id': musico.id}) }}" class="btn-editar">Editar perfil</a>
 				{% endif %}
 
-				<a href="{{ path('app_musico_index') }}" class="btn-perfil" style="background: rgba(100, 100, 100, 0.5);">Ver Músicos</a>
+				<a href="{{ path('app_musico_index') }}" class="btn-confirmar">Ver Músicos</a>
 			</div>
 
 			{# Solo se muestra el botón para BORRAR cuando el perfil es del propio usuario logueado #}

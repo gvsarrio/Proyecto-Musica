@@ -46,21 +46,29 @@
 </script>
 {% endblock %}
 {% block body %}
-<div class="hero">
-    <span class="hero-badge">🎵 Donde la música encuentra su lugar</span>
-    <h1 class="hero-title">
-        Music<span class="glitch" data-text="Hub">Hub</span>
-    </h1>
-    <p class="hero-subtitle">
-        Conecta músicos con bandas. Encuentra a quienes comparten tu sonido.
-    </p>
-    <div class="hero-actions">
-        {% if is_granted('IS_AUTHENTICATED') %}
-            <a href="{{ path('app_musico_index') }}" class="btn-hero-primary">Ver perfiles</a>
-        {% else %}
-            <a href="{{ path('app_register') }}" class="btn-hero-primary">Únete ahora</a>
-            <a href="{{ path('app_login') }}" class="btn-hero-secondary">Iniciar sesión</a>
-        {% endif %}
+<div class="home-page">
+    <div class="hero">
+        <span class="hero-badge">🎵 Donde la música encuentra su lugar</span>
+        <h1 class="hero-title">
+            Music<span class="glitch" data-text="Hub">Hub</span>
+        </h1>
+        <p class="hero-subtitle">
+            Conecta músicos con bandas. Encuentra a quienes comparten tu sonido.
+        </p>
+        <div class="hero-actions">
+            {% if is_granted('IS_AUTHENTICATED') %}
+                <a href="{{ path('app_musico_index') }}" class="btn-hero-primary">Ver Perfiles</a>
+            {% else %}
+                <a href="{{ path('app_register') }}" class="btn-hero-primary">Únete ahora</a>
+                <a href="{{ path('app_login') }}" class="btn-hero-secondary">Iniciar sesión</a>
+            {% endif %}
+        </div>
     </div>
+
+    <footer class="home-footer" aria-label="Pie de página de inicio">
+        <span class="home-footer-line"></span>
+        <p class="home-footer-text">© {{ "now"|date('Y') }} Music Hub. Todos los derechos reservados.</p>
+        <p class="home-footer-names">Gabriel Vicente Sarrió · Pilar Cabrera Méndez · Cristian Toledo Valera</p>
+    </footer>
 </div>
 {% endblock %}
