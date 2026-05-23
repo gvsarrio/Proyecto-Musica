@@ -4,6 +4,8 @@ namespace App\Form;
 
 use App\Entity\Musico;
 use App\Entity\Instrumento;
+use App\Entity\Usuario;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -68,6 +70,13 @@ class MusicoType extends AbstractType
                 ],
             ])
 
+            ->add('instrumentos_nuevos', TextType::class, [
+                'label' => false,
+                'mapped' => false,
+                'required' => false,
+                'attr' => ['placeholder' => 'Ej: guitarra'],
+            ])
+
             // Campo de instrumentos configurado como Checkboxes
             ->add('instrumentos', EntityType::class, [
                 'class' => Instrumento::class,
@@ -77,6 +86,12 @@ class MusicoType extends AbstractType
                 'mapped' => false,
                 'required' => false,
                 'label' => '¿Qué instrumentos tocas?',
+                'query_builder' => function (EntityRepository $er) use ($options) {
+                    return $er->createQueryBuilder('i')
+                        ->where('i.usuario IS NULL OR i.usuario = :usuario')
+                        ->setParameter('usuario', $options['usuario'])
+                        ->orderBy('i.nombre', 'ASC');
+                },
                 'constraints' => [
                     new Count(
                         min: 1,
@@ -96,6 +111,8 @@ class MusicoType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Musico::class,
+            'usuario' => null,
         ]);
+        $resolver->setAllowedTypes('usuario', ['null', Usuario::class]);
     }
 }

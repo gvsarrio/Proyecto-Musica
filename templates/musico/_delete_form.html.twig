@@ -1,4 +1,4 @@
 <form method="post" action="{{ path('app_musico_delete', {'id': musico.id}) }}" onsubmit="return confirm('¿Estás seguro de que quieres eliminar este elemento?');">
     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ musico.id) }}">
-    <button class="btn">Eliminar</button>
+    <button class="btn-eliminar">Eliminar Perfil</button>
 </form>

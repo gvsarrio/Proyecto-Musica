@@ -31,7 +31,7 @@
         </div>
 
         <div class="col-12">
-            {{ form_label(form.ubicacion, 'Ubicación') }}
+            {{ form_label(form.ubicacion, 'Ubicación: ') }}
             {{ form_widget(form.ubicacion, {'attr': {'class': 'form-control', 'placeholder': 'Ej: Murcia, España'}}) }}
             {{ form_errors(form.ubicacion) }}
         </div>
@@ -54,7 +54,7 @@
     {{ form_rest(form) }}
 
     <div class="mt-4">
-        <button class="btn btn-primary">
+        <button class="btn btn-confirmar" type="submit">
             {{ button_label|default('Guardar Cambios') }}
         </button>
     </div>

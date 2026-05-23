@@ -1,47 +1,138 @@
+{# templates/musico/index.html.twig #}
+
 {% extends 'base.html.twig' %}
 
-{% block title %}Musico{% endblock %}
+{% block title %}Ver Músicos — Music Hub{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/perfil.css') }}">
+{% endblock %}
+
+{# ── Fondo líquido animado ── #}
+{% block liquid_background %}
+    <div id="perfil-background"></div>
+    <script>
+        (function () {
+            var bg = document.getElementById('perfil-background');
+            var colors = [
+                'rgba(175, 79, 254, 0.7)',
+                'rgba(0, 242, 255, 0.7)',
+                'rgba(66,0,255,0.7)',
+                'rgba(222, 106, 251, 0.7)',
+                'rgba(0, 255, 136, 0.7)',
+                'rgba(155,48,255,0.7)'
+            ];
+            function createBlob() {
+                var blob = document.createElement('div');
+                blob.classList.add('perfil-blob');
+                var size = Math.random() * 300 + 150;
+                blob.style.width = size + 'px';
+                blob.style.height = size + 'px';
+                blob.style.left = (Math.random() * 100) + '%';
+                blob.style.top = (Math.random() * 100) + '%';
+                blob.style.background = colors[Math.floor(Math.random() * colors.length)];
+                bg.appendChild(blob);
+                animateBlob(blob);
+            }
+            function animateBlob(blob) {
+                var speed = Math.random() * 60 + 20;
+                function move() {
+                    var newSize = Math.random() * 300 + 150;
+                    blob.style.transition =
+                        'left ' + speed + 's ease-in-out, ' +
+                        'top ' + speed + 's ease-in-out, ' +
+                        'width ' + (speed / 2) + 's ease-in-out, ' +
+                        'height ' + (speed / 2) + 's ease-in-out';
+                    blob.style.left = (Math.random() * 100) + '%';
+                    blob.style.top = (Math.random() * 100) + '%';
+                    blob.style.width = newSize + 'px';
+                    blob.style.height = newSize + 'px';
+                    setTimeout(move, speed * 1000);
+                }
+                move();
+            }
+            for (var i = 0; i < 6; i++) createBlob();
+            document.addEventListener('mousemove', function (e) {
+                var mx = e.clientX / window.innerWidth;
+                var my = e.clientY / window.innerHeight;
+                bg.querySelectorAll('.perfil-blob').forEach(function (blob, i) {
+                    var dir = (i % 2 === 0) ? 1 : -1;
+                    blob.style.transform = 'translate(calc(-50% + ' + ((mx - 0.5) * 30 * dir) + 'px), calc(-50% + ' + ((my - 0.5) * 30 * dir) + 'px))';
+                });
+            });
+        })();
+    </script>
+{% endblock %}
 
 {% block body %}
-    <h1>Músicos</h1>
+<div class="musicos-wrapper">
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Nombre: </th>
-                <th>Teléfono: </th>
-                <th>Biografía: </th>
-                <th>Ubicación: </th>
-                <th>Años de experiencia: </th>
-                <th>Imagen: </th>
-                <th>Perfil creado:</th>
-                <th>Perfil actualizado: </th>
-                <th>Es una banda: </th>
-                <th>Acciones: </th>
-            </tr>
-        </thead>
-        <tbody>
+    {# ── Cabecera ── #}
+    <div class="musicos-header">
+        <span class="musicos-header-bar"></span>
+        <h1 class="musicos-titulo">MÚSICOS</h1>
+    </div>
+
+    {# ── Grid de tarjetas ── #}
+    <div class="musicos-grid">
         {% for musico in musicos %}
-            <tr>
-                <td>{{ musico.nombre }}</td>
-                <td>{{ musico.telefono }}</td>
-                <td>{{ musico.biografia }}</td>
-                <td>{{ musico.ubicacion }}</td>
-                <td>{{ musico.anyosExperiencia }}</td>
-                <td>{{ musico.imagenUrl }}</td>
-                <td>{{ musico.creadoEn ? musico.creadoEn|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ musico.actualizadoEn ? musico.actualizadoEn|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ musico.esBanda ? 'Yes' : 'No' }}</td>
-                <td>
-                    <a href="{{ path('app_musico_show', {'id': musico.id}) }}">Ver</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="11">No se han encontrado resultados</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+        <div class="musico-card">
 
+            {# Imagen #}
+            <div class="musico-card-img">
+                {% if musico.imagenUrl %}
+                    <img src="{{ asset('uploads/perfiles/' ~ musico.imagenUrl) }}"
+                         alt="{{ musico.nombre }}">
+                {% else %}
+                    <div class="musico-card-img-placeholder">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none"
+                             stroke="#9b30ff" stroke-width="1.2">
+                            <path d="M9 18V5l12-2v13"/>
+                            <circle cx="6" cy="18" r="3"/>
+                            <circle cx="18" cy="16" r="3"/>
+                        </svg>
+                    </div>
+                {% endif %}
+            </div>
+
+            {# Info #}
+            <div class="musico-card-info">
+                <h2 class="musico-card-nombre">{{ musico.nombre }}</h2>
+
+                <p class="musico-card-tags">
+                    {% if musico.ubicacion %}
+                        <span>{{ musico.ubicacion }}</span>
+                    {% endif %}
+                    {% if musico.anyosExperiencia is not null %}
+                        <span>{{ musico.anyosExperiencia }} años exp.</span>
+                    {% endif %}
+                </p>
+
+                {# Instrumentos — máximo 3 #}
+                {% if musico.instrumentos|length > 0 %}
+                <div class="musico-card-instrumentos">
+                    {% for instrumento in musico.instrumentos|slice(0, 3) %}
+                        <span class="musico-card-instrumento-tag">{{ instrumento.nombre }}</span>
+                    {% endfor %}
+                    {% if musico.instrumentos|length > 3 %}
+                        <span class="musico-card-instrumento-tag">+{{ musico.instrumentos|length - 3 }}</span>
+                    {% endif %}
+                </div>
+                {% endif %}
+            </div>
+
+            {# Botones Ver perfil + Chat #}
+            <div class="musico-card-footer">
+                <a href="{{ path('app_musico_show', {'id': musico.id}) }}" class="btn-confirmar">Ver Perfil</a>
+               <a href="#" class="btn-chat" title="Próximamente">Chat</a>
+            </div>
+
+        </div>
+        {% else %}
+        <p class="musicos-vacio">No hay músicos registrados todavía.</p>
+        {% endfor %}
+    </div>
+
+</div>
 {% endblock %}

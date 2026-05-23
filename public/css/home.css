@@ -219,3 +219,68 @@
     mix-blend-mode: screen;
     transition: all 6s cubic-bezier(0.23, 1, 0.32, 1);
 }
+
+.home-page {
+    min-height: calc(100vh - 60px);
+    display: flex;
+    flex-direction: column;
+}
+
+.home-footer {
+    margin-top: auto;
+    width: 100%;
+    padding: 0.75rem 1.4rem 1.05rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.55rem;
+    position: relative;
+    z-index: 1;
+}
+
+.home-footer-line {
+    width: min(280px, 62vw);
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.45), rgba(155, 48, 255, 0.85), rgba(0, 240, 255, 0.45), transparent);
+    box-shadow: 0 0 18px rgba(155, 48, 255, 0.35);
+    border-radius: 999px;
+}
+
+.home-footer-text {
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: rgba(232, 224, 255, 0.78);
+    text-shadow: 0 0 10px rgba(0, 240, 255, 0.10);
+    text-align: center;
+}
+
+.home-footer-names {
+    display: inline-block;
+    margin-top: 0.15rem;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.9px;
+    color: rgba(0, 240, 255, 0.88);
+    text-shadow: 0 0 12px rgba(0, 240, 255, 0.18);
+}
+
+@media (max-width: 480px) {
+    .home-footer {
+        padding: 0.7rem 1rem 0.9rem;
+    }
+
+    .home-footer-text {
+        font-size: 10px;
+        letter-spacing: 1px;
+    }
+
+    .home-footer-names {
+        font-size: 9px;
+        line-height: 1.35;
+        letter-spacing: 0.6px;
+    }
+}
