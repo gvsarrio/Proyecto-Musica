@@ -3,8 +3,10 @@
 namespace App\Form;
 
 use App\Entity\Musico;
-use App\Entity\Instrumento;
+use App\Entity\InstrumentoSistema;
+use App\Entity\InstrumentoPersonalizado;
 use App\Entity\Usuario;
+use App\Repository\InstrumentoPersonalizadoRepository;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -17,12 +19,17 @@ use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
-use Symfony\Component\Validator\Constraints\Count;
 
 class MusicoType extends AbstractType
 {
+    public function __construct(
+        private InstrumentoPersonalizadoRepository $personalizadoRepo,
+    ) {}
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $usuario = $options['usuario'];
+
         $builder
             ->add('nombre', TextType::class, [
                 'label' => 'Nombre',
@@ -51,8 +58,6 @@ class MusicoType extends AbstractType
                 'label' => 'Años de experiencia',
                 'attr' => ['placeholder' => '0'],
             ])
-
-            // Campo de imagen corregido con sintaxis PHP 8
             ->add('imagen_url', FileType::class, [
                 'label' => 'Foto de perfil (JPG, PNG, WEBP)',
                 'mapped' => false,
@@ -60,50 +65,44 @@ class MusicoType extends AbstractType
                 'constraints' => [
                     new File(
                         maxSize: '2M',
-                        mimeTypes: [
-                            'image/jpeg',
-                            'image/png',
-                            'image/webp',
-                        ],
+                        mimeTypes: ['image/jpeg', 'image/png', 'image/webp'],
                         mimeTypesMessage: 'Por favor, sube una imagen válida (JPG, PNG, WEBP)'
                     )
                 ],
             ])
-
             ->add('instrumentos_nuevos', TextType::class, [
                 'label' => false,
                 'mapped' => false,
                 'required' => false,
                 'attr' => ['placeholder' => 'Ej: guitarra'],
             ])
-
-            // Campo de instrumentos configurado como Checkboxes
-            ->add('instrumentos', EntityType::class, [
-                'class' => Instrumento::class,
+            ->add('instrumentos_sistema', EntityType::class, [
+                'class' => InstrumentoSistema::class,
                 'choice_label' => 'nombre',
                 'multiple' => true,
                 'expanded' => true,
                 'mapped' => false,
                 'required' => false,
-                'label' => '¿Qué instrumentos tocas?',
-                'query_builder' => function (EntityRepository $er) use ($options) {
-                    return $er->createQueryBuilder('i')
-                        ->where('i.usuario IS NULL OR i.usuario = :usuario')
-                        ->setParameter('usuario', $options['usuario'])
-                        ->orderBy('i.nombre', 'ASC');
+                'label' => false,
+                'query_builder' => fn(EntityRepository $er) => $er->createQueryBuilder('i')->orderBy('i.nombre', 'ASC'),
+            ])
+            ->add('instrumentos_personalizados', EntityType::class, [
+                'class' => InstrumentoPersonalizado::class,
+                'choice_label' => 'nombre',
+                'multiple' => true,
+                'expanded' => true,
+                'mapped' => false,
+                'required' => false,
+                'label' => false,
+                'query_builder' => function (EntityRepository $er) use ($usuario) {
+                    $qb = $er->createQueryBuilder('ip')->orderBy('ip.nombre', 'ASC');
+                    if ($usuario) {
+                        $qb->where('ip.usuario = :usuario')->setParameter('usuario', $usuario);
+                    } else {
+                        $qb->where('1 = 0');
+                    }
+                    return $qb;
                 },
-                'constraints' => [
-                    new Count(
-                        min: 1,
-                        minMessage: 'Debes seleccionar al menos un instrumento'
-                    )
-                ],
-                'attr' => [
-                    'class' => 'perfil-instrumentos-container' // <-- ESTA ES LA CLAVE
-                ],
-                'row_attr' => [
-                    'id' => 'musico_instrumentos' // <-- ESTO ACTIVA VUESTROS ESTILOS POR ID
-                ]
             ]);
     }
 

@@ -22,12 +22,14 @@
 
         {# SECCIÓN DE INSTRUMENTOS (Checkboxes) #}
         <div class="col-12">
-            {{ form_label(form.instrumentos, '¿Qué instrumentos tocas?') }}
+            {{ form_label(form.instrumentos_sistema, '¿Qué instrumentos tocas?') }}
             <div class="perfil-instrumentos-container">
-                {{ form_widget(form.instrumentos) }}
+                {{ form_widget(form.instrumentos_sistema) }}
+                {{ form_widget(form.instrumentos_personalizados) }}
             </div>
             <small style="color: var(--mh-text-muted);">Selecciona todos los que apliquen</small>
-            {{ form_errors(form.instrumentos) }}
+            {{ form_errors(form.instrumentos_sistema) }}
+            {{ form_errors(form.instrumentos_personalizados) }}
         </div>
 
         <div class="col-12">

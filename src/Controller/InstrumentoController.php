@@ -2,8 +2,8 @@
 
 namespace App\Controller;
 
-use App\Entity\Instrumento;
-use App\Repository\InstrumentoRepository;
+use App\Entity\InstrumentoPersonalizado;
+use App\Repository\InstrumentoPersonalizadoRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Attribute\Route;
 final class InstrumentoController extends AbstractController
 {
     #[Route('/add', name: 'app_instrumento_add', methods: ['POST'])]
-    public function add(Request $request, EntityManagerInterface $em, InstrumentoRepository $repo): JsonResponse
+    public function add(Request $request, EntityManagerInterface $em, InstrumentoPersonalizadoRepository $repo): JsonResponse
     {
         if (!$this->isCsrfTokenValid('add_instrument', $request->request->get('_token'))) {
             return $this->json(['error' => 'Token inválido'], 403);
@@ -26,12 +26,12 @@ final class InstrumentoController extends AbstractController
             return $this->json(['error' => 'El nombre no puede estar vacío'], 400);
         }
 
-        $existente = $repo->findOneBy(['nombre' => $nombre]);
+        $existente = $repo->findOneBy(['nombre' => $nombre, 'usuario' => $this->getUser()]);
         if ($existente) {
-            return $this->json(['error' => 'Ese instrumento ya existe', 'id' => $existente->getId(), 'nombre' => $existente->getNombre()], 409);
+            return $this->json(['id' => $existente->getId(), 'nombre' => $existente->getNombre()], 200);
         }
 
-        $instrumento = new Instrumento();
+        $instrumento = new InstrumentoPersonalizado();
         $instrumento->setNombre($nombre);
         $instrumento->setUsuario($this->getUser());
         $em->persist($instrumento);
