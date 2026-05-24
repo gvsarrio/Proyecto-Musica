@@ -71,15 +71,24 @@ class Musico
     private Collection $miembroBandas;
 
     /**
-     * @var Collection<int, InstrumentoMusico>
+     * @var Collection<int, InstrumentoSistema>
      */
-    #[ORM\OneToMany(targetEntity: InstrumentoMusico::class, mappedBy: 'musico', cascade: ['remove'])]
-    private Collection $instrumentoMusicos;
+    #[ORM\ManyToMany(targetEntity: InstrumentoSistema::class)]
+    #[ORM\JoinTable(name: 'musico_instrumento_sistema')]
+    private Collection $instrumentosSistema;
+
+    /**
+     * @var Collection<int, InstrumentoPersonalizado>
+     */
+    #[ORM\ManyToMany(targetEntity: InstrumentoPersonalizado::class)]
+    #[ORM\JoinTable(name: 'musico_instrumento_personalizado')]
+    private Collection $instrumentosPersonalizados;
 
     public function __construct()
     {
         $this->miembroBandas = new ArrayCollection();
-        $this->instrumentoMusicos = new ArrayCollection();
+        $this->instrumentosSistema = new ArrayCollection();
+        $this->instrumentosPersonalizados = new ArrayCollection();
     }
 
     public function getId(): ?int { return $this->id; }
@@ -110,21 +119,18 @@ class Musico
 
     public function getMiembroBandas(): Collection { return $this->miembroBandas; }
 
-    /**
-     * @return Collection<int, InstrumentoMusico>
-     */
-    public function getInstrumentoMusicos(): Collection
-    {
-        return $this->instrumentoMusicos;
-    }
+    public function getInstrumentosSistema(): Collection { return $this->instrumentosSistema; }
+
+    public function getInstrumentosPersonalizados(): Collection { return $this->instrumentosPersonalizados; }
 
     /**
-     * @return Collection<int, Instrumento>
+     * Devuelve todos los instrumentos (sistema + personalizados) para uso en templates.
      */
     public function getInstrumentos(): Collection
     {
-        return new ArrayCollection(
-            $this->instrumentoMusicos->map(fn(InstrumentoMusico $im) => $im->getInstrumento())->getValues()
-        );
+        return new ArrayCollection(array_merge(
+            $this->instrumentosSistema->toArray(),
+            $this->instrumentosPersonalizados->toArray()
+        ));
     }
 }
