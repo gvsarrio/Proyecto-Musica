@@ -84,6 +84,7 @@ class MusicoType extends AbstractType
                 'mapped' => false,
                 'required' => false,
                 'label' => false,
+                'attr' => ['style' => 'display: contents'],
                 'query_builder' => fn(EntityRepository $er) => $er->createQueryBuilder('i')->orderBy('i.nombre', 'ASC'),
             ])
             ->add('instrumentos_personalizados', EntityType::class, [
@@ -94,6 +95,7 @@ class MusicoType extends AbstractType
                 'mapped' => false,
                 'required' => false,
                 'label' => false,
+                'attr' => ['style' => 'display: contents'],
                 'query_builder' => function (EntityRepository $er) use ($usuario) {
                     $qb = $er->createQueryBuilder('ip')->orderBy('ip.nombre', 'ASC');
                     if ($usuario) {
