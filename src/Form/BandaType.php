@@ -4,8 +4,10 @@ namespace App\Form;
 
 use App\Entity\Banda;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
 
 class BandaType extends AbstractType
 {
@@ -16,7 +18,23 @@ class BandaType extends AbstractType
             ->add('generos')
             ->add('anyo_formacion')
             ->add('ubicacion')
-            ->add('imagen_url')
+            //Subida de imagen
+            ->add('imagen_url', FileType::class, [
+                'label' => 'Imagen de la banda (JPG, PNG, WEBP)',
+                'mapped' => false,
+                'required' => false,
+                'constraints' => [
+                    new File(
+                        maxSize: '2M',
+                        mimeTypes: [
+                            'image/jpeg',
+                            'image/png',
+                            'image/webp',
+                        ],
+                        mimeTypesMessage: 'Por favor, sube una imagen válida (JPG, PNG, WEBP)'
+                    )
+                ],
+            ])
         ;
     }
 

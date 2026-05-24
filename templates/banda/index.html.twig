@@ -1,43 +1,144 @@
+{# templates/banda/index.html.twig #}
+
 {% extends 'base.html.twig' %}
 
-{% block title %}Banda index{% endblock %}
+{% block title %}Ver Bandas — Music Hub{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/perfil.css') }}">
+{% endblock %}
+
+{# ── Fondo líquido animado ── #}
+{% block liquid_background %}
+    <div id="perfil-background"></div>
+    <script>
+        (function () {
+            var bg = document.getElementById('perfil-background');
+            var colors = [
+                'rgba(175, 79, 254, 0.7)',
+                'rgba(0, 242, 255, 0.7)',
+                'rgba(66,0,255,0.7)',
+                'rgba(222, 106, 251, 0.7)',
+                'rgba(0, 255, 136, 0.7)',
+                'rgba(155,48,255,0.7)'
+            ];
+            function createBlob() {
+                var blob = document.createElement('div');
+                blob.classList.add('perfil-blob');
+                var size = Math.random() * 300 + 150;
+                blob.style.width = size + 'px';
+                blob.style.height = size + 'px';
+                blob.style.left = (Math.random() * 100) + '%';
+                blob.style.top = (Math.random() * 100) + '%';
+                blob.style.background = colors[Math.floor(Math.random() * colors.length)];
+                bg.appendChild(blob);
+                animateBlob(blob);
+            }
+            function animateBlob(blob) {
+                var speed = Math.random() * 60 + 20;
+                function move() {
+                    var newSize = Math.random() * 300 + 150;
+                    blob.style.transition =
+                        'left ' + speed + 's ease-in-out, ' +
+                        'top ' + speed + 's ease-in-out, ' +
+                        'width ' + (speed / 2) + 's ease-in-out, ' +
+                        'height ' + (speed / 2) + 's ease-in-out';
+                    blob.style.left = (Math.random() * 100) + '%';
+                    blob.style.top = (Math.random() * 100) + '%';
+                    blob.style.width = newSize + 'px';
+                    blob.style.height = newSize + 'px';
+                    setTimeout(move, speed * 1000);
+                }
+                move();
+            }
+            for (var i = 0; i < 6; i++) createBlob();
+            document.addEventListener('mousemove', function (e) {
+                var mx = e.clientX / window.innerWidth;
+                var my = e.clientY / window.innerHeight;
+                bg.querySelectorAll('.perfil-blob').forEach(function (blob, i) {
+                    var dir = (i % 2 === 0) ? 1 : -1;
+                    blob.style.transform = 'translate(calc(-50% + ' + ((mx - 0.5) * 30 * dir) + 'px), calc(-50% + ' + ((my - 0.5) * 30 * dir) + 'px))';
+                });
+            });
+        })();
+    </script>
+{% endblock %}
 
 {% block body %}
-    <h1>Banda index</h1>
+<div class="musicos-wrapper">
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Biografia</th>
-                <th>Generos</th>
-                <th>Anyo_formacion</th>
-                <th>Ubicacion</th>
-                <th>Imagen_url</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
+    {# ── Cabecera ── #}
+    <div class="musicos-header">
+        <span class="musicos-header-bar"></span>
+        <h1 class="musicos-titulo">BANDAS</h1>
+    </div>
+
+    {# ── Grid de tarjetas ── #}
+    <div class="musicos-grid">
         {% for banda in bandas %}
-            <tr>
-                <td>{{ banda.id }}</td>
-                <td>{{ banda.biografia }}</td>
-                <td>{{ banda.generos }}</td>
-                <td>{{ banda.anyoFormacion }}</td>
-                <td>{{ banda.ubicacion }}</td>
-                <td>{{ banda.imagenUrl }}</td>
-                <td>
-                    <a href="{{ path('app_banda_show', {'id': banda.id}) }}">show</a>
-                    <a href="{{ path('app_banda_edit', {'id': banda.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="7">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+        <div class="musico-card">
 
-    <a href="{{ path('app_banda_new') }}">Create new</a>
+            {# Imagen #}
+            <div class="musico-card-img">
+                {% if banda.imagenUrl %}
+                    <img src="{{ asset('uploads/bandas/' ~ banda.imagenUrl) }}"
+                         alt="Imagen de banda">
+                {% else %}
+                    <div class="musico-card-img-placeholder">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none"
+                             stroke="#9b30ff" stroke-width="1.2">
+                            <path d="M9 18V5l12-2v13"/>
+                            <circle cx="6" cy="18" r="3"/>
+                            <circle cx="18" cy="16" r="3"/>
+                        </svg>
+                    </div>
+                {% endif %}
+            </div>
+
+            {# Info #}
+            <div class="musico-card-info">
+                <h2 class="musico-card-nombre">
+                    {{ banda.ubicacion }}
+                    {% if banda.anyoFormacion %}
+                        <small style="font-size:11px; color: var(--mh-cyan-soft);">· {{ banda.anyoFormacion }}</small>
+                    {% endif %}
+                </h2>
+
+                <p class="musico-card-tags">
+                    {% if banda.ubicacion %}
+                        <span>{{ banda.ubicacion }}</span>
+                    {% endif %}
+                    {% if banda.anyoFormacion %}
+                        <span>Desde {{ banda.anyoFormacion }}</span>
+                    {% endif %}
+                </p>
+
+                {# Géneros como pastillas #}
+                {% if banda.generos %}
+                <div class="musico-card-instrumentos">
+                    {% for genero in banda.generos|split(',') %}
+                        <span class="musico-card-instrumento-tag">{{ genero|trim }}</span>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+
+            {# Botones #}
+            <div class="musico-card-footer">
+                <a href="{{ path('app_banda_show', {'id': banda.id}) }}" class="btn-confirmar">
+                    Ver banda
+                </a>
+                <a href="#" class="btn-chat" title="Próximamente">
+                    Chat
+                </a>
+            </div>
+
+        </div>
+        {% else %}
+        <p class="musicos-vacio">No hay bandas registradas todavía.</p>
+        {% endfor %}
+    </div>
+
+</div>
 {% endblock %}
