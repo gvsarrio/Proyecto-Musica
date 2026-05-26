@@ -2,11 +2,12 @@
 
 namespace App\Entity;
 
-use App\Repository\InstrumentoRepository;
+use App\Repository\InstrumentoPersonalizadoRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: InstrumentoRepository::class)]
-class Instrumento
+#[ORM\Entity(repositoryClass: InstrumentoPersonalizadoRepository::class)]
+#[ORM\Table(name: 'instrumento_personalizado')]
+class InstrumentoPersonalizado
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -20,23 +21,21 @@ class Instrumento
     #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     private ?Usuario $usuario = null;
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
+    public function getId(): ?int { return $this->id; }
 
-    public function getNombre(): ?string
-    {
-        return $this->nombre;
-    }
+    public function getNombre(): ?string { return $this->nombre; }
 
     public function setNombre(string $nombre): static
     {
         $this->nombre = $nombre;
-
         return $this;
     }
 
     public function getUsuario(): ?Usuario { return $this->usuario; }
-    public function setUsuario(?Usuario $usuario): static { $this->usuario = $usuario; return $this; }
+
+    public function setUsuario(?Usuario $usuario): static
+    {
+        $this->usuario = $usuario;
+        return $this;
+    }
 }
