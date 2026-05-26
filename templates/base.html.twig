@@ -36,6 +36,28 @@
                                 {% endif %}
                                 <a href="{{ path('app_musico_index') }}" class="nav-link {{ app.request.attributes.get('_route') == 'app_musico_index' ? 'active' : '' }}">Ver Músicos</a>
                                 <a href="{{ path('app_banda_index') }}" class="nav-link {{ app.request.attributes.get('_route') == 'app_banda_index' ? 'active' : '' }}">Ver Bandas</a>
+                                {% if app.user.musico is not null %}
+                                <div class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Gestiona tu banda
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end">
+                                        <li><a class="dropdown-item" href="{{ path('app_banda_new') }}">+ Crear banda</a></li>
+                                        {% set mis_memberships = app.user.musico.miembroBandasAceptadas %}
+                                        {% if mis_memberships|length > 0 %}
+                                            <li><hr class="dropdown-divider"></li>
+                                            {% for mb in mis_memberships|slice(0, 3) %}
+                                                <li>
+                                                    <a class="dropdown-item" href="{{ path('app_banda_show', {id: mb.banda.id}) }}">
+                                                        {{ mb.banda.nombre }}
+                                                        {% if mb.esAdministrador %}<small class="text-muted">(Admin)</small>{% endif %}
+                                                    </a>
+                                                </li>
+                                            {% endfor %}
+                                        {% endif %}
+                                    </ul>
+                                </div>
+                                {% endif %}
                             {% endif %}
                             <a href="{{ path('app_logout') }}" class="nav-link">Salir</a>
                         {% else %}

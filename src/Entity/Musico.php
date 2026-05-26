@@ -127,4 +127,9 @@ class Musico
             $this->instrumentoMusicos->map(fn(InstrumentoMusico $im) => $im->getInstrumento())->getValues()
         );
     }
+
+    public function getMiembroBandasAceptadas(): Collection
+    {
+        return $this->miembroBandas->filter(fn(MiembroBanda $mb) => $mb->getEstado() === 'aceptado');
+    }
 }
