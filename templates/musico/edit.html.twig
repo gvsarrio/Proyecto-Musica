@@ -131,21 +131,23 @@ blob.style.transform = 'translate(calc(-50% + ' + ox + 'px), calc(-50% + ' + oy 
 
 				{# SECCIÓN DE INSTRUMENTOS (Checkboxes) #}
 				<div class="col-12">
-					{{ form_label(form.instrumentos, '¿Qué instrumentos tocas?') }}
+					{{ form_label(form.instrumentos_sistema, '¿Qué instrumentos tocas?') }}
 					<div class="perfil-instrumentos-container">
-						{{ form_widget(form.instrumentos) }}
+						{{ form_widget(form.instrumentos_sistema) }}
+						{{ form_widget(form.instrumentos_personalizados) }}
 					</div>
 					<small style="color: var(--mh-text-muted);">Selecciona todos los que apliquen</small>
-						{{ form_errors(form.instrumentos) }}
+					{{ form_errors(form.instrumentos_sistema) }}
+					{{ form_errors(form.instrumentos_personalizados) }}
 					<div class="instrumento-add-wrap">
-						{{ form_widget(form.instrumentos_nuevos, {'attr': {'class': 'instrumento-add-input', 'placeholder': 'Ej: Kalimnba...'}}) }}
+						{{ form_widget(form.instrumentos_nuevos, {'attr': {'class': 'instrumento-add-input', 'placeholder': 'Ej: Kalimba...'}}) }}
 						<button id="btn-add-instrument" class="btn-confirmar" type="button">Añadir Instrumento</button>
 					</div>
 					<small style="color: var(--mh-text-muted);">
 						¿No encuentras tu instrumento? Escríbelo y pulsa Añadir Instrumento. Se añadirá al listado global.
 					</small>
 					<input type="hidden" id="csrf_add_instrument" value="{{ csrf_token('add_instrument') }}">
-				</div> 
+				</div>
 
 				<div class="col-12"
 					data-controller="google-places-autocomplete"
@@ -204,7 +206,7 @@ blob.style.transform = 'translate(calc(-50% + ' + ox + 'px), calc(-50% + ' + oy 
 			var id = 'musico_instrumentos_' + data.id;
 			var wrapper = document.createElement('div'); wrapper.className = 'form-check';
 			var input = document.createElement('input');
-			input.type = 'checkbox'; input.className = 'form-check-input'; input.name = '{{ form.instrumentos.vars.full_name }}[]';
+			input.type = 'checkbox'; input.className = 'form-check-input'; input.name = '{{ form.instrumentos_personalizados.vars.full_name }}[]';
 			input.id = id; input.value = data.id; input.checked = true;
 			var label = document.createElement('label'); label.className = 'form-check-label'; label.htmlFor = id; label.textContent = data.nombre;
 			wrapper.appendChild(input); wrapper.appendChild(label);
