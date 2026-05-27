@@ -1,62 +1,47 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Solicitudes — {{ banda.nombre }} — Music Hub{% endblock %}
+{% block title %}Gestionar banda — {{ banda.nombre }} — Music Hub{% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/perfil.css') }}">
 {% endblock %}
 
-{# Fondo líquido animado #}
 {% block liquid_background %}
     <div id="perfil-background"></div>
     <script>
         (function () {
             var bg = document.getElementById('perfil-background');
             var colors = [
-                'rgba(175, 79, 254, 0.7)',
-                'rgba(0, 242, 255, 0.7)',
-                'rgba(66,0,255,0.7)',
-                'rgba(222, 106, 251, 0.7)',
-                'rgba(0, 255, 136, 0.7)',
-                'rgba(155,48,255,0.7)'
+                'rgba(175, 79, 254, 0.7)', 'rgba(0, 242, 255, 0.7)', 'rgba(66,0,255,0.7)',
+                'rgba(222, 106, 251, 0.7)', 'rgba(0, 255, 136, 0.7)', 'rgba(155,48,255,0.7)'
             ];
             function createBlob() {
                 var blob = document.createElement('div');
                 blob.classList.add('perfil-blob');
                 var size = Math.random() * 300 + 150;
-                blob.style.width = size + 'px';
-                blob.style.height = size + 'px';
-                blob.style.left = (Math.random() * 100) + '%';
-                blob.style.top = (Math.random() * 100) + '%';
+                blob.style.width = size + 'px'; blob.style.height = size + 'px';
+                blob.style.left = (Math.random() * 100) + '%'; blob.style.top = (Math.random() * 100) + '%';
                 blob.style.background = colors[Math.floor(Math.random() * colors.length)];
-                bg.appendChild(blob);
-                animateBlob(blob);
+                bg.appendChild(blob); animateBlob(blob);
             }
             function animateBlob(blob) {
                 var speed = Math.random() * 60 + 20;
                 function move() {
                     var newSize = Math.random() * 300 + 150;
-                    blob.style.transition =
-                        'left ' + speed + 's ease-in-out, ' +
-                        'top ' + speed + 's ease-in-out, ' +
-                        'width ' + (speed / 2) + 's ease-in-out, ' +
-                        'height ' + (speed / 2) + 's ease-in-out';
-                    blob.style.left = (Math.random() * 100) + '%';
-                    blob.style.top = (Math.random() * 100) + '%';
-                    blob.style.width = newSize + 'px';
-                    blob.style.height = newSize + 'px';
+                    blob.style.transition = 'left ' + speed + 's ease-in-out, top ' + speed + 's ease-in-out, width ' + (speed/2) + 's ease-in-out, height ' + (speed/2) + 's ease-in-out';
+                    blob.style.left = (Math.random() * 100) + '%'; blob.style.top = (Math.random() * 100) + '%';
+                    blob.style.width = newSize + 'px'; blob.style.height = newSize + 'px';
                     setTimeout(move, speed * 1000);
                 }
                 move();
             }
             for (var i = 0; i < 6; i++) createBlob();
             document.addEventListener('mousemove', function (e) {
-                var mx = e.clientX / window.innerWidth;
-                var my = e.clientY / window.innerHeight;
+                var mx = e.clientX / window.innerWidth; var my = e.clientY / window.innerHeight;
                 bg.querySelectorAll('.perfil-blob').forEach(function (blob, i) {
                     var dir = (i % 2 === 0) ? 1 : -1;
-                    blob.style.transform = 'translate(calc(-50% + ' + ((mx - 0.5) * 30 * dir) + 'px), calc(-50% + ' + ((my - 0.5) * 30 * dir) + 'px))';
+                    blob.style.transform = 'translate(calc(-50% + ' + ((mx-0.5)*30*dir) + 'px), calc(-50% + ' + ((my-0.5)*30*dir) + 'px))';
                 });
             });
         })();
@@ -74,17 +59,23 @@
         {% for message in app.flashes('info') %}
             <div class="alert-perfil-success" style="background: rgba(0,180,255,0.15); border-color: rgba(0,180,255,0.4);">{{ message }}</div>
         {% endfor %}
+        {% for message in app.flashes('warning') %}
+            <div class="alert-perfil-success" style="background: rgba(255,180,0,0.15); border-color: rgba(255,180,0,0.4);">⚠ {{ message }}</div>
+        {% endfor %}
 
-        <h1 class="perfil-title">Solicitudes de unión</h1>
+        <h1 class="perfil-title">Gestionar banda</h1>
         <p class="perfil-subtitle">{{ banda.nombre }}</p>
         <hr class="perfil-divider">
 
+        {# ── SOLICITUDES PENDIENTES ── #}
+        <p style="font-size: 11px; font-weight: 700; color: var(--mh-purple-light); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 12px;">
+            Solicitudes pendientes
+        </p>
+
         {% if pendientes|length == 0 %}
-            <p style="text-align: center; color: var(--mh-text-muted); padding: 2rem 0;">
-                No hay solicitudes pendientes.
-            </p>
+            <p style="color: var(--mh-text-muted); font-size: 13px; margin-bottom: 2rem;">No hay solicitudes pendientes.</p>
         {% else %}
-            <div class="row g-3">
+            <div class="row g-2 mb-4">
                 {% for miembro in pendientes %}
                 <div class="col-12">
                     <div style="display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1rem; background: rgba(255,255,255,0.04); border-radius: 8px; border: 1px solid rgba(255,255,255,0.08);">
@@ -92,6 +83,9 @@
                             <a href="{{ path('app_musico_show', {id: miembro.musico.id}) }}" style="color: var(--mh-purple-light); font-weight: 600; text-decoration: none;">
                                 {{ miembro.musico.nombre }}
                             </a>
+                            {% if miembro.rolBanda %}
+                                <span style="color: var(--mh-text-muted); font-size: 12px; margin-left: 8px;">· {{ miembro.rolBanda }}</span>
+                            {% endif %}
                             {% if miembro.musico.ubicacion %}
                                 <span style="color: var(--mh-text-muted); font-size: 12px; margin-left: 8px;">{{ miembro.musico.ubicacion }}</span>
                             {% endif %}
@@ -107,6 +101,68 @@
                             </form>
                         </div>
                     </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <hr class="perfil-divider">
+
+        {# ── MIEMBROS ACTUALES ── #}
+        <p style="font-size: 11px; font-weight: 700; color: var(--mh-purple-light); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 12px;">
+            Miembros actuales
+        </p>
+
+        {% set total_admins = miembros_aceptados|filter(mb => mb.esAdministrador)|length %}
+
+        {% if miembros_aceptados|length == 0 %}
+            <p style="color: var(--mh-text-muted); font-size: 13px;">Sin miembros aceptados aún.</p>
+        {% else %}
+            <div class="row g-2 mb-4">
+                {% for miembro in miembros_aceptados %}
+                <div class="col-12">
+                    <div style="display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1rem; background: rgba(255,255,255,0.04); border-radius: 8px; border: 1px solid rgba(255,255,255,0.08);">
+                        <div>
+                            <a href="{{ path('app_musico_show', {id: miembro.musico.id}) }}" style="color: var(--mh-purple-light); font-weight: 600; text-decoration: none;">
+                                {{ miembro.musico.nombre }}
+                            </a>
+                            {% if miembro.esAdministrador %}
+                                <span style="color: #f0c040; font-size: 11px; margin-left: 6px; font-weight: 700;">★ Admin</span>
+                            {% endif %}
+                            {% if miembro.rolBanda %}
+                                <span style="color: var(--mh-text-muted); font-size: 12px; margin-left: 8px;">· {{ miembro.rolBanda }}</span>
+                            {% endif %}
+                        </div>
+                        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: flex-end;">
+                            {% if miembro.esAdministrador %}
+                                {% if total_admins > 1 %}
+                                    <form method="post" action="{{ path('app_banda_quitar_admin', {id: miembro.id}) }}">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('quitar_admin_' ~ miembro.id) }}">
+                                        <button type="submit" class="btn-editar" style="padding: 0.3rem 1rem; font-size: 12px;">Quitar admin</button>
+                                    </form>
+                                {% endif %}
+                            {% else %}
+                                <form method="post" action="{{ path('app_banda_hacer_admin', {id: miembro.id}) }}">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('hacer_admin_' ~ miembro.id) }}">
+                                    <button type="submit" class="btn-confirmar" style="padding: 0.3rem 1rem; font-size: 12px;">Hacer admin</button>
+                                </form>
+                            {% endif %}
+                            {% if not (miembro.esAdministrador and total_admins <= 1) %}
+                                <form method="post" action="{{ path('app_banda_expulsar_miembro', {id: miembro.id}) }}" onsubmit="return confirm('¿Expulsar a {{ miembro.musico.nombre }} de la banda?')">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('expulsar_miembro_' ~ miembro.id) }}">
+                                    <button type="submit" class="btn-editar" style="padding: 0.3rem 1rem; font-size: 12px; color: #ff6b6b; border-color: rgba(255,107,107,0.4);">Expulsar</button>
+                                </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <details style="margin-top: 4px; padding-left: 1rem;">
+                        <summary style="color: var(--mh-text-muted); font-size: 12px; cursor: pointer;">Editar rol / instrumentos</summary>
+                        <form method="post" action="{{ path('app_banda_editar_rol', {id: miembro.id}) }}" style="display: flex; gap: 0.5rem; align-items: center; margin-top: 8px;">
+                            <input type="hidden" name="_token" value="{{ csrf_token('editar_rol_' ~ miembro.id) }}">
+                            <input type="text" name="rol_banda" value="{{ miembro.rolBanda }}" class="form-control" style="max-width: 220px; font-size: 13px;" placeholder="Ej: Guitarra, Bajo">
+                            <button type="submit" class="btn-confirmar" style="padding: 0.3rem 1rem; font-size: 12px;">Guardar</button>
+                        </form>
+                    </details>
                 </div>
                 {% endfor %}
             </div>

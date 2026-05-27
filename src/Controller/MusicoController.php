@@ -80,8 +80,46 @@ final class MusicoController extends AbstractController
     #[Route('/{id}', name: 'app_musico_show', methods: ['GET'])]
     public function show(Musico $musico): Response
     {
+        $bandasParaInvitar = [];
+        $invitaciones = [];
+
+        if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
+            /** @var Usuario $usuario */
+            $usuario = $this->getUser();
+            $musicoActual = $usuario->getMusico();
+
+            if ($musicoActual && $musicoActual !== $musico) {
+                foreach ($musicoActual->getMiembroBandasAceptadas() as $mb) {
+                    if (!$mb->isEsAdministrador()) {
+                        continue;
+                    }
+                    $banda = $mb->getBanda();
+                    $yaRelacionado = false;
+                    foreach ($banda->getMiembroBandas() as $mbBanda) {
+                        if ($mbBanda->getMusico() === $musico && $mbBanda->getEstado() !== 'rechazado') {
+                            $yaRelacionado = true;
+                            break;
+                        }
+                    }
+                    if (!$yaRelacionado) {
+                        $bandasParaInvitar[] = $banda;
+                    }
+                }
+            }
+
+            if ($musicoActual === $musico) {
+                foreach ($musico->getMiembroBandas() as $mb) {
+                    if ($mb->getEstado() === 'invitado') {
+                        $invitaciones[] = $mb;
+                    }
+                }
+            }
+        }
+
         return $this->render('musico/show.html.twig', [
             'musico' => $musico,
+            'bandas_para_invitar' => $bandasParaInvitar,
+            'invitaciones' => $invitaciones,
         ]);
     }
 

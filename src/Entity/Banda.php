@@ -31,6 +31,12 @@ class Banda
     #[ORM\Column(length: 255)]
     private ?string $ubicacion = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?float $latitud = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?float $longitud = null;
+
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $imagen_url = null;
 
@@ -109,6 +115,11 @@ class Banda
 
         return $this;
     }
+
+    public function getLatitud(): ?float { return $this->latitud; }
+    public function setLatitud(?float $latitud): static { $this->latitud = $latitud; return $this; }
+    public function getLongitud(): ?float { return $this->longitud; }
+    public function setLongitud(?float $longitud): static { $this->longitud = $longitud; return $this; }
 
     public function getImagenUrl(): ?string
     {
