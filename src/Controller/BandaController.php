@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Banda;
 use App\Entity\MiembroBanda;
+use App\Entity\Musico;
+use App\Entity\Usuario;
 use App\Form\BandaType;
 use App\Repository\BandaRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -136,6 +138,35 @@ final class BandaController extends AbstractController
         ]);
     }
 
+    #[Route('/{id}/solicitar-union', name: 'app_banda_form_solicitar_union', methods: ['GET'])]
+    public function formSolicitarUnion(Banda $banda): Response
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $musico = $this->getUser()->getMusico();
+        if (!$musico) {
+            $this->addFlash('warning', 'Necesitas un perfil de músico para unirte a una banda.');
+            return $this->redirectToRoute('app_banda_show', ['id' => $banda->getId()]);
+        }
+
+        foreach ($banda->getMiembroBandas() as $mb) {
+            if ($mb->getMusico() === $musico) {
+                $this->addFlash('info', 'Ya eres miembro de esta banda o tienes una solicitud pendiente.');
+                return $this->redirectToRoute('app_banda_show', ['id' => $banda->getId()]);
+            }
+        }
+
+        $instrumentos = array_merge(
+            $musico->getInstrumentosSistema()->toArray(),
+            $musico->getInstrumentosPersonalizados()->toArray()
+        );
+
+        return $this->render('banda/solicitar_union.html.twig', [
+            'banda' => $banda,
+            'instrumentos' => $instrumentos,
+        ]);
+    }
+
     #[Route('/{id}/solicitar-union', name: 'app_banda_solicitar_union', methods: ['POST'])]
     public function solicitarUnion(Request $request, Banda $banda, EntityManagerInterface $entityManager): Response
     {
@@ -158,10 +189,13 @@ final class BandaController extends AbstractController
             throw $this->createAccessDeniedException('Token CSRF inválido.');
         }
 
+        $instrumentosSeleccionados = $request->request->all('instrumentos');
+        $rolBanda = !empty($instrumentosSeleccionados) ? implode(', ', $instrumentosSeleccionados) : null;
+
         $miembro = new MiembroBanda();
         $miembro->setBanda($banda);
         $miembro->setMusico($musico);
-        $miembro->setRolBanda(null);
+        $miembro->setRolBanda($rolBanda);
         $miembro->setEstado('pendiente');
         $miembro->setEsAdministrador(false);
         $entityManager->persist($miembro);
@@ -184,9 +218,13 @@ final class BandaController extends AbstractController
         $pendientes = $banda->getMiembroBandas()->filter(
             fn(MiembroBanda $mb) => $mb->getEstado() === 'pendiente'
         );
+        $miembrosAceptados = $banda->getMiembroBandas()->filter(
+            fn(MiembroBanda $mb) => $mb->getEstado() === 'aceptado'
+        );
 
         return $this->render('banda/solicitudes.html.twig', [
             'banda' => $banda,
+            'miembros_aceptados' => $miembrosAceptados,
             'pendientes' => $pendientes,
         ]);
     }
@@ -233,6 +271,58 @@ final class BandaController extends AbstractController
         return $this->redirectToRoute('app_banda_solicitudes', ['id' => $banda->getId()]);
     }
 
+    #[Route('/miembro/{id}/hacer-admin', name: 'app_banda_hacer_admin', methods: ['POST'])]
+    public function hacerAdmin(Request $request, MiembroBanda $miembro, EntityManagerInterface $entityManager): Response
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $musico = $this->getUser()->getMusico();
+        $banda = $miembro->getBanda();
+
+        if (!$musico || !$this->esAdminDeBanda($banda, $musico)) {
+            throw $this->createAccessDeniedException();
+        }
+
+        if ($this->isCsrfTokenValid('hacer_admin_' . $miembro->getId(), $request->request->get('_token'))) {
+            $miembro->setEsAdministrador(true);
+            $entityManager->flush();
+            $this->addFlash('success', $miembro->getMusico()->getNombre() . ' es ahora administrador de la banda.');
+        }
+
+        return $this->redirectToRoute('app_banda_solicitudes', ['id' => $banda->getId()]);
+    }
+
+    #[Route('/miembro/{id}/quitar-admin', name: 'app_banda_quitar_admin', methods: ['POST'])]
+    public function quitarAdmin(Request $request, MiembroBanda $miembro, EntityManagerInterface $entityManager): Response
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $musico = $this->getUser()->getMusico();
+        $banda = $miembro->getBanda();
+
+        if (!$musico || !$this->esAdminDeBanda($banda, $musico)) {
+            throw $this->createAccessDeniedException();
+        }
+
+        // Evitar que quede la banda sin ningún administrador
+        $totalAdmins = $banda->getMiembroBandas()->filter(
+            fn(MiembroBanda $mb) => $mb->isEsAdministrador() && $mb->getEstado() === 'aceptado'
+        )->count();
+
+        if ($totalAdmins <= 1) {
+            $this->addFlash('warning', 'No puedes quitar el último administrador de la banda.');
+            return $this->redirectToRoute('app_banda_solicitudes', ['id' => $banda->getId()]);
+        }
+
+        if ($this->isCsrfTokenValid('quitar_admin_' . $miembro->getId(), $request->request->get('_token'))) {
+            $miembro->setEsAdministrador(false);
+            $entityManager->flush();
+            $this->addFlash('info', $miembro->getMusico()->getNombre() . ' ya no es administrador.');
+        }
+
+        return $this->redirectToRoute('app_banda_solicitudes', ['id' => $banda->getId()]);
+    }
+
     #[Route('/{id}', name: 'app_banda_delete', methods: ['POST'])]
     public function delete(Request $request, Banda $banda, EntityManagerInterface $entityManager): Response
     {
@@ -251,7 +341,183 @@ final class BandaController extends AbstractController
         return $this->redirectToRoute('app_banda_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    private function esAdminDeBanda(Banda $banda, \App\Entity\Musico $musico): bool
+    #[Route('/{banda}/invitar/{musico}', name: 'app_banda_invitar', methods: ['POST'])]
+    public function invitar(Request $request, Banda $banda, Musico $musico, EntityManagerInterface $entityManager): Response
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        /** @var \App\Entity\Usuario $usuario */
+        $musicoActual = $this->getUser()->getMusico();
+        if (!$musicoActual || !$this->esAdminDeBanda($banda, $musicoActual)) {
+            throw $this->createAccessDeniedException('No tienes permisos de administrador en esta banda.');
+        }
+
+        foreach ($banda->getMiembroBandas() as $mb) {
+            if ($mb->getMusico() === $musico && $mb->getEstado() !== 'rechazado') {
+                $this->addFlash('info', $musico->getNombre() . ' ya tiene relación activa con esta banda.');
+                return $this->redirectToRoute('app_musico_show', ['id' => $musico->getId()]);
+            }
+        }
+
+        if (!$this->isCsrfTokenValid('invitar_' . $banda->getId() . '_' . $musico->getId(), $request->request->get('_token'))) {
+            throw $this->createAccessDeniedException('Token CSRF inválido.');
+        }
+
+        $miembro = new MiembroBanda();
+        $miembro->setBanda($banda);
+        $miembro->setMusico($musico);
+        $miembro->setRolBanda(null);
+        $miembro->setEstado('invitado');
+        $miembro->setEsAdministrador(false);
+        $entityManager->persist($miembro);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Invitación enviada a ' . $musico->getNombre() . '.');
+        return $this->redirectToRoute('app_musico_show', ['id' => $musico->getId()]);
+    }
+
+    #[Route('/invitacion/{id}/aceptar', name: 'app_banda_aceptar_invitacion', methods: ['POST'])]
+    public function aceptarInvitacion(Request $request, MiembroBanda $miembro, EntityManagerInterface $entityManager): Response
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        /** @var \App\Entity\Usuario $usuario */
+        $musicoActual = $this->getUser()->getMusico();
+        if (!$musicoActual || $miembro->getMusico() !== $musicoActual || $miembro->getEstado() !== 'invitado') {
+            throw $this->createAccessDeniedException('No puedes gestionar esta invitación.');
+        }
+
+        if ($this->isCsrfTokenValid('aceptar_invitacion_' . $miembro->getId(), $request->request->get('_token'))) {
+            $miembro->setEstado('aceptado');
+            $entityManager->flush();
+            $this->addFlash('success', '¡Te has unido a ' . $miembro->getBanda()->getNombre() . '!');
+        }
+
+        return $this->redirectToRoute('app_musico_show', ['id' => $musicoActual->getId()]);
+    }
+
+    #[Route('/invitacion/{id}/rechazar', name: 'app_banda_rechazar_invitacion', methods: ['POST'])]
+    public function rechazarInvitacion(Request $request, MiembroBanda $miembro, EntityManagerInterface $entityManager): Response
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        /** @var \App\Entity\Usuario $usuario */
+        $musicoActual = $this->getUser()->getMusico();
+        if (!$musicoActual || $miembro->getMusico() !== $musicoActual || $miembro->getEstado() !== 'invitado') {
+            throw $this->createAccessDeniedException('No puedes gestionar esta invitación.');
+        }
+
+        if ($this->isCsrfTokenValid('rechazar_invitacion_' . $miembro->getId(), $request->request->get('_token'))) {
+            $miembro->setEstado('rechazado');
+            $entityManager->flush();
+            $this->addFlash('info', 'Has rechazado la invitación de ' . $miembro->getBanda()->getNombre() . '.');
+        }
+
+        return $this->redirectToRoute('app_musico_show', ['id' => $musicoActual->getId()]);
+    }
+
+    #[Route('/miembro/{id}/expulsar', name: 'app_banda_expulsar_miembro', methods: ['POST'])]
+    public function expulsarMiembro(Request $request, MiembroBanda $miembro, EntityManagerInterface $entityManager): Response
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $musico = $this->getUser()->getMusico();
+        $banda = $miembro->getBanda();
+
+        if (!$musico || !$this->esAdminDeBanda($banda, $musico)) {
+            throw $this->createAccessDeniedException();
+        }
+
+        if ($miembro->getMusico() === $musico) {
+            $this->addFlash('warning', 'No puedes expulsarte a ti mismo. Usa "Salir de la banda".');
+            return $this->redirectToRoute('app_banda_solicitudes', ['id' => $banda->getId()]);
+        }
+
+        if ($miembro->isEsAdministrador()) {
+            $totalAdmins = $banda->getMiembroBandas()->filter(
+                fn(MiembroBanda $mb) => $mb->isEsAdministrador() && $mb->getEstado() === 'aceptado'
+            )->count();
+            if ($totalAdmins <= 1) {
+                $this->addFlash('warning', 'No puedes expulsar al único administrador de la banda.');
+                return $this->redirectToRoute('app_banda_solicitudes', ['id' => $banda->getId()]);
+            }
+        }
+
+        if ($this->isCsrfTokenValid('expulsar_miembro_' . $miembro->getId(), $request->request->get('_token'))) {
+            $nombre = $miembro->getMusico()->getNombre();
+            $entityManager->remove($miembro);
+            $entityManager->flush();
+            $this->addFlash('info', $nombre . ' ha sido expulsado de la banda.');
+        }
+
+        return $this->redirectToRoute('app_banda_solicitudes', ['id' => $banda->getId()]);
+    }
+
+    #[Route('/{id}/salir', name: 'app_banda_salir', methods: ['POST'])]
+    public function salirDeBanda(Request $request, Banda $banda, EntityManagerInterface $entityManager): Response
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $musico = $this->getUser()->getMusico();
+        if (!$musico) {
+            throw $this->createAccessDeniedException();
+        }
+
+        $miembro = null;
+        foreach ($banda->getMiembroBandas() as $mb) {
+            if ($mb->getMusico() === $musico && $mb->getEstado() === 'aceptado') {
+                $miembro = $mb;
+                break;
+            }
+        }
+
+        if (!$miembro) {
+            $this->addFlash('warning', 'No eres miembro aceptado de esta banda.');
+            return $this->redirectToRoute('app_banda_show', ['id' => $banda->getId()]);
+        }
+
+        if ($miembro->isEsAdministrador()) {
+            $totalAdmins = $banda->getMiembroBandas()->filter(
+                fn(MiembroBanda $mb) => $mb->isEsAdministrador() && $mb->getEstado() === 'aceptado'
+            )->count();
+            if ($totalAdmins <= 1) {
+                $this->addFlash('warning', 'Eres el único administrador. Designa otro admin antes de salir.');
+                return $this->redirectToRoute('app_banda_show', ['id' => $banda->getId()]);
+            }
+        }
+
+        if ($this->isCsrfTokenValid('salir_banda_' . $banda->getId(), $request->request->get('_token'))) {
+            $entityManager->remove($miembro);
+            $entityManager->flush();
+            $this->addFlash('info', 'Has salido de ' . $banda->getNombre() . '.');
+        }
+
+        return $this->redirectToRoute('app_banda_index');
+    }
+
+    #[Route('/miembro/{id}/editar-rol', name: 'app_banda_editar_rol', methods: ['POST'])]
+    public function editarRol(Request $request, MiembroBanda $miembro, EntityManagerInterface $entityManager): Response
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $musico = $this->getUser()->getMusico();
+        $banda = $miembro->getBanda();
+
+        if (!$musico || !$this->esAdminDeBanda($banda, $musico)) {
+            throw $this->createAccessDeniedException();
+        }
+
+        if ($this->isCsrfTokenValid('editar_rol_' . $miembro->getId(), $request->request->get('_token'))) {
+            $nuevoRol = $request->request->get('rol_banda');
+            $miembro->setRolBanda($nuevoRol ?: null);
+            $entityManager->flush();
+            $this->addFlash('success', 'Rol de ' . $miembro->getMusico()->getNombre() . ' actualizado.');
+        }
+
+        return $this->redirectToRoute('app_banda_solicitudes', ['id' => $banda->getId()]);
+    }
+
+    private function esAdminDeBanda(Banda $banda, Musico $musico): bool
     {
         foreach ($banda->getMiembroBandas() as $mb) {
             if ($mb->getMusico() === $musico && $mb->isEsAdministrador() && $mb->getEstado() === 'aceptado') {
