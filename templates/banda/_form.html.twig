@@ -1,4 +1,44 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_start(form, {'attr': {'novalidate': 'novalidate', 'enctype': 'multipart/form-data'}}) }}
+
+<div class="row g-3">
+
+    <div class="col-12">
+        {{ form_label(form.biografia, 'Biografía de la banda:') }}
+        {{ form_widget(form.biografia, {'attr': {'class': 'form-control', 'rows': '4', 'placeholder': 'Cuéntanos sobre el estilo e historia de la banda...'}}) }}
+        {{ form_errors(form.biografia) }}
+    </div>
+
+    <div class="col-12">
+        {{ form_label(form.generos, 'Géneros musicales:') }}
+        {{ form_widget(form.generos, {'attr': {'class': 'form-control', 'placeholder': 'Ej: Rock, Jazz, Metal (separados por comas)'}}) }}
+        <small style="color: var(--mh-text-muted);">Separa los géneros con comas</small>
+        {{ form_errors(form.generos) }}
+    </div>
+
+    <div class="col-md-6">
+        {{ form_label(form.anyo_formacion, 'Año de formación:') }}
+        {{ form_widget(form.anyo_formacion, {'attr': {'class': 'form-control', 'placeholder': 'Ej: 2010'}}) }}
+        {{ form_errors(form.anyo_formacion) }}
+    </div>
+
+    <div class="col-md-6">
+        {{ form_label(form.ubicacion, 'Ubicación:') }}
+        {{ form_widget(form.ubicacion, {'attr': {'class': 'form-control', 'placeholder': 'Ej: Murcia, España'}}) }}
+        {{ form_errors(form.ubicacion) }}
+    </div>
+
+    <div class="col-12">
+        {{ form_label(form.imagen_url, 'Imagen de la banda:') }}
+        {{ form_widget(form.imagen_url, {'attr': {'class': 'form-control'}}) }}
+        <small style="color: var(--mh-text-muted);">Formatos permitidos: JPG, PNG o WEBP (Máx. 2MB)</small>
+        {{ form_errors(form.imagen_url) }}
+    </div>
+
+</div>
+
+<div class="d-flex justify-content-center mt-4">
+    <button type="submit" class="btn-confirmar">{{ button_label|default('Guardar Cambios') }}</button>
+</div>
+
 {{ form_end(form) }}
+

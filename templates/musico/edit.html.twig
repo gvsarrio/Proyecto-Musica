@@ -150,7 +150,7 @@ blob.style.transform = 'translate(calc(-50% + ' + ox + 'px), calc(-50% + ' + oy 
 				<div class="col-12"
 					data-controller="google-places-autocomplete"
 					data-google-places-autocomplete-api-key-value="{{ google_places_api_key }}">
-					{{ form_label(form.ubicacion, 'Ubicación') }}
+					{{ form_label(form.ubicacion, 'Ubicación: ') }}
 					{{ form_widget(form.ubicacion, {'attr': {'class': 'form-control', 'placeholder': 'Ej: Murcia, España'}}) }}
 					{{ form_errors(form.ubicacion) }}
 					{{ form_widget(form.latitud, {'attr': {'data-google-places-autocomplete-target': 'lat'}}) }}

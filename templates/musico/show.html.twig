@@ -1,5 +1,3 @@
-{# templates/musico/show.html.twig #}
-
 {% extends 'base.html.twig' %}
 
 {% block title %}Perfil de {{ musico.nombre }}{% endblock %}
@@ -8,7 +6,6 @@
 	{{ parent() }}
 	<link rel="stylesheet" href="{{ asset('css/perfil.css') }}">
 {% endblock %}
-
 
 {# Fondo líquido animado #}
 {% block liquid_background %}
@@ -85,7 +82,7 @@
 					{% if musico.imagenUrl %}
 						<img src="{{ asset('uploads/perfiles/' ~ musico.imagenUrl) }}" alt="Foto de {{ musico.nombre }}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
 					{% else %}
-						<svg width="45" height="45" viewbox="0 0 24 24" fill="none" stroke="#00b4ff" stroke-width="1.5">
+						<svg width="45" height="45" viewBox="0 0 24 24" fill="none" stroke="#00b4ff" stroke-width="1.5">
 							<path d="M9 18V5l12-2v13"/>
 							<circle cx="6" cy="18" r="3"/>
 							<circle cx="18" cy="16" r="3"/>
@@ -95,52 +92,52 @@
 			</div>
 
 			<h1 class="perfil-title">{{ musico.nombre }}</h1>
-			<p class="perfil-subtitle">Músico apasionado</p>
+			<p class="perfil-subtitle">
+				{% if musico.ubicacion %}{{ musico.ubicacion }}{% else %}Músico apasionado{% endif %}
+			</p>
 			<hr class="perfil-divider">
 
-			<div class="row g-3">
+			<div class="row g-4">
+
 				{% if musico.biografia %}
-					<div class="col-12">
-						<strong>Biografía:</strong>
-						<p>{{ musico.biografia }}</p>
-					</div>
+				<div class="col-12">
+					<p class="show-dato-label" style="font-family: var(--font-body); font-size: 11px; font-weight: 700; color: var(--mh-purple-light); text-transform: uppercase; letter-spacing: 2px; margin: 0 0 4px;">Biografía:</p>
+					<p style="font-family: var(--font-body); font-size: 14px; color: #e8e0ff; margin: 0;">{{ musico.biografia }}</p>
+				</div>
 				{% endif %}
 
-				{% if musico.telefono %}
-					<div class="col-12">
-						<strong>Teléfono:</strong>
-						<p>{{ musico.telefono }}</p>
-					</div>
-				{% endif %}
+				<div class="col-md-6">
+					{% if musico.telefono %}
+					<p class="show-dato-label" style="font-family: var(--font-body); font-size: 11px; font-weight: 700; color: var(--mh-purple-light); text-transform: uppercase; letter-spacing: 2px; margin: 0 0 4px;">Teléfono:</p>
+					<p style="font-family: var(--font-body); font-size: 14px; color: #e8e0ff; margin: 0;">{{ musico.telefono }}</p>
+					{% endif %}
+				</div>
+
+				<div class="col-md-6">
+					{% if musico.anyosExperiencia is not null %}
+					<p class="show-dato-label" style="font-family: var(--font-body); font-size: 11px; font-weight: 700; color: var(--mh-purple-light); text-transform: uppercase; letter-spacing: 2px; margin: 0 0 4px;">Años de experiencia:</p>
+					<p style="font-family: var(--font-body); font-size: 14px; color: #e8e0ff; margin: 0;">{{ musico.anyosExperiencia }} años</p>
+					{% endif %}
+				</div>
 
 				{% if musico.ubicacion %}
-					<div class="col-12">
-						<strong>Ubicación:</strong>
-						<p>{{ musico.ubicacion }}</p>
-					</div>
-				{% endif %}
-
-				{% if musico.anyosExperiencia is not null %}
-					<div class="col-12">
-						<strong>Años de experiencia:</strong>
-						<p>{{ musico.anyosExperiencia }} años</p>
-					</div>
+				<div class="col-12">
+					<p class="show-dato-label" style="font-family: var(--font-body); font-size: 11px; font-weight: 700; color: var(--mh-purple-light); text-transform: uppercase; letter-spacing: 2px; margin: 0 0 4px;">Ubicación:</p>
+					<p style="font-family: var(--font-body); font-size: 14px; color: #e8e0ff; margin: 0;">{{ musico.ubicacion }}</p>
+				</div>
 				{% endif %}
 
 				{% if musico.instrumentos|length > 0 %}
-					<div class="col-12">
-						<strong>Instrumentos:</strong>
-						<div class="perfil-instrumentos-container">
-							{% for instrumento in musico.instrumentos %}
-								<div style="display: inline-block; margin: 0.5rem;">
-									<span style="background: rgba(0, 242, 255, 0.2); border: 1px solid #00b4ff; border-radius: 20px; padding: 0.5rem 1rem; color: #00b4ff; font-weight: 500;">
-										{{ instrumento.nombre }}
-									</span>
-								</div>
-							{% endfor %}
-						</div>
+				<div class="col-12">
+					<p class="show-dato-label" style="font-family: var(--font-body); font-size: 11px; font-weight: 700; color: var(--mh-purple-light); text-transform: uppercase; letter-spacing: 2px; margin: 0 0 8px;">Instrumentos:</p>
+					<div class="musico-card-instrumentos">
+						{% for instrumento in musico.instrumentos %}
+							<span class="musico-card-instrumento-tag">{{ instrumento.nombre }}</span>
+						{% endfor %}
 					</div>
+				</div>
 				{% endif %}
+
 			</div>
 
 			<div class="d-flex justify-content-center gap-2 mt-4">
@@ -148,7 +145,6 @@
 				{% if app.user == musico.usuario %}
 					<a href="{{ path('app_musico_edit', {'id': musico.id}) }}" class="btn-editar">Editar perfil</a>
 				{% endif %}
-
 				<a href="{{ path('app_musico_index') }}" class="btn-confirmar">Ver Músicos</a>
 			</div>
 
