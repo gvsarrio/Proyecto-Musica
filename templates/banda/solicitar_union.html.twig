@@ -1,0 +1,102 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Solicitar unirse — {{ banda.nombre }} — Music Hub{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/perfil.css') }}">
+{% endblock %}
+
+{% block liquid_background %}
+    <div id="perfil-background"></div>
+    <script>
+        (function () {
+            var bg = document.getElementById('perfil-background');
+            var colors = [
+                'rgba(175, 79, 254, 0.7)', 'rgba(0, 242, 255, 0.7)', 'rgba(66,0,255,0.7)',
+                'rgba(222, 106, 251, 0.7)', 'rgba(0, 255, 136, 0.7)', 'rgba(155,48,255,0.7)'
+            ];
+            function createBlob() {
+                var blob = document.createElement('div');
+                blob.classList.add('perfil-blob');
+                var size = Math.random() * 300 + 150;
+                blob.style.width = size + 'px'; blob.style.height = size + 'px';
+                blob.style.left = (Math.random() * 100) + '%'; blob.style.top = (Math.random() * 100) + '%';
+                blob.style.background = colors[Math.floor(Math.random() * colors.length)];
+                bg.appendChild(blob); animateBlob(blob);
+            }
+            function animateBlob(blob) {
+                var speed = Math.random() * 60 + 20;
+                function move() {
+                    var newSize = Math.random() * 300 + 150;
+                    blob.style.transition = 'left ' + speed + 's ease-in-out, top ' + speed + 's ease-in-out, width ' + (speed/2) + 's ease-in-out, height ' + (speed/2) + 's ease-in-out';
+                    blob.style.left = (Math.random() * 100) + '%'; blob.style.top = (Math.random() * 100) + '%';
+                    blob.style.width = newSize + 'px'; blob.style.height = newSize + 'px';
+                    setTimeout(move, speed * 1000);
+                }
+                move();
+            }
+            for (var i = 0; i < 6; i++) createBlob();
+            document.addEventListener('mousemove', function (e) {
+                var mx = e.clientX / window.innerWidth; var my = e.clientY / window.innerHeight;
+                bg.querySelectorAll('.perfil-blob').forEach(function (blob, i) {
+                    var dir = (i % 2 === 0) ? 1 : -1;
+                    blob.style.transform = 'translate(calc(-50% + ' + ((mx-0.5)*30*dir) + 'px), calc(-50% + ' + ((my-0.5)*30*dir) + 'px))';
+                });
+            });
+        })();
+    </script>
+{% endblock %}
+
+{% block body %}
+<div class="perfil-wrapper">
+    <div class="perfil-card">
+        <div class="perfil-accent-bar"></div>
+
+        <h1 class="perfil-title">Solicitar unirse</h1>
+        <p class="perfil-subtitle">{{ banda.nombre }}</p>
+        <hr class="perfil-divider">
+
+        <form method="post" action="{{ path('app_banda_solicitar_union', {id: banda.id}) }}">
+            <input type="hidden" name="_token" value="{{ csrf_token('solicitar_union_' ~ banda.id) }}">
+
+            <div class="col-12 mb-3">
+                <p style="font-size: 11px; font-weight: 700; color: var(--mh-purple-light); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 12px;">
+                    ¿Qué instrumentos tocas en esta banda?
+                </p>
+
+                {% if instrumentos|length > 0 %}
+                    <div class="perfil-instrumentos-container">
+                        {% for instrumento in instrumentos %}
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox"
+                                       name="instrumentos[]"
+                                       id="instr_{{ instrumento.id }}_{{ instrumento.nombre|replace({' ': '_'}) }}"
+                                       value="{{ instrumento.nombre }}">
+                                <label class="form-check-label" for="instr_{{ instrumento.id }}_{{ instrumento.nombre|replace({' ': '_'}) }}">
+                                    {{ instrumento.nombre }}
+                                </label>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <small style="color: var(--mh-text-muted);">Selecciona los que vayas a tocar en la banda. Puedes elegir varios.</small>
+                {% else %}
+                    <p style="color: var(--mh-text-muted); font-size: 13px;">
+                        No tienes instrumentos en tu perfil.
+                        <a href="{{ path('app_musico_edit', {id: app.user.musico.id}) }}" style="color: var(--mh-purple-light);">Añádelos primero</a>.
+                    </p>
+                {% endif %}
+            </div>
+
+            <div class="d-flex justify-content-center gap-3 mt-4 flex-wrap">
+                <button type="submit" class="btn-confirmar"
+                    {% if instrumentos|length == 0 %}disabled{% endif %}>
+                    Enviar solicitud
+                </button>
+                <a href="{{ path('app_banda_show', {id: banda.id}) }}" class="btn-principal">Cancelar</a>
+            </div>
+        </form>
+
+    </div>
+</div>
+{% endblock %}

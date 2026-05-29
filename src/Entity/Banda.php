@@ -16,6 +16,9 @@ class Banda
     #[ORM\Column]
     private ?int $id = null;
 
+    #[ORM\Column(length: 100)]
+    private ?string $nombre = null;
+
     #[ORM\Column(type: Types::TEXT)]
     private ?string $biografia = null;
 
@@ -27,6 +30,12 @@ class Banda
 
     #[ORM\Column(length: 255)]
     private ?string $ubicacion = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?float $latitud = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?float $longitud = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $imagen_url = null;
@@ -45,6 +54,18 @@ class Banda
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getNombre(): ?string
+    {
+        return $this->nombre;
+    }
+
+    public function setNombre(string $nombre): static
+    {
+        $this->nombre = $nombre;
+
+        return $this;
     }
 
     public function getBiografia(): ?string
@@ -94,6 +115,11 @@ class Banda
 
         return $this;
     }
+
+    public function getLatitud(): ?float { return $this->latitud; }
+    public function setLatitud(?float $latitud): static { $this->latitud = $latitud; return $this; }
+    public function getLongitud(): ?float { return $this->longitud; }
+    public function setLongitud(?float $longitud): static { $this->longitud = $longitud; return $this; }
 
     public function getImagenUrl(): ?string
     {
