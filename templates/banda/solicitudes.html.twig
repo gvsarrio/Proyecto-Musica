@@ -156,10 +156,10 @@
                         </div>
                     </div>
                     <details style="margin-top: 4px; padding-left: 1rem;">
-                        <summary style="color: var(--mh-text-muted); font-size: 12px; cursor: pointer;">Editar rol / instrumentos</summary>
+                        <summary style="color: var(--mh-text-muted); font-size: 12px; cursor: pointer;">Instrumentos en la banda</summary>
                         <form method="post" action="{{ path('app_banda_editar_rol', {id: miembro.id}) }}" style="display: flex; gap: 0.5rem; align-items: center; margin-top: 8px;">
                             <input type="hidden" name="_token" value="{{ csrf_token('editar_rol_' ~ miembro.id) }}">
-                            <input type="text" name="rol_banda" value="{{ miembro.rolBanda }}" class="form-control" style="max-width: 220px; font-size: 13px;" placeholder="Ej: Guitarra, Bajo">
+                            <input type="text" name="rol_banda" value="{{ miembro.rolBanda != 'Fundador' ? miembro.rolBanda : '' }}" class="form-control" style="max-width: 220px; font-size: 13px;" placeholder="Instrumento">
                             <button type="submit" class="btn-confirmar" style="padding: 0.3rem 1rem; font-size: 12px;">Guardar</button>
                         </form>
                     </details>

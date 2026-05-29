@@ -58,7 +58,7 @@ final class BandaController extends AbstractController
             $miembro = new MiembroBanda();
             $miembro->setBanda($banda);
             $miembro->setMusico($musico);
-            $miembro->setRolBanda('Fundador');
+            $miembro->setRolBanda(null);
             $miembro->setEstado('aceptado');
             $miembro->setEsAdministrador(true);
             $entityManager->persist($miembro);
@@ -511,7 +511,7 @@ final class BandaController extends AbstractController
             $nuevoRol = $request->request->get('rol_banda');
             $miembro->setRolBanda($nuevoRol ?: null);
             $entityManager->flush();
-            $this->addFlash('success', 'Rol de ' . $miembro->getMusico()->getNombre() . ' actualizado.');
+            $this->addFlash('success', 'Instrumentos de ' . $miembro->getMusico()->getNombre() . ' actualizados.');
         }
 
         return $this->redirectToRoute('app_banda_solicitudes', ['id' => $banda->getId()]);
