@@ -3,6 +3,12 @@
 <div class="row g-3">
 
     <div class="col-12">
+        {{ form_label(form.nombre, 'Nombre de la banda:') }}
+        {{ form_widget(form.nombre, {'attr': {'class': 'form-control', 'placeholder': 'Ej: Los Relámpagos'}}) }}
+        {{ form_errors(form.nombre) }}
+    </div>
+
+    <div class="col-12">
         {{ form_label(form.biografia, 'Biografía de la banda:') }}
         {{ form_widget(form.biografia, {'attr': {'class': 'form-control', 'rows': '4', 'placeholder': 'Cuéntanos sobre el estilo e historia de la banda...'}}) }}
         {{ form_errors(form.biografia) }}
@@ -21,10 +27,14 @@
         {{ form_errors(form.anyo_formacion) }}
     </div>
 
-    <div class="col-md-6">
+    <div class="col-md-6"
+        data-controller="google-places-autocomplete"
+        data-google-places-autocomplete-api-key-value="{{ google_places_api_key }}">
         {{ form_label(form.ubicacion, 'Ubicación:') }}
         {{ form_widget(form.ubicacion, {'attr': {'class': 'form-control', 'placeholder': 'Ej: Murcia, España'}}) }}
         {{ form_errors(form.ubicacion) }}
+        {{ form_widget(form.latitud, {'attr': {'data-google-places-autocomplete-target': 'lat'}}) }}
+        {{ form_widget(form.longitud, {'attr': {'data-google-places-autocomplete-target': 'lng'}}) }}
     </div>
 
     <div class="col-12">

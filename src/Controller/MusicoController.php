@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Musico;
-use App\Entity\InstrumentoMusico;
 use App\Entity\Usuario;
 use App\Form\MusicoType;
 use App\Repository\MusicoRepository;
@@ -44,36 +43,28 @@ final class MusicoController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $musico = $form->getData();
             $musico->setUsuario($usuario);
 
             $fotoArchivo = $form->get('imagen_url')->getData();
-
             if ($fotoArchivo) {
                 $nuevoNombre = uniqid() . '.' . $fotoArchivo->guessExtension();
-
                 try {
-                    $fotoArchivo->move(
-                        $this->getParameter('perfiles_directory'),
-                        $nuevoNombre
-                    );
+                    $fotoArchivo->move($this->getParameter('perfiles_directory'), $nuevoNombre);
                     $musico->setImagenUrl($nuevoNombre);
                 } catch (FileException $e) {
                     $this->addFlash('error', 'No se pudo guardar la imagen.');
                 }
             }
 
-            $entityManager->persist($musico);
-
-            $instrumentosSeleccionados = $form->get('instrumentos')->getData();
-
-            foreach ($instrumentosSeleccionados as $instrumento) {
-                $relacion = new InstrumentoMusico();
-                $relacion->setMusico($musico);
-                $relacion->setInstrumento($instrumento);
-                $entityManager->persist($relacion);
+            foreach ($form->get('instrumentos_sistema')->getData() as $instrumento) {
+                $musico->getInstrumentosSistema()->add($instrumento);
             }
 
+            foreach ($form->get('instrumentos_personalizados')->getData() as $instrumento) {
+                $musico->getInstrumentosPersonalizados()->add($instrumento);
+            }
+
+            $entityManager->persist($musico);
             $entityManager->flush();
 
             $this->addFlash('success', '¡Perfil creado con éxito!');
@@ -89,8 +80,46 @@ final class MusicoController extends AbstractController
     #[Route('/{id}', name: 'app_musico_show', methods: ['GET'])]
     public function show(Musico $musico): Response
     {
+        $bandasParaInvitar = [];
+        $invitaciones = [];
+
+        if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
+            /** @var Usuario $usuario */
+            $usuario = $this->getUser();
+            $musicoActual = $usuario->getMusico();
+
+            if ($musicoActual && $musicoActual !== $musico) {
+                foreach ($musicoActual->getMiembroBandasAceptadas() as $mb) {
+                    if (!$mb->isEsAdministrador()) {
+                        continue;
+                    }
+                    $banda = $mb->getBanda();
+                    $yaRelacionado = false;
+                    foreach ($banda->getMiembroBandas() as $mbBanda) {
+                        if ($mbBanda->getMusico() === $musico && $mbBanda->getEstado() !== 'rechazado') {
+                            $yaRelacionado = true;
+                            break;
+                        }
+                    }
+                    if (!$yaRelacionado) {
+                        $bandasParaInvitar[] = $banda;
+                    }
+                }
+            }
+
+            if ($musicoActual === $musico) {
+                foreach ($musico->getMiembroBandas() as $mb) {
+                    if ($mb->getEstado() === 'invitado') {
+                        $invitaciones[] = $mb;
+                    }
+                }
+            }
+        }
+
         return $this->render('musico/show.html.twig', [
             'musico' => $musico,
+            'bandas_para_invitar' => $bandasParaInvitar,
+            'invitaciones' => $invitaciones,
         ]);
     }
 
@@ -104,61 +133,41 @@ final class MusicoController extends AbstractController
             throw $this->createAccessDeniedException('No se puede editar este perfil desde este usuario.');
         }
 
-        // --- LÓGICA DE CARGA DE INSTRUMENTOS ---
-        // Extraemos los instrumentos actuales de la tabla intermedia para que aparezcan marcados en el form
-        $instrumentosActuales = [];
-        foreach ($musico->getInstrumentoMusicos() as $relacion) {
-            $instrumentosActuales[] = $relacion->getInstrumento();
-        }
-
         $form = $this->createForm(MusicoType::class, $musico, ['usuario' => $usuario]);
 
-        // Seteamos los datos en el campo NO mapeado 'instrumentos'
-        $form->get('instrumentos')->setData($instrumentosActuales);
+        $form->get('instrumentos_sistema')->setData($musico->getInstrumentosSistema()->toArray());
+        $form->get('instrumentos_personalizados')->setData($musico->getInstrumentosPersonalizados()->toArray());
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            
-            // --- PROCESAMIENTO DE IMAGEN EN EDICIÓN ---
             $fotoArchivo = $form->get('imagen_url')->getData();
             if ($fotoArchivo) {
                 $nuevoNombre = uniqid() . '.' . $fotoArchivo->guessExtension();
                 try {
-                    $fotoArchivo->move(
-                        $this->getParameter('perfiles_directory'),
-                        $nuevoNombre
-                    );
+                    $fotoArchivo->move($this->getParameter('perfiles_directory'), $nuevoNombre);
                     $musico->setImagenUrl($nuevoNombre);
                 } catch (FileException $e) {
                     $this->addFlash('error', 'No se pudo actualizar la imagen.');
                 }
             }
 
-            // --- ACTUALIZACIÓN DE INSTRUMENTOS (BORRAR Y CREAR) ---
-            // 1. Borramos las relaciones antiguas
-            foreach ($musico->getInstrumentoMusicos() as $relacionAntigua) {
-                $entityManager->remove($relacionAntigua);
-            }
-            // Hacemos un flush intermedio para evitar conflictos de claves únicas si los hubiera
+            $musico->getInstrumentosSistema()->clear();
+            $musico->getInstrumentosPersonalizados()->clear();
             $entityManager->flush();
 
-            // 2. Creamos las nuevas relaciones seleccionadas
-            $instrumentosSeleccionados = $form->get('instrumentos')->getData();
-            foreach ($instrumentosSeleccionados as $instrumento) {
-                $relacion = new InstrumentoMusico();
-                $relacion->setMusico($musico);
-                $relacion->setInstrumento($instrumento);
-                $entityManager->persist($relacion);
+            foreach ($form->get('instrumentos_sistema')->getData() as $instrumento) {
+                $musico->getInstrumentosSistema()->add($instrumento);
+            }
+
+            foreach ($form->get('instrumentos_personalizados')->getData() as $instrumento) {
+                $musico->getInstrumentosPersonalizados()->add($instrumento);
             }
 
             $entityManager->flush();
 
             $this->addFlash('success', 'Perfil actualizado.');
-            
-            return $this->redirectToRoute('app_musico_show', [
-                'id' => $musico->getId(),
-            ], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_musico_show', ['id' => $musico->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('musico/edit.html.twig', [
@@ -176,7 +185,7 @@ final class MusicoController extends AbstractController
         if ($musico->getUsuario() !== $usuario) {
             throw $this->createAccessDeniedException('No se puede borrar este perfil desde este usuario.');
         }
-        
+
         if ($this->isCsrfTokenValid('delete' . $musico->getId(), $request->getPayload()->getString('_token'))) {
             $usuario->setMusico(null);
             $entityManager->remove($musico);
