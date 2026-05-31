@@ -183,7 +183,7 @@
 			<div class="d-flex justify-content-center gap-2 mt-4 flex-wrap">
 				{# Solo se muestra el botón para EDITAR cuando el perfil es del propio usuario logueado #}
 				{% if app.user == musico.usuario %}
-					<a href="{{ path('app_musico_edit', {'id': musico.id}) }}" class="btn-editar">Editar perfil</a>
+					<a href="{{ path('app_musico_edit', {'id': musico.id}) }}" class="btn-editar">Editar Perfil</a>
 				{% endif %}
 
 				{# Botones de invitar a banda (visible para admins viendo el perfil de otro músico) #}

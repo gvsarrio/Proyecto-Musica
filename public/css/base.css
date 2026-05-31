@@ -1,29 +1,12 @@
 /* ================== TIPOGRAFÍAS PERSONALIZADAS ================== */
 @font-face { font-family: 'Array'; src: url('../fonts/Array/Array-Regular.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
-@font-face { font-family: 'Array'; src: url('../fonts/Array/Array-Wide.woff2') format('woff2'); font-weight: 400; font-stretch: expanded; font-display: swap; }
 @font-face { font-family: 'Array'; src: url('../fonts/Array/Array-Semibold.woff2') format('woff2'); font-weight: 600; font-style: normal; font-display: swap; }
-@font-face { font-family: 'Array'; src: url('../fonts/Array/Array-SemiboldWide.woff2') format('woff2'); font-weight: 600; font-stretch: expanded; font-display: swap; }
 @font-face { font-family: 'Array'; src: url('../fonts/Array/Array-Bold.woff2') format('woff2'); font-weight: 700; font-style: normal; font-display: swap; }
-@font-face { font-family: 'Array'; src: url('../fonts/Array/Array-BoldWide.woff2') format('woff2'); font-weight: 700; font-stretch: expanded; font-display: swap; }
 
-@font-face { font-family: 'Switzer'; src: url('../fonts/Switzer/Switzer-Thin.woff2') format('woff2'); font-weight: 100; font-style: normal; font-display: swap; }
-@font-face { font-family: 'Switzer'; src: url('../fonts/Switzer/Switzer-ThinItalic.woff2') format('woff2'); font-weight: 100; font-style: italic; font-display: swap; }
-@font-face { font-family: 'Switzer'; src: url('../fonts/Switzer/Switzer-Extralight.woff2') format('woff2'); font-weight: 200; font-style: normal; font-display: swap; }
-@font-face { font-family: 'Switzer'; src: url('../fonts/Switzer/Switzer-ExtralightItalic.woff2') format('woff2'); font-weight: 200; font-style: italic; font-display: swap; }
-@font-face { font-family: 'Switzer'; src: url('../fonts/Switzer/Switzer-Light.woff2') format('woff2'); font-weight: 300; font-style: normal; font-display: swap; }
-@font-face { font-family: 'Switzer'; src: url('../fonts/Switzer/Switzer-LightItalic.woff2') format('woff2'); font-weight: 300; font-style: italic; font-display: swap; }
 @font-face { font-family: 'Switzer'; src: url('../fonts/Switzer/Switzer-Regular.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
-@font-face { font-family: 'Switzer'; src: url('../fonts/Switzer/Switzer-Italic.woff2') format('woff2'); font-weight: 400; font-style: italic; font-display: swap; }
 @font-face { font-family: 'Switzer'; src: url('../fonts/Switzer/Switzer-Medium.woff2') format('woff2'); font-weight: 500; font-style: normal; font-display: swap; }
-@font-face { font-family: 'Switzer'; src: url('../fonts/Switzer/Switzer-MediumItalic.woff2') format('woff2'); font-weight: 500; font-style: italic; font-display: swap; }
 @font-face { font-family: 'Switzer'; src: url('../fonts/Switzer/Switzer-Semibold.woff2') format('woff2'); font-weight: 600; font-style: normal; font-display: swap; }
-@font-face { font-family: 'Switzer'; src: url('../fonts/Switzer/Switzer-SemiboldItalic.woff2') format('woff2'); font-weight: 600; font-style: italic; font-display: swap; }
 @font-face { font-family: 'Switzer'; src: url('../fonts/Switzer/Switzer-Bold.woff2') format('woff2'); font-weight: 700; font-style: normal; font-display: swap; }
-@font-face { font-family: 'Switzer'; src: url('../fonts/Switzer/Switzer-BoldItalic.woff2') format('woff2'); font-weight: 700; font-style: italic; font-display: swap; }
-@font-face { font-family: 'Switzer'; src: url('../fonts/Switzer/Switzer-Extrabold.woff2') format('woff2'); font-weight: 800; font-style: normal; font-display: swap; }
-@font-face { font-family: 'Switzer'; src: url('../fonts/Switzer/Switzer-ExtraboldItalic.woff2') format('woff2'); font-weight: 800; font-style: italic; font-display: swap; }
-@font-face { font-family: 'Switzer'; src: url('../fonts/Switzer/Switzer-Black.woff2') format('woff2'); font-weight: 900; font-style: normal; font-display: swap; }
-@font-face { font-family: 'Switzer'; src: url('../fonts/Switzer/Switzer-BlackItalic.woff2') format('woff2'); font-weight: 900; font-style: italic; font-display: swap; }
 
 /* ================== VARIABLES ================== */
 :root {
