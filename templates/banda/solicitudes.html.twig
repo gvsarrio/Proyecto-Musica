@@ -63,7 +63,7 @@
             <div class="alert-perfil-success" style="background: rgba(255,180,0,0.15); border-color: rgba(255,180,0,0.4);">⚠ {{ message }}</div>
         {% endfor %}
 
-        <h1 class="perfil-title">Gestionar banda</h1>
+        <h1 class="perfil-title">Gestionar Banda</h1>
         <p class="perfil-subtitle">{{ banda.nombre }}</p>
         <hr class="perfil-divider">
 
@@ -138,13 +138,13 @@
                                 {% if total_admins > 1 %}
                                     <form method="post" action="{{ path('app_banda_quitar_admin', {id: miembro.id}) }}">
                                         <input type="hidden" name="_token" value="{{ csrf_token('quitar_admin_' ~ miembro.id) }}">
-                                        <button type="submit" class="btn-editar" style="padding: 0.3rem 1rem; font-size: 12px;">Quitar admin</button>
+                                        <button type="submit" class="btn-editar" style="padding: 0.3rem 1rem; font-size: 12px;">Quitar Admin</button>
                                     </form>
                                 {% endif %}
                             {% else %}
                                 <form method="post" action="{{ path('app_banda_hacer_admin', {id: miembro.id}) }}">
                                     <input type="hidden" name="_token" value="{{ csrf_token('hacer_admin_' ~ miembro.id) }}">
-                                    <button type="submit" class="btn-confirmar" style="padding: 0.3rem 1rem; font-size: 12px;">Hacer admin</button>
+                                    <button type="submit" class="btn-confirmar" style="padding: 0.3rem 1rem; font-size: 12px;">Hacer Admin</button>
                                 </form>
                             {% endif %}
                             {% if not (miembro.esAdministrador and total_admins <= 1) %}
@@ -160,7 +160,7 @@
                         <form method="post" action="{{ path('app_banda_editar_rol', {id: miembro.id}) }}" style="display: flex; gap: 0.5rem; align-items: center; margin-top: 8px;">
                             <input type="hidden" name="_token" value="{{ csrf_token('editar_rol_' ~ miembro.id) }}">
                             <input type="text" name="rol_banda" value="{{ miembro.rolBanda != 'Fundador' ? miembro.rolBanda : '' }}" class="form-control" style="max-width: 220px; font-size: 13px;" placeholder="Instrumento">
-                            <button type="submit" class="btn-confirmar" style="padding: 0.3rem 1rem; font-size: 12px;">Guardar</button>
+                            <button type="submit" class="btn-confirmar" style="padding: 0.3rem 1rem; font-size: 12px;">Guardar Cambios</button>
                         </form>
                     </details>
                 </div>
@@ -169,7 +169,7 @@
         {% endif %}
 
         <div class="d-flex justify-content-center mt-4">
-            <a href="{{ path('app_banda_show', {id: banda.id}) }}" class="btn-principal">Volver a la banda</a>
+            <a href="{{ path('app_banda_show', {id: banda.id}) }}" class="btn-principal">Volver a la Banda</a>
         </div>
 
     </div>

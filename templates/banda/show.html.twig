@@ -164,9 +164,9 @@
 
         <div class="d-flex justify-content-center gap-3 mt-4 flex-wrap">
             {% if es_admin %}
-                <a href="{{ path('app_banda_edit', {'id': banda.id}) }}" class="btn-editar">Editar banda</a>
-                <a href="{{ path('app_banda_solicitudes', {'id': banda.id}) }}" class="btn-confirmar">
-                    Gestionar banda
+                <a href="{{ path('app_banda_edit', {'id': banda.id}) }}" class="btn-editar">Editar Banda</a>
+                <a href="{{ path('app_banda_solicitudes', {'id': banda.id}) }}" class="btn-principal">
+                    Gestionar Banda
                     {% set n_pendientes = banda.miembroBandas|filter(mb => mb.estado == 'pendiente')|length %}
                     {% if n_pendientes > 0 %}({{ n_pendientes }}){% endif %}
                 </a>
@@ -178,11 +178,11 @@
                 {% if not es_admin or total_admins_show > 1 %}
                     <form method="post" action="{{ path('app_banda_salir', {id: banda.id}) }}" style="display: inline;" onsubmit="return confirm('¿Seguro que quieres abandonar esta banda?')">
                         <input type="hidden" name="_token" value="{{ csrf_token('salir_banda_' ~ banda.id) }}">
-                        <button type="submit" class="btn-editar">Salir de la banda</button>
+                        <button type="submit" class="btn-eliminar">Salir de la Banda</button>
                     </form>
                 {% endif %}
             {% endif %}
-            <a href="{{ path('app_banda_index') }}" class="btn-principal">Ver bandas</a>
+            <a href="{{ path('app_banda_index') }}" class="btn-confirmar">Ver Bandas</a>
         </div>
 
         {% if es_admin %}

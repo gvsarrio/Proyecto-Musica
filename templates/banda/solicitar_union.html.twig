@@ -53,7 +53,7 @@
     <div class="perfil-card">
         <div class="perfil-accent-bar"></div>
 
-        <h1 class="perfil-title">Solicitar unirse</h1>
+        <h1 class="perfil-title">Solicitar Unirse</h1>
         <p class="perfil-subtitle">{{ banda.nombre }}</p>
         <hr class="perfil-divider">
 
@@ -91,7 +91,7 @@
             <div class="d-flex justify-content-center gap-3 mt-4 flex-wrap">
                 <button type="submit" class="btn-confirmar"
                     {% if instrumentos|length == 0 %}disabled{% endif %}>
-                    Enviar solicitud
+                    Enviar Solicitud
                 </button>
                 <a href="{{ path('app_banda_show', {id: banda.id}) }}" class="btn-principal">Cancelar</a>
             </div>
