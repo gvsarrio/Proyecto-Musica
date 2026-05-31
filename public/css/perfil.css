@@ -4,7 +4,7 @@
 
 
 /* ============================================
-   ANIMACIONES
+                ANIMACIONES
    ============================================ */
 
 @keyframes borderGlow {
@@ -15,7 +15,7 @@
 
 
 /* ============================================
-  LAYOUT — CONTENEDORES Y WRAPPERS
+        LAYOUT — CONTENEDORES Y WRAPPERS
    ============================================ */
 
 /* ================== WRAPPER PERFIL (new / edit / show) ================== */
@@ -68,7 +68,7 @@
 
 
 /* ============================================
-   TARJETAS (Glassmorphism)
+           TARJETAS (Glassmorphism)
    ============================================ */
 
 /* ================== TARJETA PERFIL (new / edit / show) ================== */
@@ -223,7 +223,7 @@
 
 
 /* ============================================
-   AVATAR
+                     AVATAR
    ============================================ */
 
 .perfil-avatar-wrap {
@@ -259,7 +259,7 @@
 
 
 /* ============================================
-   TIPOGRAFÍA
+                    TIPOGRAFÍA
    ============================================ */
 
 /* ================== TÍTULOS PERFIL ================== */
@@ -334,6 +334,14 @@
     grid-column: 1 / -1;
     text-align: center;
     padding: 3rem 0;
+}
+
+/* ================== VALOR DE DATO (vista show) ================== */
+.show-dato-valor {
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: #e8e0ff;
+    margin: 0;
 }
 
 
@@ -533,7 +541,7 @@
 
 
 /* ============================================
-   BOTONES
+                    BOTONES
    ============================================ */
 
 /* ================== BASE COMPARTIDA ================== */
@@ -659,9 +667,16 @@
     color: #fff;
 }
 
+/* ================== BOTONES PEQUEÑOS (acciones en filas de gestión) ================== */
+.btn-sm {
+    padding: 0.3rem 1rem !important;
+    font-size: 12px !important;
+    letter-spacing: 0.5px !important;
+}
+
 
 /* ============================================
-   ALERTAS
+                     ALERTAS
    ============================================ */
 
 .alert-perfil-success {
@@ -674,6 +689,30 @@
     padding: 10px 14px;
     margin-bottom: 16px;
     text-shadow: 0 0 10px rgba(0, 240, 255, 0.6);
+    backdrop-filter: blur(4px);
+}
+
+.alert-perfil-info {
+    font-family: var(--font-body);
+    font-size: 13px;
+    background: rgba(0, 180, 255, 0.1);
+    border: 1px solid rgba(0, 180, 255, 0.4);
+    border-radius: 10px;
+    color: #60d0ff;
+    padding: 10px 14px;
+    margin-bottom: 16px;
+    backdrop-filter: blur(4px);
+}
+
+.alert-perfil-warning {
+    font-family: var(--font-body);
+    font-size: 13px;
+    background: rgba(255, 180, 0, 0.08);
+    border: 1px solid rgba(255, 180, 0, 0.4);
+    border-radius: 10px;
+    color: #ffb400;
+    padding: 10px 14px;
+    margin-bottom: 16px;
     backdrop-filter: blur(4px);
 }
 
@@ -701,7 +740,153 @@
 
 
 /* ============================================
-    FONDO LÍQUIDO Y BLOBS
+   GESTIÓN DE BANDA (solicitudes y miembros)
+   ============================================ */
+
+/* ================== ETIQUETA DE SECCIÓN ================== */
+.gestionar-seccion-label {
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--mh-purple-light);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+}
+
+/* ================== FILA DE MIEMBRO / SOLICITUD ================== */
+.gestionar-fila {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.gestionar-fila + .gestionar-fila {
+    margin-top: 8px;
+}
+
+/* ================== INFO DEL MIEMBRO (nombre + rol + ubicación) ================== */
+.gestionar-fila-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.gestionar-fila-nombre {
+    font-family: var(--font-body);
+    font-weight: 600;
+    color: var(--mh-purple-light);
+    text-decoration: none;
+}
+
+.gestionar-fila-nombre:hover {
+    color: var(--mh-purple-light);
+    text-shadow: 0 0 8px rgba(217, 102, 255, 0.4);
+}
+
+.gestionar-fila-meta {
+    font-family: var(--font-body);
+    font-size: 12px;
+    color: var(--mh-text-muted);
+}
+
+/* ================== ACCIONES DEL MIEMBRO (botones) ================== */
+.gestionar-fila-acciones {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+/* ================== BADGE ADMIN ================== */
+.badge-admin {
+    color: #f0c040;
+    font-size: 11px;
+    font-weight: 700;
+    margin-left: 6px;
+}
+
+/* ================== EXPULSAR (variante roja del btn-editar) ================== */
+.btn-expulsar {
+    color: #ff6b6b !important;
+    border-color: rgba(255, 107, 107, 0.4) !important;
+}
+
+/* ================== DETAILS DE INSTRUMENTOS ================== */
+.gestionar-details {
+    margin-top: 4px;
+    padding-left: 1rem;
+}
+
+.gestionar-details summary {
+    font-family: var(--font-body);
+    font-size: 12px;
+    color: var(--mh-text-muted);
+    cursor: pointer;
+}
+
+.gestionar-details-form {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    margin-top: 8px;
+}
+
+.gestionar-details-input {
+    max-width: 220px;
+    font-size: 13px !important;
+}
+
+/* ================== LISTA DE MIEMBROS (vista show banda) ================== */
+.banda-miembros-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.banda-miembro-fila {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.banda-miembro-nombre {
+    font-family: var(--font-body);
+    font-weight: 600;
+    color: #e8e0ff;
+    text-decoration: none;
+    min-width: 120px;
+    font-size: 14px;
+}
+
+.banda-miembro-nombre:hover {
+    color: #e8e0ff;
+}
+
+/* ================== MENSAJES DE ESTADO SOLICITUD ================== */
+.solicitud-pendiente-msg {
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: var(--mh-text-muted);
+    text-align: center;
+}
+
+.solicitud-rechazada-msg {
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: #ff6b6b;
+    text-align: center;
+}
+
+
+/* ============================================
+             FONDO LÍQUIDO Y BLOBS
    ============================================ */
 
 #perfil-background {
@@ -727,7 +912,7 @@
 
 
 /* ============================================
-  RESPONSIVE
+                    RESPONSIVE
    ============================================ */
 
 @media (max-width: 1024px) {
@@ -746,6 +931,17 @@
     .perfil-instrumentos-container .form-check {
         flex: 1 0 calc(50% - 10px);   /* 2 por fila en tablet */
         max-width: 100%;
+    }
+    .gestionar-fila {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .gestionar-fila-acciones {
+        justify-content: flex-start;
+    }
+    .banda-miembro-fila {
+        flex-direction: column;
+        align-items: flex-start;
     }
 }
 
