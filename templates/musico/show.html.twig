@@ -80,7 +80,7 @@
 			<div class="perfil-avatar-wrap">
 				<div class="perfil-avatar">
 					{% if musico.imagenUrl %}
-						<img src="{{ asset('uploads/perfiles/' ~ musico.imagenUrl) }}" alt="Foto de {{ musico.nombre }}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+						<img src="{{ asset('uploads/perfiles/' ~ musico.imagenUrl) }}" alt="Foto de {{ musico.nombre }}">
 					{% else %}
 						<svg width="45" height="45" viewBox="0 0 24 24" fill="none" stroke="#00b4ff" stroke-width="1.5">
 							<path d="M9 18V5l12-2v13"/>
@@ -101,35 +101,35 @@
 
 				{% if musico.biografia %}
 				<div class="col-12">
-					<p class="show-dato-label" style="font-family: var(--font-body); font-size: 11px; font-weight: 700; color: var(--mh-purple-light); text-transform: uppercase; letter-spacing: 2px; margin: 0 0 4px;">Biografía:</p>
-					<p style="font-family: var(--font-body); font-size: 14px; color: #e8e0ff; margin: 0;">{{ musico.biografia }}</p>
+					<p class="perfil-form-label">Biografía:</p>
+					<p class="show-dato-valor">{{ musico.biografia }}</p>
 				</div>
 				{% endif %}
 
 				<div class="col-md-6">
 					{% if musico.telefono %}
-					<p class="show-dato-label" style="font-family: var(--font-body); font-size: 11px; font-weight: 700; color: var(--mh-purple-light); text-transform: uppercase; letter-spacing: 2px; margin: 0 0 4px;">Teléfono:</p>
-					<p style="font-family: var(--font-body); font-size: 14px; color: #e8e0ff; margin: 0;">{{ musico.telefono }}</p>
+					<p class="perfil-form-label">Teléfono:</p>
+					<p class="show-dato-valor">{{ musico.telefono }}</p>
 					{% endif %}
 				</div>
 
 				<div class="col-md-6">
 					{% if musico.anyosExperiencia is not null %}
-					<p class="show-dato-label" style="font-family: var(--font-body); font-size: 11px; font-weight: 700; color: var(--mh-purple-light); text-transform: uppercase; letter-spacing: 2px; margin: 0 0 4px;">Años de experiencia:</p>
-					<p style="font-family: var(--font-body); font-size: 14px; color: #e8e0ff; margin: 0;">{{ musico.anyosExperiencia }} años</p>
+					<p class="perfil-form-label">Años de experiencia:</p>
+					<p class="show-dato-valor">{{ musico.anyosExperiencia }} años</p>
 					{% endif %}
 				</div>
 
 				{% if musico.ubicacion %}
 				<div class="col-12">
-					<p class="show-dato-label" style="font-family: var(--font-body); font-size: 11px; font-weight: 700; color: var(--mh-purple-light); text-transform: uppercase; letter-spacing: 2px; margin: 0 0 4px;">Ubicación:</p>
-					<p style="font-family: var(--font-body); font-size: 14px; color: #e8e0ff; margin: 0;">{{ musico.ubicacion }}</p>
+					<p class="perfil-form-label">Ubicación:</p>
+					<p class="show-dato-valor">{{ musico.ubicacion }}</p>
 				</div>
 				{% endif %}
 
 				{% if musico.instrumentos|length > 0 %}
 				<div class="col-12">
-					<p class="show-dato-label" style="font-family: var(--font-body); font-size: 11px; font-weight: 700; color: var(--mh-purple-light); text-transform: uppercase; letter-spacing: 2px; margin: 0 0 8px;">Instrumentos:</p>
+					<p class="perfil-form-label">Instrumentos:</p>
 					<div class="musico-card-instrumentos">
 						{% for instrumento in musico.instrumentos %}
 							<span class="musico-card-instrumento-tag">{{ instrumento.nombre }}</span>
@@ -140,10 +140,10 @@
 
 				{% if musico.miembroBandasAceptadas|length > 0 %}
 				<div class="col-12">
-					<p class="show-dato-label" style="font-family: var(--font-body); font-size: 11px; font-weight: 700; color: var(--mh-purple-light); text-transform: uppercase; letter-spacing: 2px; margin: 0 0 8px;">Bandas:</p>
+					<p class="perfil-form-label">Bandas:</p>
 					<div class="musico-card-instrumentos">
 						{% for mb in musico.miembroBandasAceptadas %}
-							<a href="{{ path('app_banda_show', {id: mb.banda.id}) }}" class="musico-card-instrumento-tag" style="text-decoration: none;">
+							<a href="{{ path('app_banda_show', {id: mb.banda.id}) }}" class="musico-card-instrumento-tag">
 								{{ mb.banda.nombre }}{% if mb.esAdministrador %} ★{% endif %}
 							</a>
 						{% endfor %}
@@ -158,20 +158,20 @@
 			<hr class="perfil-divider">
 			<div class="row g-2 mb-2">
 				<div class="col-12">
-					<p style="font-size: 11px; font-weight: 700; color: var(--mh-purple-light); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 12px;">Invitaciones pendientes</p>
+					<p class="gestionar-seccion-label">Invitaciones pendientes</p>
 					{% for inv in invitaciones %}
-					<div style="display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.8rem 1rem; background: rgba(255,255,255,0.04); border-radius: 8px; border: 1px solid rgba(255,255,255,0.08); margin-bottom: 8px;">
-						<a href="{{ path('app_banda_show', {id: inv.banda.id}) }}" style="color: var(--mh-purple-light); font-weight: 600; text-decoration: none;">
+					<div class="gestionar-fila">
+						<a href="{{ path('app_banda_show', {id: inv.banda.id}) }}" class="gestionar-fila-nombre">
 							{{ inv.banda.nombre }}
 						</a>
-						<div style="display: flex; gap: 0.5rem;">
+						<div class="gestionar-fila-acciones">
 							<form method="post" action="{{ path('app_banda_aceptar_invitacion', {id: inv.id}) }}">
 								<input type="hidden" name="_token" value="{{ csrf_token('aceptar_invitacion_' ~ inv.id) }}">
-								<button type="submit" class="btn-confirmar" style="padding: 0.3rem 1rem; font-size: 13px;">Aceptar</button>
+								<button type="submit" class="btn-confirmar btn-sm">Aceptar</button>
 							</form>
 							<form method="post" action="{{ path('app_banda_rechazar_invitacion', {id: inv.id}) }}">
 								<input type="hidden" name="_token" value="{{ csrf_token('rechazar_invitacion_' ~ inv.id) }}">
-								<button type="submit" class="btn-editar" style="padding: 0.3rem 1rem; font-size: 13px;">Rechazar</button>
+								<button type="submit" class="btn-editar btn-sm">Rechazar</button>
 							</form>
 						</div>
 					</div>
@@ -190,7 +190,7 @@
 				{% for banda in bandas_para_invitar %}
 					<form method="post" action="{{ path('app_banda_invitar', {banda: banda.id, musico: musico.id}) }}">
 						<input type="hidden" name="_token" value="{{ csrf_token('invitar_' ~ banda.id ~ '_' ~ musico.id) }}">
-						<button type="submit" class="btn-confirmar" style="font-size: 13px;">
+						<button type="submit" class="btn-confirmar btn-sm">
 							Invitar a {{ banda.nombre }}
 						</button>
 					</form>

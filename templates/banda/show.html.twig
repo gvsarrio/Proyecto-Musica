@@ -68,6 +68,7 @@
     <div class="perfil-card">
         <div class="perfil-accent-bar"></div>
 
+        {# ── Avatar / imagen de banda ── #}
         <div class="perfil-avatar-wrap">
             <div class="perfil-avatar">
                 {% if banda.imagenUrl %}
@@ -84,6 +85,7 @@
             </div>
         </div>
 
+        {# ── Título y subtítulo ── #}
         <h1 class="perfil-title">{{ banda.nombre }}</h1>
         <p class="perfil-subtitle">
             {% if banda.ubicacion %}{{ banda.ubicacion }}{% endif %}
@@ -91,28 +93,29 @@
         </p>
         <hr class="perfil-divider">
 
+        {# ── Datos ── #}
         <div class="row g-4">
 
             {% if banda.biografia %}
             <div class="col-12">
-                <p class="show-dato-label" style="font-family: var(--font-body); font-size: 11px; font-weight: 700; color: var(--mh-purple-light); text-transform: uppercase; letter-spacing: 2px; margin: 0 0 4px;">Biografía:</p>
-                <p style="font-family: var(--font-body); font-size: 14px; color: #e8e0ff; margin: 0;">{{ banda.biografia }}</p>
+                <p class="perfil-form-label">Biografía:</p>
+                <p class="show-dato-valor">{{ banda.biografia }}</p>
             </div>
             {% endif %}
 
             <div class="col-md-6">
-                <p class="show-dato-label" style="font-family: var(--font-body); font-size: 11px; font-weight: 700; color: var(--mh-purple-light); text-transform: uppercase; letter-spacing: 2px; margin: 0 0 4px;">Ubicación:</p>
-                <p style="font-family: var(--font-body); font-size: 14px; color: #e8e0ff; margin: 0;">{{ banda.ubicacion }}</p>
+                <p class="perfil-form-label">Ubicación:</p>
+                <p class="show-dato-valor">{{ banda.ubicacion }}</p>
             </div>
 
             <div class="col-md-6">
-                <p class="show-dato-label" style="font-family: var(--font-body); font-size: 11px; font-weight: 700; color: var(--mh-purple-light); text-transform: uppercase; letter-spacing: 2px; margin: 0 0 4px;">Año de formación:</p>
-                <p style="font-family: var(--font-body); font-size: 14px; color: #e8e0ff; margin: 0;">{{ banda.anyoFormacion }}</p>
+                <p class="perfil-form-label">Año de formación:</p>
+                <p class="show-dato-valor">{{ banda.anyoFormacion }}</p>
             </div>
 
             {% if banda.generos %}
             <div class="col-12">
-                <p class="show-dato-label" style="font-family: var(--font-body); font-size: 11px; font-weight: 700; color: var(--mh-purple-light); text-transform: uppercase; letter-spacing: 2px; margin: 0 0 8px;">Géneros:</p>
+                <p class="perfil-form-label">Géneros:</p>
                 <div class="musico-card-instrumentos">
                     {% for genero in banda.generos|split(',') %}
                         <span class="musico-card-instrumento-tag">{{ genero|trim }}</span>
@@ -121,25 +124,28 @@
             </div>
             {% endif %}
 
+            {# ── Miembros aceptados ── #}
             {% set miembros_aceptados = banda.miembroBandas|filter(mb => mb.estado == 'aceptado') %}
             {% if miembros_aceptados|length > 0 %}
             <div class="col-12">
-                <p class="show-dato-label" style="font-family: var(--font-body); font-size: 11px; font-weight: 700; color: var(--mh-purple-light); text-transform: uppercase; letter-spacing: 2px; margin: 0 0 12px;">Miembros:</p>
-                <div style="display: flex; flex-direction: column; gap: 10px;">
+                <p class="perfil-form-label">Miembros:</p>
+                <div class="banda-miembros-lista">
                     {% for miembro in miembros_aceptados %}
-                    <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
-                        <a href="{{ path('app_musico_show', {id: miembro.musico.id}) }}" style="color: #e8e0ff; font-weight: 600; text-decoration: none; min-width: 120px; font-size: 14px;">
+                    <div class="banda-miembro-fila">
+                        <a href="{{ path('app_musico_show', {id: miembro.musico.id}) }}" class="banda-miembro-nombre">
                             {{ miembro.musico.nombre }}
-                            {% if miembro.esAdministrador %}<span style="color: #f0c040; font-size: 11px; margin-left: 4px;">★</span>{% endif %}
+                            {% if miembro.esAdministrador %}
+                                <span class="badge-admin">★</span>
+                            {% endif %}
                         </a>
                         {% if miembro.musico.instrumentos|length > 0 %}
-                            <div class="musico-card-instrumentos" style="margin: 0;">
+                            <div class="musico-card-instrumentos">
                                 {% for instrumento in miembro.musico.instrumentos %}
                                     <span class="musico-card-instrumento-tag">{{ instrumento.nombre }}</span>
                                 {% endfor %}
                             </div>
                         {% else %}
-                            <span style="color: var(--mh-text-muted); font-size: 12px;">Sin instrumentos</span>
+                            <span class="gestionar-fila-meta">Sin instrumentos</span>
                         {% endif %}
                     </div>
                     {% endfor %}
@@ -147,21 +153,22 @@
             </div>
             {% endif %}
 
-            {# Estado de la solicitud del usuario actual #}
+            {# ── Estado de la solicitud del usuario actual ── #}
             {% if miembro_actual is not null %}
                 {% if miembro_actual.estado == 'pendiente' %}
                 <div class="col-12">
-                    <p style="color: var(--mh-text-muted); font-size: 13px; text-align: center;">Tu solicitud está pendiente de aprobación.</p>
+                    <p class="solicitud-pendiente-msg">Tu solicitud está pendiente de aprobación.</p>
                 </div>
                 {% elseif miembro_actual.estado == 'rechazado' %}
                 <div class="col-12">
-                    <p style="color: #ff6b6b; font-size: 13px; text-align: center;">Tu solicitud de unión fue rechazada.</p>
+                    <p class="solicitud-rechazada-msg">Tu solicitud de unión fue rechazada.</p>
                 </div>
                 {% endif %}
             {% endif %}
 
         </div>
 
+        {# ── Botones de acción ── #}
         <div class="d-flex justify-content-center gap-3 mt-4 flex-wrap">
             {% if es_admin %}
                 <a href="{{ path('app_banda_edit', {'id': banda.id}) }}" class="btn-editar">Editar Banda</a>
@@ -171,7 +178,7 @@
                     {% if n_pendientes > 0 %}({{ n_pendientes }}){% endif %}
                 </a>
             {% elseif miembro_actual is null and is_granted('IS_AUTHENTICATED_FULLY') and app.user.musico is not null %}
-                <a href="{{ path('app_banda_form_solicitar_union', {id: banda.id}) }}" class="btn-confirmar">Solicitar unirse</a>
+                <a href="{{ path('app_banda_form_solicitar_union', {id: banda.id}) }}" class="btn-confirmar">Solicitar Unirse</a>
             {% endif %}
             {% if miembro_actual is not null and miembro_actual.estado == 'aceptado' %}
                 {% set total_admins_show = banda.miembroBandas|filter(mb => mb.estado == 'aceptado' and mb.esAdministrador)|length %}

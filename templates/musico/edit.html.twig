@@ -91,7 +91,7 @@ blob.style.transform = 'translate(calc(-50% + ' + ox + 'px), calc(-50% + ' + oy 
 			<div class="perfil-avatar-wrap">
 				<div class="perfil-avatar">
 					{% if musico.imagenUrl %}
-						<img src="{{ asset('uploads/perfiles/' ~ musico.imagenUrl) }}" alt="Foto de {{ musico.nombre }}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+						<img src="{{ asset('uploads/perfiles/' ~ musico.imagenUrl) }}" alt="Foto de {{ musico.nombre }}">
 					{% else %}
 						<svg width="45" height="45" viewbox="0 0 24 24" fill="none" stroke="#00b4ff" stroke-width="1.5">
 							<path d="M9 18V5l12-2v13"/>
@@ -102,7 +102,7 @@ blob.style.transform = 'translate(calc(-50% + ' + ox + 'px), calc(-50% + ' + oy 
 				</div>
 			</div>
 
-			<h1 class="perfil-title">Editar perfil</h1>
+			<h1 class="perfil-title">Editar Perfil</h1>
 			<p class="perfil-subtitle">Actualiza tu información para mejorar tu perfil</p>
 			<hr
 			class="perfil-divider">
