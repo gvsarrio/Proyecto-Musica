@@ -55,11 +55,10 @@ setTimeout(move, speed * 1000);
 move();
 }
 
-for (var i = 0; i < 6; i++) 
-createBlob();
+for (var i = 0; i < 6; i++) createBlob();
 
-
-
+{# Solo en dispositivos no táctiles — en móvil no hay cursor #}
+if (!('ontouchstart' in window)) {
 document.addEventListener('mousemove', function (e) {
 var mx = e.clientX / window.innerWidth;
 var my = e.clientY / window.innerHeight;
@@ -71,6 +70,7 @@ var oy = (my - 0.5) * 30 * dir;
 blob.style.transform = 'translate(calc(-50% + ' + ox + 'px), calc(-50% + ' + oy + 'px))';
 });
 });
+}
 })();
 	</script>
 {% endblock %}
@@ -104,8 +104,7 @@ blob.style.transform = 'translate(calc(-50% + ' + ox + 'px), calc(-50% + ' + oy 
 
 			<h1 class="perfil-title">Editar Perfil</h1>
 			<p class="perfil-subtitle">Actualiza tu información para mejorar tu perfil</p>
-			<hr
-			class="perfil-divider">
+			<hr class="perfil-divider">
 
 			{# IMPORTANTE: enctype para permitir la subida de la foto #}
 			{{ form_start(form, {'attr': {'novalidate': 'novalidate', 'enctype': 'multipart/form-data'}}) }}
@@ -188,9 +187,22 @@ blob.style.transform = 'translate(calc(-50% + ' + ox + 'px), calc(-50% + ' + oy 
 	</div>
 
 	<script>
+	{# Función reutilizable para mostrar errores estilizados en vez de alert() nativo #}
+	function mostrarError(mensaje) {
+		var existing = document.getElementById('instrumento-error-msg');
+		if (existing) existing.remove();
+		var err = document.createElement('div');
+		err.id = 'instrumento-error-msg';
+		err.className = 'alert-perfil-error';
+		err.textContent = mensaje;
+		var wrap = document.querySelector('.instrumento-add-wrap');
+		wrap.parentNode.insertBefore(err, wrap);
+		setTimeout(function() { err.remove(); }, 4000);
+	}
+
 	document.getElementById('btn-add-instrument').addEventListener('click', function() {
 		var nombre = document.getElementById('{{ form.instrumentos_nuevos.vars.id }}').value.trim();
-		if (!nombre) return alert('Introduce el nombre del instrumento');
+		if (!nombre) return mostrarError('Introduce el nombre del instrumento');
 		var token = document.getElementById('csrf_add_instrument').value;
 		var formData = new FormData();
 		formData.append('nombre', nombre);
@@ -200,7 +212,7 @@ blob.style.transform = 'translate(calc(-50% + ' + ox + 'px), calc(-50% + ' + oy 
 			body: formData,
 			headers: { 'X-Requested-With': 'XMLHttpRequest' }
 		}).then(resp => resp.json()).then(data => {
-			if (data.error) return alert(data.error);
+			if (data.error) return mostrarError(data.error);
 			var container = document.querySelector('.perfil-instrumentos-container');
 			if (!container) return;
 			var id = 'musico_instrumentos_' + data.id;
@@ -219,7 +231,7 @@ blob.style.transform = 'translate(calc(-50% + ' + ox + 'px), calc(-50% + ' + oy 
 			wrap.parentNode.insertBefore(msg, wrap.nextSibling);
 			setTimeout(function() { msg.style.opacity = '0'; }, 2000);
 			setTimeout(function() { msg.remove(); }, 3000);
-		}).catch(err => { console.error(err); alert('Error añadiendo instrumento'); });
+		}).catch(err => { console.error(err); mostrarError('Error añadiendo instrumento'); });
 	});
 	</script>
 {% endblock %}

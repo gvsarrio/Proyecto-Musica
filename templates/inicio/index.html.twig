@@ -31,17 +31,20 @@
     }
     setTimeout(animateBlobs, 100);
     setInterval(animateBlobs, 6000);
-    // Reacción suave al ratón
-    document.addEventListener('mousemove', function(e) {
-        var mx = e.clientX / window.innerWidth;
-        var my = e.clientY / window.innerHeight;
-        blobs.forEach(function(blob, i) {
-            var dir = (i % 2 === 0) ? 1 : -1;
-            var ox = (mx - 0.5) * 30 * dir;
-            var oy = (my - 0.5) * 30 * dir;
-            blob.style.transform = 'translate(calc(-50% + ' + ox + 'px), calc(-50% + ' + oy + 'px))';
+
+    {# Reacción suave al ratón — solo en dispositivos no táctiles #}
+    if (!('ontouchstart' in window)) {
+        document.addEventListener('mousemove', function(e) {
+            var mx = e.clientX / window.innerWidth;
+            var my = e.clientY / window.innerHeight;
+            blobs.forEach(function(blob, i) {
+                var dir = (i % 2 === 0) ? 1 : -1;
+                var ox = (mx - 0.5) * 30 * dir;
+                var oy = (my - 0.5) * 30 * dir;
+                blob.style.transform = 'translate(calc(-50% + ' + ox + 'px), calc(-50% + ' + oy + 'px))';
+            });
         });
-    });
+    }
 })();
 </script>
 {% endblock %}
@@ -64,7 +67,6 @@
             {% endif %}
         </div>
     </div>
-
     <footer class="home-footer" aria-label="Pie de página de inicio">
         <span class="home-footer-line"></span>
         <p class="home-footer-text">© {{ "now"|date('Y') }} Music Hub. Todos los derechos reservados.</p>

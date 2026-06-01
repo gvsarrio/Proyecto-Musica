@@ -27,6 +27,14 @@
     --font-body:        'Switzer', sans-serif;
 }
 
+/* ================== ANIMACIONES GLOBALES ================== */
+/* Usado en perfil.css y auth.css — definido aquí para no duplicar */
+@keyframes borderGlow {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
 /* ================== RESET ================== */
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
