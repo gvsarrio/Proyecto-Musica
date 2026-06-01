@@ -187,6 +187,17 @@ final class MusicoController extends AbstractController
         }
 
         if ($this->isCsrfTokenValid('delete' . $musico->getId(), $request->getPayload()->getString('_token'))) {
+
+            // Comprobar si el músico pertenece a alguna banda activa
+            $bandasActivas = $musico->getMiembroBandas()->filter(
+                fn($mb) => in_array($mb->getEstado(), ['aceptado', 'pendiente', 'invitado'])
+            );
+
+            if (!$bandasActivas->isEmpty()) {
+                $this->addFlash('error', 'No puedes eliminar tu perfil mientras pertenezcas a una banda. Sal de todas las bandas primero.');
+                return $this->redirectToRoute('app_musico_show', ['id' => $musico->getId()], Response::HTTP_SEE_OTHER);
+            }
+
             $usuario->setMusico(null);
             $entityManager->remove($musico);
             $entityManager->flush();
