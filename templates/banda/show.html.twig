@@ -72,7 +72,7 @@
     <div class="perfil-card">
         <div class="perfil-accent-bar"></div>
 
-        {# ── Avatar / imagen de banda ── #}
+        {#  Avatar / imagen de banda #}
         <div class="perfil-avatar-wrap">
             <div class="perfil-avatar">
                 {% if banda.imagenUrl %}
@@ -89,7 +89,7 @@
             </div>
         </div>
 
-        {# ── Título y subtítulo ── #}
+        {# Título y subtítulo #}
         <h1 class="perfil-title">{{ banda.nombre }}</h1>
         <p class="perfil-subtitle">
             {% if banda.ubicacion %}{{ banda.ubicacion }}{% endif %}
@@ -97,7 +97,7 @@
         </p>
         <hr class="perfil-divider">
 
-        {# ── Datos ── #}
+        {#  Datos  #}
         <div class="row g-4">
 
             {% if banda.biografia %}
@@ -128,7 +128,7 @@
             </div>
             {% endif %}
 
-            {# ── Miembros aceptados ── #}
+            {# Miembros aceptados #}
             {% set miembros_aceptados = banda.miembroBandas|filter(mb => mb.estado == 'aceptado') %}
             {% if miembros_aceptados|length > 0 %}
             <div class="col-12">
@@ -157,7 +157,7 @@
             </div>
             {% endif %}
 
-            {# ── Estado de la solicitud del usuario actual ── #}
+            {# Estado de la solicitud del usuario actual  #}
             {% if miembro_actual is not null %}
                 {% if miembro_actual.estado == 'pendiente' %}
                 <div class="col-12">
@@ -172,7 +172,25 @@
 
         </div>
 
-        {# ── Botones de acción ── #}
+        {# Ventana de confirmación — Salir de la banda #}
+        {% if miembro_actual is not null and miembro_actual.estado == 'aceptado' %}
+            {% set total_admins_show = banda.miembroBandas|filter(mb => mb.estado == 'aceptado' and mb.esAdministrador)|length %}
+            {% if not es_admin or total_admins_show > 1 %}
+            <div id="modal-salir-banda" class="mh-modal-overlay" style="display:none;">
+                <div class="mh-modal-card">
+                    <div class="mh-modal-accent-bar"></div>
+                    <p class="mh-modal-titulo">¿Salir de la banda?</p>
+                    <p class="mh-modal-texto">Abandonarás {{ banda.nombre }}. Podrás solicitar unirte de nuevo en el futuro.</p>
+                    <div class="mh-modal-acciones">
+                        <button type="button" class="btn-eliminar" onclick="document.getElementById('form-salir-banda').submit()">Salir de la Banda</button>
+                        <button type="button" class="btn-principal" onclick="document.getElementById('modal-salir-banda').style.display='none'">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        {% endif %}
+
+        {# Botones de acción #}
         <div class="d-flex justify-content-center gap-3 mt-4 flex-wrap">
             {% if es_admin %}
                 <a href="{{ path('app_banda_edit', {'id': banda.id}) }}" class="btn-editar">Editar Banda</a>
@@ -187,9 +205,11 @@
             {% if miembro_actual is not null and miembro_actual.estado == 'aceptado' %}
                 {% set total_admins_show = banda.miembroBandas|filter(mb => mb.estado == 'aceptado' and mb.esAdministrador)|length %}
                 {% if not es_admin or total_admins_show > 1 %}
-                    <form method="post" action="{{ path('app_banda_salir', {id: banda.id}) }}" style="display: inline;" onsubmit="return confirm('¿Seguro que quieres abandonar esta banda?')">
+                    <form id="form-salir-banda" method="post" action="{{ path('app_banda_salir', {id: banda.id}) }}" style="display: inline;">
                         <input type="hidden" name="_token" value="{{ csrf_token('salir_banda_' ~ banda.id) }}">
-                        <button type="submit" class="btn-eliminar">Salir de la Banda</button>
+                        <button type="button" class="btn-eliminar" onclick="document.getElementById('modal-salir-banda').style.display='flex'">
+                            Salir de la Banda
+                        </button>
                     </form>
                 {% endif %}
             {% endif %}

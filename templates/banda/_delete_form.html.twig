@@ -1,4 +1,19 @@
-<form method="post" action="{{ path('app_banda_delete', {'id': banda.id}) }}" onsubmit="return confirm('¿Estás seguro de que quieres eliminar este elemento?');">
+{# Ventana de confirmación — Eliminar banda #}
+<div id="modal-eliminar-banda" class="mh-modal-overlay" style="display:none;">
+    <div class="mh-modal-card">
+        <div class="mh-modal-accent-bar"></div>
+        <p class="mh-modal-titulo">¿Eliminar banda?</p>
+        <p class="mh-modal-texto">Esta acción es irreversible. La banda será eliminada permanentemente junto con todos sus miembros.</p>
+        <div class="mh-modal-acciones">
+            <button type="button" class="btn-eliminar" onclick="document.getElementById('form-eliminar-banda').submit()">Eliminar Banda</button>
+            <button type="button" class="btn-principal" onclick="document.getElementById('modal-eliminar-banda').style.display='none'">Cancelar</button>
+        </div>
+    </div>
+</div>
+
+<form id="form-eliminar-banda" method="post" action="{{ path('app_banda_delete', {'id': banda.id}) }}">
     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ banda.id) }}">
-    <button class="btn-eliminar">Eliminar Banda</button>
+    <button type="button" class="btn-eliminar" onclick="document.getElementById('modal-eliminar-banda').style.display='flex'">
+        Eliminar Banda
+    </button>
 </form>
