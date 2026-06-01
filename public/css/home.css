@@ -1,5 +1,5 @@
 /* ============================================
-   HOME.CSS — Página principal (Liquid Motion)
+   HOME.CSS — Página principal
    ============================================ */
 
 .hero {
@@ -198,6 +198,7 @@
 }
 
 /* ================== FONDO LÍQUIDO (inicio) ================== */
+/* Sin filter:blur en el contenedor — los blobs tienen su propio blur */
 #home-background {
     position: fixed;
     top: 0;
@@ -208,7 +209,6 @@
     pointer-events: none;
     overflow: hidden;
     background: rgb(47, 16, 95);
-    filter: blur(40px);
 }
 
 .home-blob {

@@ -1,7 +1,5 @@
 {% extends 'base.html.twig' %}
-
 {% block title %}Crear Perfil de Banda — Music Hub{% endblock %}
-
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/perfil.css') }}">
@@ -51,14 +49,18 @@
                 move();
             }
             for (var i = 0; i < 6; i++) createBlob();
-            document.addEventListener('mousemove', function (e) {
-                var mx = e.clientX / window.innerWidth;
-                var my = e.clientY / window.innerHeight;
-                bg.querySelectorAll('.perfil-blob').forEach(function (blob, i) {
-                    var dir = (i % 2 === 0) ? 1 : -1;
-                    blob.style.transform = 'translate(calc(-50% + ' + ((mx - 0.5) * 30 * dir) + 'px), calc(-50% + ' + ((my - 0.5) * 30 * dir) + 'px))';
+
+            {# Solo en dispositivos no táctiles — en móvil no hay cursor #}
+            if (!('ontouchstart' in window)) {
+                document.addEventListener('mousemove', function (e) {
+                    var mx = e.clientX / window.innerWidth;
+                    var my = e.clientY / window.innerHeight;
+                    bg.querySelectorAll('.perfil-blob').forEach(function (blob, i) {
+                        var dir = (i % 2 === 0) ? 1 : -1;
+                        blob.style.transform = 'translate(calc(-50% + ' + ((mx - 0.5) * 30 * dir) + 'px), calc(-50% + ' + ((my - 0.5) * 30 * dir) + 'px))';
+                    });
                 });
-            });
+            }
         })();
     </script>
 {% endblock %}
@@ -67,11 +69,9 @@
 <div class="perfil-wrapper">
     <div class="perfil-card">
         <div class="perfil-accent-bar"></div>
-
         {% for message in app.flashes('success') %}
             <div class="alert-perfil-success">✓ {{ message }}</div>
         {% endfor %}
-
         <div class="perfil-avatar-wrap">
             <div class="perfil-avatar">
                 <svg width="45" height="45" viewBox="0 0 24 24" fill="none"
@@ -82,17 +82,13 @@
                 </svg>
             </div>
         </div>
-
         <h1 class="perfil-title">Crear Banda</h1>
         <p class="perfil-subtitle">Cuéntanos sobre tu banda para conectar con otros músicos</p>
         <hr class="perfil-divider">
-
         {{ include('banda/_form.html.twig') }}
-
         <div class="mt-3 text-center">
             <a href="{{ path('app_banda_index') }}" class="btn-confirmar">Ver Bandas</a>
         </div>
-
     </div>
 </div>
 {% endblock %}

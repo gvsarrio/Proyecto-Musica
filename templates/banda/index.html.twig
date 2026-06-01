@@ -17,7 +17,7 @@
             var bg = document.getElementById('perfil-background');
             var colors = [
                 'rgba(175, 79, 254, 0.7)',
-                'rgba(0, 242, 255, 0.7)',
+                'rgba(0, 242 255, 0.7)',
                 'rgba(66,0,255,0.7)',
                 'rgba(222, 106, 251, 0.7)',
                 'rgba(0, 255, 136, 0.7)',
@@ -53,14 +53,18 @@
                 move();
             }
             for (var i = 0; i < 6; i++) createBlob();
-            document.addEventListener('mousemove', function (e) {
-                var mx = e.clientX / window.innerWidth;
-                var my = e.clientY / window.innerHeight;
-                bg.querySelectorAll('.perfil-blob').forEach(function (blob, i) {
-                    var dir = (i % 2 === 0) ? 1 : -1;
-                    blob.style.transform = 'translate(calc(-50% + ' + ((mx - 0.5) * 30 * dir) + 'px), calc(-50% + ' + ((my - 0.5) * 30 * dir) + 'px))';
+
+            {# Solo en dispositivos no táctiles — en móvil no hay cursor #}
+            if (!('ontouchstart' in window)) {
+                document.addEventListener('mousemove', function (e) {
+                    var mx = e.clientX / window.innerWidth;
+                    var my = e.clientY / window.innerHeight;
+                    bg.querySelectorAll('.perfil-blob').forEach(function (blob, i) {
+                        var dir = (i % 2 === 0) ? 1 : -1;
+                        blob.style.transform = 'translate(calc(-50% + ' + ((mx - 0.5) * 30 * dir) + 'px), calc(-50% + ' + ((my - 0.5) * 30 * dir) + 'px))';
+                    });
                 });
-            });
+            }
         })();
     </script>
 {% endblock %}

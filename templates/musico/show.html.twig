@@ -55,17 +55,20 @@
 
 		for (var i = 0; i < 6; i++) createBlob();
 
-		document.addEventListener('mousemove', function(e) {
-			var mx = e.clientX / window.innerWidth;
-			var my = e.clientY / window.innerHeight;
-			var blobs = bg.querySelectorAll('.perfil-blob');
-			blobs.forEach(function(blob, i) {
-				var dir = (i % 2 === 0) ? 1 : -1;
-				var ox = (mx - 0.5) * 30 * dir;
-				var oy = (my - 0.5) * 30 * dir;
-				blob.style.transform = 'translate(calc(-50% + ' + ox + 'px), calc(-50% + ' + oy + 'px))';
+		{# Solo en dispositivos no táctiles — en móvil no hay cursor #}
+		if (!('ontouchstart' in window)) {
+			document.addEventListener('mousemove', function(e) {
+				var mx = e.clientX / window.innerWidth;
+				var my = e.clientY / window.innerHeight;
+				var blobs = bg.querySelectorAll('.perfil-blob');
+				blobs.forEach(function(blob, i) {
+					var dir = (i % 2 === 0) ? 1 : -1;
+					var ox = (mx - 0.5) * 30 * dir;
+					var oy = (my - 0.5) * 30 * dir;
+					blob.style.transform = 'translate(calc(-50% + ' + ox + 'px), calc(-50% + ' + oy + 'px))';
+				});
 			});
-		});
+		}
 	})();
 </script>
 {% endblock %}
