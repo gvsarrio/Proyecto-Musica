@@ -143,7 +143,17 @@
 					</small>
 					<input type="hidden" id="csrf_add_instrument" value="{{ csrf_token('add_instrument') }}">
 				</div>
-				
+
+				{# SECCIÓN DE GÉNEROS MUSICALES (Checkboxes) #}
+				<div class="col-12">
+					{{ form_label(form.generos_musicales, '¿Qué géneros musicales tocas?') }}
+					<div class="perfil-instrumentos-container">
+						{{ form_widget(form.generos_musicales) }}
+					</div>
+					<small style="color: var(--mh-text-muted);">Selecciona todos los que apliquen</small>
+					{{ form_errors(form.generos_musicales) }}
+				</div>
+
 				<div class="col-12"
 					data-controller="google-places-autocomplete"
 					data-google-places-autocomplete-api-key-value="{{ google_places_api_key }}">

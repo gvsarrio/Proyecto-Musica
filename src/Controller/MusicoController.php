@@ -64,6 +64,10 @@ final class MusicoController extends AbstractController
                 $musico->getInstrumentosPersonalizados()->add($instrumento);
             }
 
+            foreach ($form->get('generos_musicales')->getData() as $genero) {
+                $musico->addGeneroMusical($genero);
+            }
+
             $entityManager->persist($musico);
             $entityManager->flush();
 
@@ -137,6 +141,7 @@ final class MusicoController extends AbstractController
 
         $form->get('instrumentos_sistema')->setData($musico->getInstrumentosSistema()->toArray());
         $form->get('instrumentos_personalizados')->setData($musico->getInstrumentosPersonalizados()->toArray());
+        $form->get('generos_musicales')->setData($musico->getGenerosMusicales()->toArray());
 
         $form->handleRequest($request);
 
@@ -154,6 +159,7 @@ final class MusicoController extends AbstractController
 
             $musico->getInstrumentosSistema()->clear();
             $musico->getInstrumentosPersonalizados()->clear();
+            $musico->getGenerosMusicales()->clear();
             $entityManager->flush();
 
             foreach ($form->get('instrumentos_sistema')->getData() as $instrumento) {
@@ -162,6 +168,10 @@ final class MusicoController extends AbstractController
 
             foreach ($form->get('instrumentos_personalizados')->getData() as $instrumento) {
                 $musico->getInstrumentosPersonalizados()->add($instrumento);
+            }
+
+            foreach ($form->get('generos_musicales')->getData() as $genero) {
+                $musico->addGeneroMusical($genero);
             }
 
             $entityManager->flush();

@@ -30,6 +30,16 @@
             {{ form_errors(form.instrumentos_personalizados) }}
         </div>
 
+        {# SECCIÓN DE GÉNEROS MUSICALES (Checkboxes) #}
+        <div class="col-12">
+            {{ form_label(form.generos_musicales, '¿Qué géneros musicales tocas?') }}
+            <div class="perfil-instrumentos-container">
+                {{ form_widget(form.generos_musicales) }}
+            </div>
+            <small style="color: var(--mh-text-muted);">Selecciona todos los que apliquen</small>
+            {{ form_errors(form.generos_musicales) }}
+        </div>
+
         <div class="col-12">
             {{ form_label(form.ubicacion, 'Ubicación: ') }}
             {{ form_widget(form.ubicacion, {'attr': {'class': 'form-control', 'placeholder': 'Ej: Murcia, España'}}) }}

@@ -84,11 +84,19 @@ class Musico
     #[ORM\JoinTable(name: 'musico_instrumento_personalizado')]
     private Collection $instrumentosPersonalizados;
 
+    /**
+     * @var Collection<int, Genero>
+     */
+    #[ORM\ManyToMany(targetEntity: Genero::class)]
+    #[ORM\JoinTable(name: 'musico_genero')]
+    private Collection $generosMusicales;
+
     public function __construct()
     {
         $this->miembroBandas = new ArrayCollection();
         $this->instrumentosSistema = new ArrayCollection();
         $this->instrumentosPersonalizados = new ArrayCollection();
+        $this->generosMusicales = new ArrayCollection();
     }
 
     public function getId(): ?int { return $this->id; }
@@ -122,6 +130,22 @@ class Musico
     public function getInstrumentosSistema(): Collection { return $this->instrumentosSistema; }
 
     public function getInstrumentosPersonalizados(): Collection { return $this->instrumentosPersonalizados; }
+
+    public function getGenerosMusicales(): Collection { return $this->generosMusicales; }
+
+    public function addGeneroMusical(Genero $genero): static
+    {
+        if (!$this->generosMusicales->contains($genero)) {
+            $this->generosMusicales->add($genero);
+        }
+        return $this;
+    }
+
+    public function removeGeneroMusical(Genero $genero): static
+    {
+        $this->generosMusicales->removeElement($genero);
+        return $this;
+    }
 
     /**
      * Devuelve todos los instrumentos (sistema + personalizados) para uso en templates.

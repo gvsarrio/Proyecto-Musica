@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\Genero;
 use App\Entity\Musico;
 use App\Entity\InstrumentoSistema;
 use App\Entity\InstrumentoPersonalizado;
@@ -105,6 +106,17 @@ class MusicoType extends AbstractType
                     }
                     return $qb;
                 },
+            ])
+            ->add('generos_musicales', EntityType::class, [
+                'class' => Genero::class,
+                'choice_label' => 'nombre',
+                'multiple' => true,
+                'expanded' => true,
+                'mapped' => false,
+                'required' => false,
+                'label' => false,
+                'attr' => ['style' => 'display: contents'],
+                'query_builder' => fn(EntityRepository $er) => $er->createQueryBuilder('g')->orderBy('g.nombre', 'ASC'),
             ]);
     }
 

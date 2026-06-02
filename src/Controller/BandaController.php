@@ -53,6 +53,10 @@ final class BandaController extends AbstractController
                 }
             }
 
+            foreach ($form->get('generos_musicales')->getData() as $genero) {
+                $banda->addGeneroMusical($genero);
+            }
+
             $entityManager->persist($banda);
 
             $miembro = new MiembroBanda();
@@ -112,6 +116,7 @@ final class BandaController extends AbstractController
         }
 
         $form = $this->createForm(BandaType::class, $banda);
+        $form->get('generos_musicales')->setData($banda->getGenerosMusicales()->toArray());
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -124,6 +129,13 @@ final class BandaController extends AbstractController
                 } catch (FileException $e) {
                     $this->addFlash('error', 'No se pudo actualizar la imagen.');
                 }
+            }
+
+            $banda->getGenerosMusicales()->clear();
+            $entityManager->flush();
+
+            foreach ($form->get('generos_musicales')->getData() as $genero) {
+                $banda->addGeneroMusical($genero);
             }
 
             $entityManager->flush();

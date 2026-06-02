@@ -122,6 +122,18 @@
                     {% endif %}
                 </div>
                 {% endif %}
+
+                {# Géneros — máximo 3 #}
+                {% if musico.generosMusicales|length > 0 %}
+                <div class="musico-card-instrumentos">
+                    {% for genero in musico.generosMusicales|slice(0, 3) %}
+                        <span class="musico-card-instrumento-tag">{{ genero.nombre }}</span>
+                    {% endfor %}
+                    {% if musico.generosMusicales|length > 3 %}
+                        <span class="musico-card-instrumento-tag">+{{ musico.generosMusicales|length - 3 }}</span>
+                    {% endif %}
+                </div>
+                {% endif %}
             </div>
 
             {# Botones Ver perfil + Chat #}

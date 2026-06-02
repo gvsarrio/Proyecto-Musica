@@ -46,9 +46,17 @@ class Banda
     #[ORM\OneToMany(targetEntity: MiembroBanda::class, mappedBy: 'banda')]
     private Collection $miembroBandas;
 
+    /**
+     * @var Collection<int, Genero>
+     */
+    #[ORM\ManyToMany(targetEntity: Genero::class)]
+    #[ORM\JoinTable(name: 'banda_genero')]
+    private Collection $generosMusicales;
+
     public function __construct()
     {
         $this->miembroBandas = new ArrayCollection();
+        $this->generosMusicales = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -130,6 +138,22 @@ class Banda
     {
         $this->imagen_url = $imagen_url;
 
+        return $this;
+    }
+
+    public function getGenerosMusicales(): Collection { return $this->generosMusicales; }
+
+    public function addGeneroMusical(Genero $genero): static
+    {
+        if (!$this->generosMusicales->contains($genero)) {
+            $this->generosMusicales->add($genero);
+        }
+        return $this;
+    }
+
+    public function removeGeneroMusical(Genero $genero): static
+    {
+        $this->generosMusicales->removeElement($genero);
         return $this;
     }
 

@@ -15,10 +15,12 @@
     </div>
 
     <div class="col-12">
-        {{ form_label(form.generos, 'Géneros musicales:') }}
-        {{ form_widget(form.generos, {'attr': {'class': 'form-control', 'placeholder': 'Ej: Rock, Jazz, Metal (separados por comas)'}}) }}
-        <small style="color: var(--mh-text-muted);">Separa los géneros con comas</small>
-        {{ form_errors(form.generos) }}
+        {{ form_label(form.generos_musicales, 'Géneros musicales:') }}
+        <div class="perfil-instrumentos-container">
+            {{ form_widget(form.generos_musicales) }}
+        </div>
+        <small style="color: var(--mh-text-muted);">Selecciona todos los que apliquen</small>
+        {{ form_errors(form.generos_musicales) }}
     </div>
 
     <div class="col-md-6">

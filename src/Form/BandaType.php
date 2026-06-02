@@ -3,6 +3,9 @@
 namespace App\Form;
 
 use App\Entity\Banda;
+use App\Entity\Genero;
+use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -34,8 +37,16 @@ class BandaType extends AbstractType
                     new NotBlank(message: 'La biografía no puede estar vacía'),
                 ],
             ])
-            ->add('generos', TextType::class, [
+            ->add('generos_musicales', EntityType::class, [
+                'class' => Genero::class,
+                'choice_label' => 'nombre',
+                'multiple' => true,
+                'expanded' => true,
+                'mapped' => false,
                 'required' => false,
+                'label' => false,
+                'attr' => ['style' => 'display: contents'],
+                'query_builder' => fn(EntityRepository $er) => $er->createQueryBuilder('g')->orderBy('g.nombre', 'ASC'),
             ])
             ->add('anyo_formacion', IntegerType::class, [
                 'constraints' => [

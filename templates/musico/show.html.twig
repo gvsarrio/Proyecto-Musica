@@ -141,6 +141,17 @@
 				</div>
 				{% endif %}
 
+				{% if musico.generosMusicales|length > 0 %}
+				<div class="col-12">
+					<p class="perfil-form-label">Géneros:</p>
+					<div class="musico-card-instrumentos">
+						{% for genero in musico.generosMusicales %}
+							<span class="musico-card-instrumento-tag">{{ genero.nombre }}</span>
+						{% endfor %}
+					</div>
+				</div>
+				{% endif %}
+
 				{% if musico.miembroBandasAceptadas|length > 0 %}
 				<div class="col-12">
 					<p class="perfil-form-label">Bandas:</p>
