@@ -1,0 +1,105 @@
+{#
+    Partial reutilizable: sidebar de filtros (géneros, ubicación, radio).
+
+    Variables requeridas:
+      route       (string)  — nombre de la ruta Symfony para el form action y el enlace "Limpiar"
+      generos     (array)   — colección de entidades Genero ordenadas por nombre
+      filtros     (array)   — valores actuales de los filtros (para repopular el formulario)
+
+    Variables opcionales:
+      instrumentos (array)  — colección de InstrumentoSistema; si se omite o está vacía,
+                               el bloque de instrumentos no se renderiza
+#}
+{% set instrumentos = instrumentos ?? [] %}
+
+<aside class="musicos-filtros-sidebar">
+    <p class="musicos-filtros-titulo">Filtros</p>
+
+    <form method="get" action="{{ path(route) }}">
+
+        {# ── Géneros ── #}
+        <div class="filtros-grupo">
+            <p class="filtros-grupo-titulo">Género</p>
+            <div class="filtros-grupo-scroll">
+                {% for genero in generos %}
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox"
+                           name="filtros[generos][]"
+                           id="f_genero_{{ genero.id }}"
+                           value="{{ genero.id }}"
+                           {% if genero.id in (filtros.generos ?? []) %}checked{% endif %}>
+                    <label class="form-check-label" for="f_genero_{{ genero.id }}">{{ genero.nombre }}</label>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        {# ── Instrumentos (solo si se proporciona la variable) ── #}
+        {% if instrumentos|length > 0 %}
+        <div class="filtros-grupo">
+            <p class="filtros-grupo-titulo">Instrumento</p>
+            <div class="filtros-grupo-scroll">
+                {% for instrumento in instrumentos %}
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox"
+                           name="filtros[instrumentos][]"
+                           id="f_inst_{{ instrumento.id }}"
+                           value="{{ instrumento.id }}"
+                           {% if instrumento.id in (filtros.instrumentos ?? []) %}checked{% endif %}>
+                    <label class="form-check-label" for="f_inst_{{ instrumento.id }}">{{ instrumento.nombre }}</label>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        {# ── Ubicación + slider de radio ── #}
+        <div class="filtros-grupo"
+             data-controller="google-places-autocomplete"
+             data-google-places-autocomplete-api-key-value="{{ google_places_api_key }}">
+            <p class="filtros-grupo-titulo">Ubicación</p>
+            <input class="filtros-ubicacion-input"
+                   type="text"
+                   placeholder="Ciudad o región..."
+                   value="{{ filtros.ubicacion ?? '' }}">
+            <button type="button" class="filtros-geolocate-btn" id="filtros-geolocate-btn">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <circle cx="12" cy="10" r="3"/>
+                    <path d="M12 2a8 8 0 0 0-8 8c0 5 8 14 8 14s8-9 8-14a8 8 0 0 0-8-8z"/>
+                </svg>
+                Usar mi ubicación
+            </button>
+            <input type="hidden"
+                   name="filtros[ubicacion]"
+                   value="{{ filtros.ubicacion ?? '' }}">
+            <input type="hidden"
+                   name="filtros[lat]"
+                   value="{{ filtros.lat ?? '' }}"
+                   data-google-places-autocomplete-target="lat">
+            <input type="hidden"
+                   name="filtros[lng]"
+                   value="{{ filtros.lng ?? '' }}"
+                   data-google-places-autocomplete-target="lng">
+            <div class="filtros-radio-wrap">
+                <div class="filtros-radio-header">
+                    <span>Radio</span>
+                    <span class="filtros-radio-valor" id="filtros-radio-valor">{{ filtros.radio ?? '20' }} km</span>
+                </div>
+                <input class="filtros-radio-slider"
+                       type="range"
+                       name="filtros[radio]"
+                       id="filtros-radio"
+                       min="10" max="100" step="10"
+                       value="{{ filtros.radio ?? '20' }}">
+                <div class="filtros-radio-marks">
+                    <span>10 km</span>
+                    <span>100 km</span>
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" class="filtros-btn-aplicar">Aplicar filtros</button>
+        <a href="{{ path(route) }}" class="filtros-btn-limpiar">Limpiar</a>
+
+    </form>
+</aside>

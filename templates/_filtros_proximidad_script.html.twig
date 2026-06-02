@@ -1,0 +1,97 @@
+<script>
+(function () {
+    // ── Slider de radio ──
+    var slider = document.getElementById('filtros-radio');
+    var label  = document.getElementById('filtros-radio-valor');
+    if (slider) {
+        function updateSlider(v) {
+            var pct = (v - 10) / 90 * 100;
+            slider.style.background =
+                'linear-gradient(to right,#9b30ff ' + pct + '%,rgba(155,48,255,0.18) ' + pct + '%)';
+            label.textContent = v + ' km';
+        }
+        slider.addEventListener('input', function () { updateSlider(+this.value); });
+
+        // ── Habilitar/deshabilitar según ubicación ──
+        var ubicacionInput = document.querySelector('.filtros-ubicacion-input');
+        if (ubicacionInput) {
+            function syncSlider() {
+                var hasLocation = ubicacionInput.value.trim() !== '';
+                slider.disabled = !hasLocation;
+                slider.closest('.filtros-radio-wrap').classList.toggle('filtros-radio-disabled', !hasLocation);
+                if (!hasLocation) {
+                    slider.style.background = 'rgba(155,48,255,0.18)';
+                } else {
+                    updateSlider(+slider.value);
+                }
+            }
+            ubicacionInput.addEventListener('input', syncSlider);
+            syncSlider();
+        } else {
+            updateSlider(+slider.value);
+        }
+    }
+
+    // ── Botón "Usar mi ubicación" ──
+    var btn = document.getElementById('filtros-geolocate-btn');
+    if (!btn) return;
+    if (!navigator.geolocation) { btn.style.display = 'none'; return; }
+
+    btn.addEventListener('click', function () {
+        btn.disabled = true;
+        var originalHTML = btn.innerHTML;
+        btn.textContent  = 'Obteniendo…';
+
+        navigator.geolocation.getCurrentPosition(
+            function (pos) {
+                var lat = pos.coords.latitude;
+                var lng = pos.coords.longitude;
+
+                var latInput   = document.querySelector('[data-google-places-autocomplete-target="lat"]');
+                var lngInput   = document.querySelector('[data-google-places-autocomplete-target="lng"]');
+                var hiddenUbic = document.querySelector('[name="filtros[ubicacion]"]');
+                var textInput  = document.querySelector('.filtros-ubicacion-input');
+
+                if (latInput)  latInput.value = lat;
+                if (lngInput)  lngInput.value = lng;
+
+                function setLabel(label) {
+                    if (textInput) {
+                        textInput.value = label;
+                        textInput.dispatchEvent(new Event('input'));
+                    }
+                    if (hiddenUbic) hiddenUbic.value = label;
+                    btn.disabled  = false;
+                    btn.innerHTML = originalHTML;
+                }
+
+                if (window.google && window.google.maps) {
+                    new google.maps.Geocoder().geocode(
+                        { location: { lat: lat, lng: lng } },
+                        function (results, status) {
+                            if (status === 'OK' && results[0]) {
+                                var comps   = results[0].address_components;
+                                var city    = comps.find(function (c) { return c.types.includes('locality'); }) ||
+                                              comps.find(function (c) { return c.types.includes('administrative_area_level_2'); }) ||
+                                              comps.find(function (c) { return c.types.includes('administrative_area_level_1'); });
+                                var country = comps.find(function (c) { return c.types.includes('country'); });
+                                setLabel(city && country
+                                    ? city.long_name + ', ' + country.long_name
+                                    : results[0].formatted_address);
+                            } else {
+                                setLabel(lat.toFixed(4) + ', ' + lng.toFixed(4));
+                            }
+                        }
+                    );
+                } else {
+                    setLabel(lat.toFixed(4) + ', ' + lng.toFixed(4));
+                }
+            },
+            function () {
+                btn.disabled  = false;
+                btn.innerHTML = originalHTML;
+            }
+        );
+    });
+})();
+</script>

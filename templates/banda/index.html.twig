@@ -78,6 +78,16 @@
         <h1 class="musicos-titulo">BANDAS</h1>
     </div>
 
+    {# ── Layout filtros + grid ── #}
+    <div class="musicos-layout">
+
+    {# ── Sidebar de filtros ── #}
+    {% include '_filtros_sidebar.html.twig' with {
+        route: 'app_banda_index',
+        generos: generos,
+        filtros: filtros
+    } only %}
+
     {# ── Grid de tarjetas ── #}
     <div class="musicos-grid">
         {% for banda in bandas %}
@@ -111,26 +121,28 @@
                     {% if banda.anyoFormacion %}
                         <span>Desde {{ banda.anyoFormacion }}</span>
                     {% endif %}
+                    {% if banda.id in distancias|keys %}
+                        <span class="musico-card-distancia-tag">{{ distancias[banda.id] }} km</span>
+                    {% endif %}
                 </p>
 
-                {# Géneros como pastillas #}
-                {% if banda.generos %}
+                {# Géneros — máximo 3 #}
+                {% if banda.generosMusicales|length > 0 %}
                 <div class="musico-card-instrumentos">
-                    {% for genero in banda.generos|split(',') %}
-                        <span class="musico-card-instrumento-tag">{{ genero|trim }}</span>
+                    {% for genero in banda.generosMusicales|slice(0, 3) %}
+                        <span class="musico-card-instrumento-tag">{{ genero.nombre }}</span>
                     {% endfor %}
+                    {% if banda.generosMusicales|length > 3 %}
+                        <span class="musico-card-instrumento-tag">+{{ banda.generosMusicales|length - 3 }}</span>
+                    {% endif %}
                 </div>
                 {% endif %}
             </div>
 
             {# Botones #}
             <div class="musico-card-footer">
-                <a href="{{ path('app_banda_show', {'id': banda.id}) }}" class="btn-confirmar">
-                    Ver Banda
-                </a>
-                <a href="#" class="btn-chat" title="Próximamente">
-                    Chat
-                </a>
+                <a href="{{ path('app_banda_show', {'id': banda.id}) }}" class="btn-confirmar">Ver Banda</a>
+                <a href="#" class="btn-chat" title="Próximamente">Chat</a>
             </div>
 
         </div>
@@ -139,5 +151,9 @@
         {% endfor %}
     </div>
 
+    </div>{# fin musicos-layout #}
+
 </div>
+
+{% include '_filtros_proximidad_script.html.twig' %}
 {% endblock %}

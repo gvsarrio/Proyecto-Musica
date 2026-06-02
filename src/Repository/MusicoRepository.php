@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Musico;
+use App\Repository\Traits\HasHaversine;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -15,6 +16,8 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class MusicoRepository extends ServiceEntityRepository
 {
+    use HasHaversine;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Musico::class);
@@ -53,18 +56,6 @@ class MusicoRepository extends ServiceEntityRepository
         return $musicos;
     }
 
-    public function calcularDistanciaKm(float $lat1, float $lng1, float $lat2, float $lng2): float
-    {
-        return $this->haversine($lat1, $lng1, $lat2, $lng2);
-    }
-
-    private function haversine(float $lat1, float $lng1, float $lat2, float $lng2): float
-    {
-        $dLat = deg2rad($lat2 - $lat1);
-        $dLng = deg2rad($lng2 - $lng1);
-        $a = sin($dLat / 2) ** 2 + cos(deg2rad($lat1)) * cos(deg2rad($lat2)) * sin($dLng / 2) ** 2;
-        return 6371 * 2 * atan2(sqrt($a), sqrt(1 - $a));
-    }
 
     //    /**
     //     * @return Musico[] Returns an array of Musico objects

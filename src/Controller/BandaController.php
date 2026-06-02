@@ -8,6 +8,7 @@ use App\Entity\Musico;
 use App\Entity\Usuario;
 use App\Form\BandaType;
 use App\Repository\BandaRepository;
+use App\Repository\GeneroRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -19,10 +20,41 @@ use Symfony\Component\Routing\Attribute\Route;
 final class BandaController extends AbstractController
 {
     #[Route('/list', name: 'app_banda_index', methods: ['GET'])]
-    public function index(BandaRepository $bandaRepository): Response
-    {
+    public function index(
+        BandaRepository $bandaRepository,
+        GeneroRepository $generoRepository,
+        Request $request
+    ): Response {
+        $filtros = $request->query->all('filtros');
+
+        $generoIds = !empty($filtros['generos']) ? array_map('intval', (array) $filtros['generos']) : [];
+        $lat   = isset($filtros['lat'])   && $filtros['lat']   !== '' ? (float) $filtros['lat']   : null;
+        $lng   = isset($filtros['lng'])   && $filtros['lng']   !== '' ? (float) $filtros['lng']   : null;
+        $radio = isset($filtros['radio']) && $filtros['radio'] !== '' ? (int)   $filtros['radio'] : null;
+
+        $hayFiltros = !empty($generoIds) || ($lat !== null && $radio !== null);
+
+        $bandas = $hayFiltros
+            ? $bandaRepository->findByFiltros($generoIds, $lat, $lng, $radio)
+            : $bandaRepository->findAll();
+
+        $distancias = [];
+        if ($lat !== null && $lng !== null) {
+            foreach ($bandas as $b) {
+                if ($b->getLatitud() !== null && $b->getLongitud() !== null) {
+                    $distancias[$b->getId()] = round(
+                        $bandaRepository->calcularDistanciaKm($lat, $lng, $b->getLatitud(), $b->getLongitud()),
+                        1
+                    );
+                }
+            }
+        }
+
         return $this->render('banda/index.html.twig', [
-            'bandas' => $bandaRepository->findAll(),
+            'bandas'     => $bandas,
+            'generos'    => $generoRepository->findBy([], ['nombre' => 'ASC']),
+            'filtros'    => $filtros,
+            'distancias' => $distancias,
         ]);
     }
 
