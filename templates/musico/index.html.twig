@@ -203,6 +203,9 @@
                     {% if musico.anyosExperiencia is not null %}
                         <span>{{ musico.anyosExperiencia }} años exp.</span>
                     {% endif %}
+                    {% if musico.id in distancias|keys %}
+                        <span class="musico-card-distancia-tag">{{ distancias[musico.id] }} km</span>
+                    {% endif %}
                 </p>
 
                 {# Instrumentos — máximo 3 #}
@@ -259,7 +262,25 @@
             label.textContent = v + ' km';
         }
         slider.addEventListener('input', function () { updateSlider(+this.value); });
-        updateSlider(+slider.value);
+
+        // ── Habilitar/deshabilitar según ubicación ──
+        var ubicacionInput = document.querySelector('.filtros-ubicacion-input');
+        if (ubicacionInput) {
+            function syncSlider() {
+                var hasLocation = ubicacionInput.value.trim() !== '';
+                slider.disabled = !hasLocation;
+                slider.closest('.filtros-radio-wrap').classList.toggle('filtros-radio-disabled', !hasLocation);
+                if (!hasLocation) {
+                    slider.style.background = 'rgba(155,48,255,0.18)';
+                } else {
+                    updateSlider(+slider.value);
+                }
+            }
+            ubicacionInput.addEventListener('input', syncSlider);
+            syncSlider();
+        } else {
+            updateSlider(+slider.value);
+        }
     }
 
     // ── Botón "Usar mi ubicación" ──
@@ -286,7 +307,10 @@
                 if (lngInput)  lngInput.value = lng;
 
                 function setLabel(label) {
-                    if (textInput)  textInput.value  = label;
+                    if (textInput) {
+                        textInput.value = label;
+                        textInput.dispatchEvent(new Event('input'));
+                    }
                     if (hiddenUbic) hiddenUbic.value = label;
                     btn.disabled  = false;
                     btn.innerHTML = originalHTML;

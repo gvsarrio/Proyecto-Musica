@@ -306,6 +306,11 @@
     flex-wrap: wrap;
 }
 
+.musico-card-distancia-tag {
+    color: var(--mh-cyan) !important;
+    font-weight: 600;
+}
+
 .musico-card-tags span::after {
     content: " •";
     color: rgba(155, 48, 255, 0.6);
@@ -1182,6 +1187,12 @@
 
 .filtros-radio-wrap {
     margin-top: 8px;
+}
+
+.filtros-radio-wrap.filtros-radio-disabled {
+    opacity: 0.35;
+    pointer-events: none;
+    cursor: not-allowed;
 }
 
 .filtros-radio-header {

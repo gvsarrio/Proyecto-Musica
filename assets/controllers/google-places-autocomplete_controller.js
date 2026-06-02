@@ -60,6 +60,8 @@ export default class extends Controller {
                 input.value = place.formatted_address;
             }
 
+            input.dispatchEvent(new Event('input'));
+
             if (place.geometry && place.geometry.location) {
                 if (this.hasLatTarget) this.latTarget.value = place.geometry.location.lat();
                 if (this.hasLngTarget) this.lngTarget.value = place.geometry.location.lng();

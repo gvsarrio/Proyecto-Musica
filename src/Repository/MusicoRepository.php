@@ -53,6 +53,11 @@ class MusicoRepository extends ServiceEntityRepository
         return $musicos;
     }
 
+    public function calcularDistanciaKm(float $lat1, float $lng1, float $lat2, float $lng2): float
+    {
+        return $this->haversine($lat1, $lng1, $lat2, $lng2);
+    }
+
     private function haversine(float $lat1, float $lng1, float $lat2, float $lng2): float
     {
         $dLat = deg2rad($lat2 - $lat1);

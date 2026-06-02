@@ -39,11 +39,24 @@ final class MusicoController extends AbstractController
             ? $musicoRepository->findByFiltros($generoIds, $instrumentoIds, $lat, $lng, $radio)
             : $musicoRepository->findAll();
 
+        $distancias = [];
+        if ($lat !== null && $lng !== null) {
+            foreach ($musicos as $m) {
+                if ($m->getLatitud() !== null && $m->getLongitud() !== null) {
+                    $distancias[$m->getId()] = round(
+                        $musicoRepository->calcularDistanciaKm($lat, $lng, $m->getLatitud(), $m->getLongitud()),
+                        1
+                    );
+                }
+            }
+        }
+
         return $this->render('musico/index.html.twig', [
             'musicos'      => $musicos,
             'generos'      => $generoRepository->findBy([], ['nombre' => 'ASC']),
             'instrumentos' => $instrumentoSistemaRepository->findBy([], ['nombre' => 'ASC']),
             'filtros'      => $filtros,
+            'distancias'   => $distancias,
         ]);
     }
 
