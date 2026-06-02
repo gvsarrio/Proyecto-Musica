@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\Musico;
 use App\Entity\Usuario;
 use App\Form\MusicoType;
+use App\Repository\GeneroRepository;
+use App\Repository\InstrumentoSistemaRepository;
 use App\Repository\MusicoRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,10 +19,31 @@ use Symfony\Component\Routing\Attribute\Route;
 final class MusicoController extends AbstractController
 {
     #[Route('/list', name: 'app_musico_index', methods: ['GET'])]
-    public function index(MusicoRepository $musicoRepository): Response
-    {
+    public function index(
+        MusicoRepository $musicoRepository,
+        GeneroRepository $generoRepository,
+        InstrumentoSistemaRepository $instrumentoSistemaRepository,
+        Request $request
+    ): Response {
+        $filtros = $request->query->all('filtros');
+
+        $generoIds      = !empty($filtros['generos'])      ? array_map('intval', (array) $filtros['generos'])      : [];
+        $instrumentoIds = !empty($filtros['instrumentos']) ? array_map('intval', (array) $filtros['instrumentos']) : [];
+        $lat   = isset($filtros['lat'])   && $filtros['lat']   !== '' ? (float) $filtros['lat']   : null;
+        $lng   = isset($filtros['lng'])   && $filtros['lng']   !== '' ? (float) $filtros['lng']   : null;
+        $radio = isset($filtros['radio']) && $filtros['radio'] !== '' ? (int)   $filtros['radio'] : null;
+
+        $hayFiltros = !empty($generoIds) || !empty($instrumentoIds) || ($lat !== null && $radio !== null);
+
+        $musicos = $hayFiltros
+            ? $musicoRepository->findByFiltros($generoIds, $instrumentoIds, $lat, $lng, $radio)
+            : $musicoRepository->findAll();
+
         return $this->render('musico/index.html.twig', [
-            'musicos' => $musicoRepository->findAll(),
+            'musicos'      => $musicos,
+            'generos'      => $generoRepository->findBy([], ['nombre' => 'ASC']),
+            'instrumentos' => $instrumentoSistemaRepository->findBy([], ['nombre' => 'ASC']),
+            'filtros'      => $filtros,
         ]);
     }
 
