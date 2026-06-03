@@ -28,10 +28,10 @@ final class Version20260602180509 extends AbstractMigration
         $this->addSql('ALTER TABLE musico_genero ADD CONSTRAINT FK_180AAEBF79398F67 FOREIGN KEY (musico_id) REFERENCES musico (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE musico_genero ADD CONSTRAINT FK_180AAEBFBCE7B795 FOREIGN KEY (genero_id) REFERENCES genero (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE banda CHANGE nombre nombre VARCHAR(100) NOT NULL');
-        $this->addSql('ALTER TABLE instrumento_personalizado RENAME INDEX fk_inst_pers_usuario TO IDX_9F716A96DB38439E');
+        $this->addSql('ALTER TABLE instrumento_personalizado RENAME INDEX FK_inst_pers_usuario TO IDX_9F716A96DB38439E');
         $this->addSql('ALTER TABLE miembro_banda CHANGE estado estado VARCHAR(20) NOT NULL, CHANGE es_administrador es_administrador TINYINT NOT NULL');
-        $this->addSql('ALTER TABLE musico_instrumento_sistema RENAME INDEX fk_mis_instrumento TO IDX_5FD5519A6060A947');
-        $this->addSql('ALTER TABLE musico_instrumento_personalizado RENAME INDEX fk_mip_instrumento TO IDX_840AD3C827CFC36A');
+        $this->addSql('ALTER TABLE musico_instrumento_sistema RENAME INDEX FK_mis_instrumento TO IDX_5FD5519A6060A947');
+        $this->addSql('ALTER TABLE musico_instrumento_personalizado RENAME INDEX FK_mip_instrumento TO IDX_840AD3C827CFC36A');
     }
 
     public function down(Schema $schema): void
