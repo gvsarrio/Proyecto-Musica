@@ -68,16 +68,17 @@ git checkout feature/filtros
 # 2. Instalar dependencias PHP (por si hay cambios)
 composer install
 
-# 3. Instalar/compilar assets JS
-npm install
-npm run build      # o npm run dev si prefieres el modo watch
-
-# 4. Limpiar caché de Symfony
+# 3. Limpiar caché de Symfony
 php bin/console cache:clear
 
-# 5. Aplicar migraciones (si las hay)
+# 4. Aplicar migraciones (si las hay)
 php bin/console doctrine:migrations:migrate
+
+# 5. Cargar géneros (solo si tu base de datos no los tiene todavía)
+php bin/console doctrine:fixtures:load --append --class=App\\DataFixtures\\GeneroFixtures
 ```
+
+> **Sobre el paso 5:** el flag `--append` es obligatorio — sin él el comando borra toda la base de datos antes de cargar. Si ya tienes géneros (Rock, Jazz, Pop…) en la tabla `genero`, sáltate este paso.
 
 Comprueba que puedes acceder a:
 - `http://localhost/musico/list` → debe mostrar la página de músicos **con sidebar de filtros**.
