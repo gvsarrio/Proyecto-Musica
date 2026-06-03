@@ -36,8 +36,8 @@
                                 {% else %}
                                     <a href="{{ path('app_musico_show', {id: app.user.musico.id}) }}" class="nav-link {{ app.request.attributes.get('_route') == 'app_musico_show' ? 'active' : '' }}">Mi Perfil</a>
                                 {% endif %}
-                                <a href="{{ path('app_musico_index') }}" class="nav-link {{ app.request.attributes.get('_route') == 'app_musico_index' ? 'active' : '' }}">Ver Músicos</a>
-                                <a href="{{ path('app_banda_index') }}" class="nav-link {{ app.request.attributes.get('_route') == 'app_banda_index' ? 'active' : '' }}">Ver Bandas</a>
+                                <a href="{{ path('app_musico_index') }}" class="nav-link {{ app.request.attributes.get('_route') == 'app_musico_index' ? 'active' : '' }}">Músicos</a>
+                                <a href="{{ path('app_banda_index') }}" class="nav-link {{ app.request.attributes.get('_route') == 'app_banda_index' ? 'active' : '' }}">Bandas</a>
                                 {% if app.user.musico is not null %}
                                 <div class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
