@@ -41,10 +41,10 @@
                                 {% if app.user.musico is not null %}
                                 <div class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Gestiona tu banda
+                                        Gestionar Banda
                                     </a>
                                     <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end">
-                                        <li><a class="dropdown-item" href="{{ path('app_banda_new') }}">+ Crear banda</a></li>
+                                        <li><a class="dropdown-item" href="{{ path('app_banda_new') }}">+ Nueva Banda</a></li>
                                         {% set mis_memberships = app.user.musico.miembroBandasAceptadas %}
                                         {% if mis_memberships|length > 0 %}
                                             <li><hr class="dropdown-divider"></li>
