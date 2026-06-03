@@ -15,17 +15,12 @@ ENV COMPOSER_ALLOW_SUPERUSER=1
 
 WORKDIR /var/www/html
 
-COPY composer.json composer.lock symfony.lock importmap.php ./
-RUN composer install --no-dev --optimize-autoloader --no-scripts --no-interaction
-
 COPY . .
 
-# Regenerar autoloader con todas las clases del proyecto
-RUN composer dump-autoload --optimize --no-dev
-
-# Instalar paquetes JS durante el build (necesita vars dummy para arrancar Symfony)
-RUN APP_ENV=prod APP_SECRET=placeholder DATABASE_URL="mysql://x:x@localhost/x" \
-    php bin/console importmap:install --no-interaction
+# Con scripts habilitados: genera autoload_runtime.php, limpia caché e instala paquetes JS
+RUN APP_ENV=prod APP_SECRET=build_placeholder \
+    DATABASE_URL="mysql://u:p@localhost:3306/db?serverVersion=8.0&charset=utf8mb4" \
+    composer install --no-dev --optimize-autoloader --no-interaction
 
 RUN mkdir -p var/cache var/log && chown -R www-data:www-data var/ public/ && chmod -R 755 var/
 
