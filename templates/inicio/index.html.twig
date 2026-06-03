@@ -59,8 +59,11 @@
             Conecta músicos con bandas. Encuentra a quienes comparten tu sonido.
         </p>
         <div class="hero-actions">
-            {% if is_granted('IS_AUTHENTICATED') %}
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                 <a href="{{ path('app_musico_index') }}" class="btn-hero-primary">Ver Perfiles</a>
+                {% if app.user.musico is null %}
+                    <a href="{{ path('app_musico_new') }}" class="btn-hero-secondary">Crear Perfil</a>
+                {% endif %}
             {% else %}
                 <a href="{{ path('app_register') }}" class="btn-hero-primary">Únete ahora</a>
                 <a href="{{ path('app_login') }}" class="btn-hero-secondary">Iniciar sesión</a>
