@@ -6,6 +6,14 @@ rm -f /etc/apache2/mods-enabled/mpm_*.load /etc/apache2/mods-enabled/mpm_*.conf
 ln -sf /etc/apache2/mods-available/mpm_prefork.load /etc/apache2/mods-enabled/mpm_prefork.load
 ln -sf /etc/apache2/mods-available/mpm_prefork.conf /etc/apache2/mods-enabled/mpm_prefork.conf
 
+# Usar el puerto que Railway indique (por defecto 80)
+PORT=${PORT:-80}
+echo "Listen $PORT" > /etc/apache2/ports.conf
+sed -i "s/<VirtualHost \*:80>/<VirtualHost *:$PORT>/" /etc/apache2/sites-enabled/*.conf
+
+# Suprimir el warning de ServerName
+echo "ServerName localhost" >> /etc/apache2/apache2.conf
+
 php bin/console doctrine:migrations:migrate --no-interaction --env=prod
 
 exec "$@"
