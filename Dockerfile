@@ -25,6 +25,9 @@ RUN APP_ENV=prod APP_SECRET=build_placeholder \
     DATABASE_URL="mysql://u:p@localhost:3306/db?serverVersion=8.0&charset=utf8mb4" \
     composer install --no-dev --optimize-autoloader --no-interaction
 
+RUN APP_ENV=prod APP_SECRET=build_placeholder \
+    php bin/console asset-map:compile
+
 RUN mkdir -p var/cache var/log && chown -R www-data:www-data var/ public/ && chmod -R 755 var/
 
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
