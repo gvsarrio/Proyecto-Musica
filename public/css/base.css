@@ -196,3 +196,11 @@ a:hover { color: var(--mh-cyan); text-shadow: 0 0 8px rgba(0,212,232,0.4); }
     border: 1px solid rgba(255,180,0,0.4) !important;
     color: #ffb400 !important;
 }
+
+.saludo-usuario {
+    color: magenta !important;
+}
+.saludo-usuario:hover {
+    color: magenta !important;
+}
+.saludo-usuario:hover::before { width: 0; }
