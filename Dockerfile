@@ -19,6 +19,13 @@ RUN composer install --no-dev --optimize-autoloader --no-scripts --no-interactio
 
 COPY . .
 
+# Regenerar autoloader con todas las clases del proyecto
+RUN composer dump-autoload --optimize --no-dev
+
+# Instalar paquetes JS durante el build (necesita vars dummy para arrancar Symfony)
+RUN APP_ENV=prod APP_SECRET=placeholder DATABASE_URL="mysql://x:x@localhost/x" \
+    php bin/console importmap:install --no-interaction
+
 RUN mkdir -p var/cache var/log && chown -R www-data:www-data var/ public/ && chmod -R 755 var/
 
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
