@@ -200,7 +200,7 @@
                     {% if n_pendientes > 0 %}({{ n_pendientes }}){% endif %}
                 </a>
             {% elseif miembro_actual is null and is_granted('IS_AUTHENTICATED_FULLY') and app.user.musico is not null %}
-                <a href="{{ path('app_banda_form_solicitar_union', {id: banda.id}) }}" class="btn-confirmar">Solicitar Unirse</a>
+                <a href="{{ path('app_banda_form_solicitar_union', {id: banda.id}) }}" class="btn-principal">Solicitar Unirse</a>
             {% endif %}
             {% if miembro_actual is not null and miembro_actual.estado == 'aceptado' %}
                 {% set total_admins_show = banda.miembroBandas|filter(mb => mb.estado == 'aceptado' and mb.esAdministrador)|length %}
