@@ -19,19 +19,15 @@ final class Version20260602180509 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE TABLE banda_genero (banda_id INT NOT NULL, genero_id INT NOT NULL, INDEX IDX_385989899EFB0C1D (banda_id), INDEX IDX_38598989BCE7B795 (genero_id), PRIMARY KEY (banda_id, genero_id)) DEFAULT CHARACTER SET utf8mb4');
-        $this->addSql('CREATE TABLE genero (id INT AUTO_INCREMENT NOT NULL, nombre VARCHAR(50) NOT NULL, PRIMARY KEY (id)) DEFAULT CHARACTER SET utf8mb4');
-        $this->addSql('CREATE TABLE musico_genero (musico_id INT NOT NULL, genero_id INT NOT NULL, INDEX IDX_180AAEBF79398F67 (musico_id), INDEX IDX_180AAEBFBCE7B795 (genero_id), PRIMARY KEY (musico_id, genero_id)) DEFAULT CHARACTER SET utf8mb4');
-        $this->addSql('ALTER TABLE banda_genero ADD CONSTRAINT FK_385989899EFB0C1D FOREIGN KEY (banda_id) REFERENCES banda (id) ON DELETE CASCADE');
-        $this->addSql('ALTER TABLE banda_genero ADD CONSTRAINT FK_38598989BCE7B795 FOREIGN KEY (genero_id) REFERENCES genero (id) ON DELETE CASCADE');
-        $this->addSql('ALTER TABLE musico_genero ADD CONSTRAINT FK_180AAEBF79398F67 FOREIGN KEY (musico_id) REFERENCES musico (id) ON DELETE CASCADE');
-        $this->addSql('ALTER TABLE musico_genero ADD CONSTRAINT FK_180AAEBFBCE7B795 FOREIGN KEY (genero_id) REFERENCES genero (id) ON DELETE CASCADE');
+        $this->addSql('CREATE TABLE IF NOT EXISTS genero (id INT AUTO_INCREMENT NOT NULL, nombre VARCHAR(50) NOT NULL, PRIMARY KEY (id)) DEFAULT CHARACTER SET utf8mb4');
+        $this->addSql('CREATE TABLE IF NOT EXISTS banda_genero (banda_id INT NOT NULL, genero_id INT NOT NULL, INDEX IDX_385989899EFB0C1D (banda_id), INDEX IDX_38598989BCE7B795 (genero_id), PRIMARY KEY (banda_id, genero_id)) DEFAULT CHARACTER SET utf8mb4');
+        $this->addSql('CREATE TABLE IF NOT EXISTS musico_genero (musico_id INT NOT NULL, genero_id INT NOT NULL, INDEX IDX_180AAEBF79398F67 (musico_id), INDEX IDX_180AAEBFBCE7B795 (genero_id), PRIMARY KEY (musico_id, genero_id)) DEFAULT CHARACTER SET utf8mb4');
+        $this->addSql('ALTER TABLE banda_genero ADD CONSTRAINT IF NOT EXISTS FK_385989899EFB0C1D FOREIGN KEY (banda_id) REFERENCES banda (id) ON DELETE CASCADE');
+        $this->addSql('ALTER TABLE banda_genero ADD CONSTRAINT IF NOT EXISTS FK_38598989BCE7B795 FOREIGN KEY (genero_id) REFERENCES genero (id) ON DELETE CASCADE');
+        $this->addSql('ALTER TABLE musico_genero ADD CONSTRAINT IF NOT EXISTS FK_180AAEBF79398F67 FOREIGN KEY (musico_id) REFERENCES musico (id) ON DELETE CASCADE');
+        $this->addSql('ALTER TABLE musico_genero ADD CONSTRAINT IF NOT EXISTS FK_180AAEBFBCE7B795 FOREIGN KEY (genero_id) REFERENCES genero (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE banda CHANGE nombre nombre VARCHAR(100) NOT NULL');
-        $this->addSql('ALTER TABLE instrumento_personalizado RENAME INDEX FK_inst_pers_usuario TO IDX_9F716A96DB38439E');
         $this->addSql('ALTER TABLE miembro_banda CHANGE estado estado VARCHAR(20) NOT NULL, CHANGE es_administrador es_administrador TINYINT NOT NULL');
-        $this->addSql('ALTER TABLE musico_instrumento_sistema RENAME INDEX FK_mis_instrumento TO IDX_5FD5519A6060A947');
-        $this->addSql('ALTER TABLE musico_instrumento_personalizado RENAME INDEX FK_mip_instrumento TO IDX_840AD3C827CFC36A');
     }
 
     public function down(Schema $schema): void
