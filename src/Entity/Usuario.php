@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UsuarioRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -42,6 +44,31 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
 
     // Esta propiedad no se guarda en la BD (es usada para hashear contraseña en '/admin'):
     private ?string $plainPassword = null;
+
+    /**
+     * @var Collection<int, Conversacion>
+     */
+    #[ORM\OneToMany(targetEntity: Conversacion::class, mappedBy: 'usuarioUno')]
+    private Collection $conversacionesComoUsuarioUno;
+
+    /**
+     * @var Collection<int, Conversacion>
+     */
+    #[ORM\OneToMany(targetEntity: Conversacion::class, mappedBy: 'usuarioDos')]
+    private Collection $conversacionesComoUsuarioDos;
+
+    /**
+     * @var Collection<int, Mensaje>
+     */
+    #[ORM\OneToMany(targetEntity: Mensaje::class, mappedBy: 'remitente')]
+    private Collection $mensajes;
+
+    public function __construct()
+    {
+        $this->conversacionesComoUsuarioUno = new ArrayCollection();
+        $this->conversacionesComoUsuarioDos = new ArrayCollection();
+        $this->mensajes = new ArrayCollection();
+    }
 
 
     public function getId(): ?int
@@ -154,6 +181,96 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPlainPassword(?string $plainPassword): void
     {
         $this->plainPassword = $plainPassword;
+    }
+
+    /**
+     * @return Collection<int, Conversacion>
+     */
+    public function getConversacionesComoUsuarioUno(): Collection
+    {
+        return $this->conversacionesComoUsuarioUno;
+    }
+
+    public function addConversacionesComoUsuarioUno(Conversacion $conversacionesComoUsuarioUno): static
+    {
+        if (!$this->conversacionesComoUsuarioUno->contains($conversacionesComoUsuarioUno)) {
+            $this->conversacionesComoUsuarioUno->add($conversacionesComoUsuarioUno);
+            $conversacionesComoUsuarioUno->setUsuarioUno($this);
+        }
+
+        return $this;
+    }
+
+    public function removeConversacionesComoUsuarioUno(Conversacion $conversacionesComoUsuarioUno): static
+    {
+        if ($this->conversacionesComoUsuarioUno->removeElement($conversacionesComoUsuarioUno)) {
+            // set the owning side to null (unless already changed)
+            if ($conversacionesComoUsuarioUno->getUsuarioUno() === $this) {
+                $conversacionesComoUsuarioUno->setUsuarioUno(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Conversacion>
+     */
+    public function getConversacionesComoUsuarioDos(): Collection
+    {
+        return $this->conversacionesComoUsuarioDos;
+    }
+
+    public function addConversacionesComoUsuarioDo(Conversacion $conversacionesComoUsuarioDo): static
+    {
+        if (!$this->conversacionesComoUsuarioDos->contains($conversacionesComoUsuarioDo)) {
+            $this->conversacionesComoUsuarioDos->add($conversacionesComoUsuarioDo);
+            $conversacionesComoUsuarioDo->setUsuarioDos($this);
+        }
+
+        return $this;
+    }
+
+    public function removeConversacionesComoUsuarioDo(Conversacion $conversacionesComoUsuarioDo): static
+    {
+        if ($this->conversacionesComoUsuarioDos->removeElement($conversacionesComoUsuarioDo)) {
+            // set the owning side to null (unless already changed)
+            if ($conversacionesComoUsuarioDo->getUsuarioDos() === $this) {
+                $conversacionesComoUsuarioDo->setUsuarioDos(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Mensaje>
+     */
+    public function getMensajes(): Collection
+    {
+        return $this->mensajes;
+    }
+
+    public function addMensaje(Mensaje $mensaje): static
+    {
+        if (!$this->mensajes->contains($mensaje)) {
+            $this->mensajes->add($mensaje);
+            $mensaje->setRemitente($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMensaje(Mensaje $mensaje): static
+    {
+        if ($this->mensajes->removeElement($mensaje)) {
+            // set the owning side to null (unless already changed)
+            if ($mensaje->getRemitente() === $this) {
+                $mensaje->setRemitente(null);
+            }
+        }
+
+        return $this;
     }
     
 }
