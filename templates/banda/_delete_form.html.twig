@@ -14,6 +14,6 @@
 <form id="form-eliminar-banda" method="post" action="{{ path('app_banda_delete', {'id': banda.id}) }}">
     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ banda.id) }}">
     <button type="button" class="btn-eliminar" onclick="document.getElementById('modal-eliminar-banda').style.display='flex'">
-        Eliminar Banda
+        Eliminar
     </button>
 </form>

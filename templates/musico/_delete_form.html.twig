@@ -14,6 +14,6 @@
 <form id="form-eliminar-musico" method="post" action="{{ path('app_musico_delete', {'id': musico.id}) }}">
     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ musico.id) }}">
     <button type="button" class="btn-eliminar" onclick="document.getElementById('modal-eliminar-musico').style.display='flex'">
-        Eliminar Perfil
+        Eliminar
     </button>
 </form>

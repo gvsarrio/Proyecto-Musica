@@ -9,6 +9,7 @@
             <link rel="preconnect" href="https://cdn.jsdelivr.net">
             <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
             <link href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.3/dist/vapor/bootstrap.min.css" rel="stylesheet">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
             <link rel="stylesheet" href="{{ asset('css/base.css') }}">
         {% endblock %}
         {% block javascripts %}
@@ -25,7 +26,7 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
-                    <div class="navbar-nav ms-auto">
+                    <div class="navbar-nav ms-auto align-items-center">
                         {% if app.user %}
                             {% if app.user.musico is null %}
                                 <span class="nav-link saludo-usuario">Hola, {{ app.user.email }}</span>
@@ -44,28 +45,75 @@
                                     <a href="{{ path('app_musico_show', {id: app.user.musico.id}) }}" class="nav-link {{ app.request.attributes.get('_route') == 'app_musico_show' ? 'active' : '' }}">Mi Perfil</a>
                                 {% endif %}
                                 <a href="{{ path('app_musico_index') }}" class="nav-link {{ app.request.attributes.get('_route') == 'app_musico_index' ? 'active' : '' }}">Músicos</a>
-                                <a href="{{ path('app_banda_index') }}" class="nav-link {{ app.request.attributes.get('_route') == 'app_banda_index' ? 'active' : '' }}">Bandas</a>
-                                {% if app.user.musico is not null %}
+
+                                {# ── Dropdown Bandas unificado — ver bandas + gestionar ── #}
                                 <div class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Gestionar Banda
+                                        Bandas
                                     </a>
-                                    <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end">
-                                        <li><a class="dropdown-item" href="{{ path('app_banda_new') }}">+ Nueva Banda</a></li>
-                                        {% set mis_memberships = app.user.musico.miembroBandasAceptadas %}
-                                        {% if mis_memberships|length > 0 %}
+                                    <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end nav-dropdown-menu nav-dropdown-bandas">
+                                        <li><a class="dropdown-item" href="{{ path('app_banda_index') }}">Ver Bandas</a></li>
+                                        {% if app.user.musico is not null %}
                                             <li><hr class="dropdown-divider"></li>
-                                            {% for mb in mis_memberships|slice(0, 3) %}
-                                                <li>
-                                                    <a class="dropdown-item" href="{{ path('app_banda_show', {id: mb.banda.id}) }}">
-                                                        {{ mb.banda.nombre }}
-                                                        {% if mb.esAdministrador %}<small class="text-muted">(Admin)</small>{% endif %}
-                                                    </a>
-                                                </li>
-                                            {% endfor %}
+                                            <li><a class="dropdown-item" href="{{ path('app_banda_new') }}">+ Nueva Banda</a></li>
+                                            {% set mis_memberships = app.user.musico.miembroBandasAceptadas %}
+                                            {% if mis_memberships|length > 0 %}
+                                                <li><hr class="dropdown-divider"></li>
+                                                {% for mb in mis_memberships|slice(0, 3) %}
+                                                    <li>
+                                                        <a class="dropdown-item" href="{{ path('app_banda_show', {id: mb.banda.id}) }}">
+                                                            {{ mb.banda.nombre }}
+                                                            {% if mb.esAdministrador %}<small class="text-muted">(Admin)</small>{% endif %}
+                                                        </a>
+                                                    </li>
+                                                {% endfor %}
+                                            {% endif %}
                                         {% endif %}
                                     </ul>
                                 </div>
+
+                                {% if app.user.musico is not null %}
+
+                                {# ── Iconos agrupados en fila — chat y campana ── #}
+                                <div class="nav-iconos-grupo">
+
+                                    {# ── Icono chat (futura implementación) ── #}
+                                    <a href="#" class="nav-link nav-chat" title="Chat">
+                                        <i class="fa-brands fa-weixin"></i>
+                                    </a>
+
+                                    {# ── Campana de notificaciones — invitaciones pendientes ── #}
+                                    {% set invitaciones_nav = app.user.musico.miembroBandas|filter(mb => mb.estado == 'invitado') %}
+                                    {% set n_invitaciones = invitaciones_nav|length %}
+                                    <div class="nav-item dropdown">
+                                        <a class="nav-link nav-campana {{ n_invitaciones > 0 ? 'nav-campana-activa' : '' }}" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" title="Notificaciones">
+                                            <i class="fa-solid fa-bell"></i>
+                                            {% if n_invitaciones > 0 %}
+                                                <span class="nav-campana-badge">{{ n_invitaciones }}</span>
+                                            {% endif %}
+                                        </a>
+                                        <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end nav-dropdown-menu nav-dropdown-notificaciones">
+                                            {% if n_invitaciones == 0 %}
+                                                <li><span class="dropdown-item-text nav-notif-vacia">Sin notificaciones</span></li>
+                                            {% else %}
+                                                <li><span class="dropdown-item-text nav-notif-titulo">Invitaciones pendientes</span></li>
+                                                <li><hr class="dropdown-divider"></li>
+                                                {% for inv in invitaciones_nav %}
+                                                    <li>
+                                                        <a class="dropdown-item nav-notif-item" href="{{ path('app_banda_show', {id: inv.banda.id}) }}">
+                                                            <i class="fa-solid fa-music nav-notif-icono"></i>
+                                                            {{ inv.banda.nombre }}
+                                                        </a>
+                                                    </li>
+                                                {% endfor %}
+                                                <li><hr class="dropdown-divider"></li>
+                                                <li><a class="dropdown-item nav-notif-ver-todas" href="{{ path('app_musico_show', {id: app.user.musico.id}) }}">Ver todas</a></li>
+                                            {% endif %}
+                                        </ul>
+                                    </div>
+
+                                </div>{# fin nav-iconos-grupo #}
+
                                 {% endif %}
                             {% endif %}
                             <a href="{{ path('app_logout') }}" class="nav-link">Salir</a>
@@ -74,19 +122,15 @@
                             <a href="{{ path('app_login') }}" class="nav-link {{ app.request.attributes.get('_route') == 'app_login' ? 'active' : '' }}">Iniciar sesión</a>
                         {% endif %}
                     </div>
-                </div>
-            </div>
+                </div> {# .collapse navbar-collapse #}
+            </div> {# .container-fluid #}
         </nav>
-        <div class="container-fluid px-4">
-            {% for label, messages in app.flashes %}
-                {% for message in messages %}
-                    <div class="alert alert-{{ label }} alert-dismissible fade show">
-                        {{ message }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                    </div>
-                {% endfor %}
-            {% endfor %}
+
+        <main class="container-fluid">
             {% block body %}{% endblock %}
-        </div>
+        </main>
+
+        {% block footer %}{% endblock %}
     </body>
 </html>
+  

@@ -18,7 +18,7 @@
 /* ================== WRAPPER INDEX (grid de músicos) ================== */
 .musicos-wrapper {
     padding: 2rem 2rem;
-    max-width: 1100px;
+    max-width: 1400px;
     margin: 0 auto;
 }
 
@@ -190,7 +190,7 @@
     display: flex;
     flex-direction: row;
     justify-content: center;
-    gap: 0.5rem;
+    gap: 0.85rem; /* más espacio entre botones */
 }
 
 /* Unifica el tamaño de los botones */
@@ -202,8 +202,8 @@
     flex: 1 1 140px;
     min-width: 0;
     max-width: 180px;
-    min-height: 44px;
-    padding: 0 20px;
+    min-height: 50px; 
+    padding: 8px 28px; 
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -1055,12 +1055,12 @@
 
 .musicos-layout {
     display: flex;
-    gap: 1.5rem;
+    gap: 2.5rem; 
     align-items: flex-start;
 }
 
 .musicos-filtros-sidebar {
-    width: 210px;
+    width: 240px;
     flex-shrink: 0;
     background: rgba(16, 5, 38, 0.55);
     border: 1px solid rgba(155, 48, 255, 0.35);
@@ -1097,7 +1097,7 @@
 .filtros-grupo-titulo {
     font-size: 10px;
     font-weight: 700;
-    color: var(--mh-purple);
+    color: var(--mh-magenta); 
     letter-spacing: 1.5px;
     text-transform: uppercase;
     margin: 0 0 0.6rem 0;
@@ -1199,48 +1199,57 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 10px;
-    font-size: 10px;
+    margin-bottom: 8px;
+    font-size: 12px; 
     font-weight: 700;
-    color: rgba(192, 176, 224, 0.7);
+    color: var(--mh-text); 
     letter-spacing: 1.5px;
     text-transform: uppercase;
 }
 
 .filtros-radio-valor {
-    font-size: 12px;
-    font-weight: 700;
+    font-size: 13px;
+    font-weight: 800;
     color: var(--mh-cyan);
-    text-shadow: 0 0 8px rgba(0, 242, 255, 0.5);
+    text-shadow: 0 0 8px rgba(0, 242, 255, 0.6);
     letter-spacing: 0;
     text-transform: none;
+}
+
+/* Icono junto al título de filtros */
+.musicos-filtros-titulo .filtros-icon {
+    margin-right: 10px;
+    font-size: 18px; 
+    color: var(--mh-cyan);
+    vertical-align: middle;
+    display: inline-block;
 }
 
 .filtros-radio-slider {
     width: 100%;
     -webkit-appearance: none;
     appearance: none;
-    height: 4px;
-    border-radius: 4px;
+    height: 6px; 
+    border-radius: 6px;
     outline: none;
     cursor: pointer;
     margin: 0;
     padding: 0;
     border: none;
-    background: rgba(155, 48, 255, 0.18);
+    background: linear-gradient(90deg, rgba(155,48,255,0.18), rgba(0,242,255,0.08));
 }
 
 .filtros-radio-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    width: 16px;
-    height: 16px;
+    width: 20px; 
+    height: 20px;
     border-radius: 50%;
-    background: #9b30ff;
-    border: 2px solid rgba(255, 255, 255, 0.9);
-    box-shadow: 0 0 10px rgba(155, 48, 255, 0.7);
+    background: var(--mh-purple);
+    border: 3px solid rgba(255, 255, 255, 0.95);
+    box-shadow: 0 0 14px rgba(155, 48, 255, 0.85);
     cursor: pointer;
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
 }
 
 .filtros-radio-slider::-webkit-slider-thumb:hover {
@@ -1269,17 +1278,21 @@
     display: flex;
     justify-content: space-between;
     margin-top: 6px;
-    font-size: 10px;
-    color: rgba(192, 176, 224, 0.45);
+    font-size: 11px;
+    color: rgba(192, 176, 224, 0.7); 
 }
 
 .filtros-btn-aplicar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 100%;
     background: var(--mh-purple);
     color: #fff;
     border: none;
     border-radius: 50px;
-    padding: 8px 0;
+    padding: 0 0;
+    min-height: 35px;
     font-size: 12px;
     font-weight: 600;
     cursor: pointer;
@@ -1288,24 +1301,28 @@
 }
 
 .filtros-btn-aplicar:hover {
-    background: #d966ff;
-    box-shadow: 0 0 12px rgba(155, 48, 255, 0.5);
+    background: rgba(113, 5, 214, 0.904); 
+    box-shadow: 0 6px 18px rgba(155, 48, 255, 0.18), inset 0 0 10px rgba(155,48,255,0.06);
 }
 
 .filtros-btn-limpiar {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 100%;
     background: transparent;
-    color: var(--mh-text-muted);
-    border: 1px solid rgba(155, 48, 255, 0.25);
+    color: var(--mh-text);
+    border: 2px solid rgba(155, 48, 255, 0.28);
     border-radius: 50px;
-    padding: 7px 0;
-    font-size: 11px;
+    padding: 0;
+    font-size: 12px; 
+    font-weight: 600;
     cursor: pointer;
-    margin-top: 6px;
-    text-align: center;
+    margin-top: 0.6rem;
     text-decoration: none;
     transition: all 0.2s;
+    box-sizing: border-box;
+    min-height: 35px; 
 }
 
 .filtros-btn-limpiar:hover {
@@ -1335,5 +1352,168 @@
 @media (max-width: 480px) {
     .musicos-layout .musicos-grid {
         grid-template-columns: 1fr;
+    }
+}
+
+/* ============================================
+   TARJETA HORIZONTAL (índice músicos / bandas)
+   ============================================ */
+
+/* ================== LISTA CONTENEDORA ================== */
+.musicos-lista {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    padding-left: 6px; 
+}
+
+/* ================== TARJETA HORIZONTAL ================== */
+.mh-card-h {
+    display: flex;
+    flex-direction: row;
+    background: rgba(16, 5, 38, 0.7);
+    border: 1px solid rgba(155, 48, 255, 0.3);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    height: 200px;
+}
+
+.mh-card-h:hover {
+    transform: translateY(-3px);
+    border-color: rgba(0, 242, 255, 0.7);
+    box-shadow:
+        0 0 0 1px rgba(0, 242, 255, 0.5),
+        0 0 20px rgba(0, 242, 255, 0.3),
+        0 0 40px rgba(155, 48, 255, 0.2);
+}
+
+/* ================== IMAGEN IZQUIERDA ================== */
+.mh-card-h-img {
+    width: 200px;
+    min-width: 200px;
+    height: 100%;
+    overflow: hidden;
+    background: rgba(10, 3, 28, 0.9);
+    flex-shrink: 0;
+}
+
+.mh-card-h-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+}
+
+.mh-card-h:hover .mh-card-h-img img {
+    transform: scale(1.06);
+}
+
+.mh-card-h-img-placeholder {
+    width: 100%;
+    height: 100%;
+    min-height: 140px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(155, 48, 255, 0.05);
+}
+
+/* ================== CONTENIDO DERECHA ================== */
+.mh-card-h-body {
+    flex: 1;
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-width: 0;
+}
+
+.mh-card-h-top {
+    flex: 1;
+}
+
+/* ================== BOTONES TARJETA HORIZONTAL ================== */
+.mh-card-h-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 0.75rem;
+}
+
+.mh-card-h-actions .btn-confirmar,
+.mh-card-h-actions .btn-chat,
+.mh-card-h-actions .btn-editar {
+    padding: 0.5rem 1.6rem !important;
+    font-size: 13px !important;
+    letter-spacing: 0.6px !important;
+}
+
+/* ============================================
+   RESPONSIVE TARJETA HORIZONTAL
+   ============================================ */
+
+@media (max-width: 900px) {
+    .mh-card-h-img {
+        width: 160px;
+        min-width: 160px;
+    }
+}
+
+@media (max-width: 600px) {
+    /* En móvil la tarjeta se vuelve vertical */
+    .mh-card-h {
+        flex-direction: column;
+        height: auto;
+    }
+    .mh-card-h-img {
+        width: 100%;
+        min-width: unset;
+        height: 180px;
+    }
+    .mh-card-h-img-placeholder {
+        min-height: 180px;
+    }
+    .mh-card-h-body {
+        padding: 1rem;
+    }
+    .mh-card-h-actions {
+        justify-content: stretch;
+        gap: 0.5rem;
+    }
+    .mh-card-h-actions .btn-confirmar,
+    .mh-card-h-actions .btn-chat {
+        flex: 1;
+        text-align: center;
+        justify-content: center;
+        display: inline-flex !important;
+        align-items: center;
+        padding: 0.5rem 0 !important;
+    }
+    /* Sidebar en móvil — ocultar por defecto */
+    .musicos-filtros-sidebar {
+        display: none;
+    }
+    .musicos-filtros-sidebar.sidebar-visible {
+        display: block;
+    }
+    /* Botón mostrar filtros en móvil */
+    .btn-filtros-movil {
+        display: flex !important;
+    }
+    /* Layout en columna en móvil */
+    .musicos-layout {
+        flex-direction: column;
+    }
+    .musicos-wrapper {
+        padding: 1rem 0.75rem;
+    }
+    .musicos-lista {
+        gap: 0.75rem;
     }
 }

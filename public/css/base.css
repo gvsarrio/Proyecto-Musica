@@ -136,8 +136,12 @@ a:hover { color: var(--mh-cyan); text-shadow: 0 0 8px rgba(0,212,232,0.4); }
     font-weight: 600 !important;
     color: rgba(240,240,255,0.75) !important;
     position: relative;
-    margin: 0 8px !important;
+    margin: 0 14px !important;
     transition: all 0.2s;
+}
+
+.navbar-nav {
+    gap: 0.45rem;
 }
 
 .nav-link::before {
@@ -204,3 +208,246 @@ a:hover { color: var(--mh-cyan); text-shadow: 0 0 8px rgba(0,212,232,0.4); }
     color: magenta !important;
 }
 .saludo-usuario:hover::before { width: 0; }
+
+/* ================== ICONOS DE ACCIÓN EN NAVBAR (campana y chat) ================== */
+/* Base compartida para campana y chat */
+.nav-campana,
+.nav-chat {
+    position: relative;
+    padding: 0 10px !important;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    font-size: 16px;
+    color: rgba(240, 240, 255, 0.75) !important;
+    margin: 0 2px !important;
+    line-height: 1;
+}
+
+/* Activos — hay notificaciones — color magenta */
+.nav-campana.nav-campana-activa,
+.nav-chat.nav-chat-activo {
+    color: var(--mh-magenta) !important;
+}
+
+/* Hover — blanco */
+.nav-campana:hover,
+.nav-chat:hover {
+    color: #ffffff !important;
+}
+
+/* Ocultar la línea inferior de nav-link en estos iconos */
+.nav-campana::before,
+.nav-chat::before {
+    display: none !important;
+}
+
+/* ================== ICONOS AGRUPADOS EN MÓVIL ================== */
+/* En móvil los iconos van en fila horizontal */
+.nav-iconos-grupo {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    padding: 4px 0;
+}
+
+@media (max-width: 991px) {
+    .nav-iconos-grupo {
+        border-top: 1px solid rgba(155, 48, 255, 0.15);
+        border-bottom: 1px solid rgba(155, 48, 255, 0.15);
+        margin: 4px 0;
+        padding: 8px 0;
+    }
+    .nav-campana,
+    .nav-chat {
+        height: 40px;
+        padding: 0 18px !important;
+    }
+}
+
+/* ================== BADGE CONTADOR (campana y chat) ================== */
+.nav-campana-badge,
+.nav-chat-badge {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    background: #ff2a55;
+    color: #fff;
+    font-family: var(--font-body);
+    font-size: 10px;
+    font-weight: 700;
+    border-radius: 50%;
+    min-width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 3px;
+    box-shadow: 0 0 8px rgba(255, 42, 85, 0.8);
+    line-height: 1;
+}
+
+/* ================== DROPDOWN DE NOTIFICACIONES ================== */
+.nav-notif-titulo {
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--mh-purple-light) !important;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 6px 16px;
+    display: block;
+}
+
+.nav-notif-vacia {
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: #e8e0ff !important;
+    padding: 0.9rem 1rem;
+    display: block;
+    text-align: center;
+}
+
+.nav-notif-item {
+    font-family: var(--font-body);
+    font-size: 14px;
+    display: flex !important;
+    align-items: center;
+    gap: 10px;
+    color: #e8e0ff !important;
+    padding: 0.9rem 1rem;
+}
+
+.nav-notif-icono {
+    color: var(--mh-magenta);
+    font-size: 12px;
+}
+
+.nav-notif-ver-todas {
+    font-family: var(--font-body);
+    font-size: 12px;
+    color: var(--mh-cyan-soft) !important;
+    text-align: center;
+    padding: 0.8rem 1rem;
+    font-weight: 600;
+}
+
+.nav-dropdown-notificaciones .nav-notif-item:hover .nav-notif-icono {
+    color: var(--mh-cyan);
+}
+
+.nav-dropdown-notificaciones .nav-notif-ver-todas:hover {
+    color: #fff !important;
+}
+
+.nav-dropdown-menu {
+    background: linear-gradient(180deg, rgba(12, 8, 28, 0.98), rgba(18, 10, 36, 0.96)) !important;
+    border: 1px solid rgba(155, 48, 255, 0.34) !important;
+    border-radius: 18px !important;
+    padding: 0.5rem !important;
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    box-shadow:
+        0 18px 40px rgba(0, 0, 0, 0.48),
+        0 0 0 1px rgba(0, 240, 255, 0.05) inset,
+        0 0 24px rgba(155, 48, 255, 0.08);
+    overflow: hidden;
+    margin-top: 0.8rem !important;
+}
+
+.nav-dropdown-menu .dropdown-item,
+.nav-dropdown-menu .dropdown-item-text {
+    border-radius: 12px;
+    transition: background-color 0.18s ease, color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.nav-dropdown-menu .dropdown-item:hover,
+.nav-dropdown-menu .dropdown-item:focus {
+    background: rgba(0, 240, 255, 0.08) !important;
+    color: #fff !important;
+    transform: translateX(2px);
+}
+
+.nav-dropdown-menu .dropdown-divider {
+    border-color: rgba(155, 48, 255, 0.2) !important;
+    margin: 0.35rem 0;
+}
+
+.nav-dropdown-bandas {
+    min-width: 220px;
+    padding: 0.4rem !important;
+}
+
+.nav-dropdown-bandas .dropdown-item {
+    font-size: 13px;
+    padding: 0.7rem 0.95rem;
+}
+
+.nav-dropdown-bandas .dropdown-item small {
+    color: var(--mh-cyan) !important;
+    margin-left: 0.2rem;
+}
+
+.nav-dropdown-notificaciones {
+    min-width: 360px;
+    padding: 0.65rem !important;
+    right: -0.75rem !important;
+    left: auto !important;
+    transform: translateX(18px);
+    background: linear-gradient(180deg, rgba(12, 8, 28, 0.82), rgba(18, 10, 36, 0.78)) !important;
+}
+
+.nav-dropdown-notificaciones .nav-notif-titulo {
+    font-size: 12px;
+    letter-spacing: 1.6px;
+    padding: 0.95rem 1rem 0.65rem;
+    color: var(--mh-cyan) !important;
+}
+
+.nav-dropdown-notificaciones .nav-notif-item {
+    padding: 1rem 1rem;
+}
+
+.nav-dropdown-notificaciones .nav-notif-vacia {
+    padding: 1.2rem 1rem;
+    min-height: 72px;
+}
+
+.nav-dropdown-notificaciones .nav-notif-ver-todas {
+    padding: 0.95rem 1rem 1rem;
+}
+
+.nav-dropdown-notificaciones .dropdown-divider {
+    margin: 0.45rem 0;
+}
+/* ================== BOTÓN FILTROS MÓVIL ================== */
+.btn-filtros-movil {
+    display: none;
+    align-items: center;
+    gap: 8px;
+    background: rgba(155, 48, 255, 0.12);
+    border: 1px solid rgba(155, 48, 255, 0.4);
+    border-radius: 50px;
+    color: #e8e0ff;
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 8px 20px;
+    cursor: pointer;
+    margin-bottom: 1rem;
+    transition: all 0.2s;
+}
+
+.btn-filtros-movil:hover {
+    background: rgba(155, 48, 255, 0.25);
+    border-color: var(--mh-purple);
+}
+
+@media (max-width: 600px) {
+    .btn-filtros-movil {
+        display: flex;
+    }
+}
