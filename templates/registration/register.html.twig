@@ -55,7 +55,7 @@
         {% for flash_error in app.flashes('verify_email_error') %}
             <div class="auth-error-alert" role="alert">{{ flash_error }}</div>
         {% endfor %}
-        <h1>Regístrate</h1>
+        <h1>Regístrate en <span class="auth-card-brand" data-text="Music Hub">Music Hub</span></h1>
         <hr class="auth-form-divider">
         {{ form_errors(registrationForm) }}
         {{ form_start(registrationForm) }}

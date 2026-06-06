@@ -71,7 +71,7 @@
 
 /* ================== TÍTULO ================== */
 .auth-card-container h1 {
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-size: 24px;
     font-weight: 700;
     color: #e8e0ff;
@@ -79,6 +79,22 @@
     text-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
     margin-top: 8px;
     margin-bottom: 20px;
+    text-align: center;
+}
+
+.auth-card-subtitle {
+    font-family: var(--font-body);
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--mh-text-muted);
+    text-align: center;
+    margin: 0 0 8px;
+}
+
+.auth-card-brand {
+    font-family: var(--font-display);
+    color: var(--mh-purple-light);
+    letter-spacing: 1px;
 }
 
 /* ================== DIVISOR ================== */

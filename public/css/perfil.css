@@ -993,10 +993,20 @@
 
 @media (max-width: 1024px) {
     .musicos-wrapper {
-        padding: 2rem 3rem;
+        /* menos padding lateral en tablet para aprovechar más ancho */
+        padding: 1.5rem 0.9rem;
     }
 }
 
+@media (max-width: 991px) {
+    .musicos-wrapper {
+        /* permitir fluidez en tablet pequeño: no limitar ancho rígidamente */
+        margin: 0 auto;
+        padding-left: 12px;
+        padding-right: 12px;
+        width: calc(100% - 24px);
+    }
+}
 @media (max-width: 768px) {
     .musicos-wrapper {
         padding: 2rem 1rem;
@@ -1046,6 +1056,33 @@
     .instrumento-add-wrap .btn-confirmar {
         width: 100%;
         text-align: center;
+    }
+
+    .mh-card-h-actions .btn-confirmar,
+    .mh-card-h-actions .btn-chat {
+        min-height: 44px;
+        padding: 10px 18px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        border-radius: 10px;
+    }
+
+    .btn-filtros-movil {
+        min-height: 44px;
+        padding: 10px 18px;
+    }
+
+    .btn-filtros-movil i {
+        display: none;
+    }
+
+    .mh-card-h-actions .btn-confirmar:focus-visible,
+    .mh-card-h-actions .btn-chat:focus-visible,
+    .btn-filtros-movil:focus-visible {
+        box-shadow: 0 0 0 4px rgba(0,212,255,0.12);
+        outline: none;
     }
 }
 
@@ -1338,14 +1375,10 @@
 
 @media (max-width: 900px) {
     .musicos-layout {
-        flex-direction: column;
+        gap: 1.5rem;
     }
     .musicos-filtros-sidebar {
-        width: 100%;
-        position: static;
-    }
-    .musicos-layout .musicos-grid {
-        grid-template-columns: repeat(2, 1fr);
+        width: 220px;
     }
 }
 
@@ -1505,6 +1538,10 @@
     /* Botón mostrar filtros en móvil */
     .btn-filtros-movil {
         display: flex !important;
+    }
+    .musicos-filtros-titulo i,
+    .btn-filtros-movil i {
+        display: none;
     }
     /* Layout en columna en móvil */
     .musicos-layout {

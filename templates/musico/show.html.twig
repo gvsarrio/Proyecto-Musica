@@ -175,7 +175,7 @@
 					<p class="gestionar-seccion-label">Invitaciones pendientes</p>
 					{% for inv in invitaciones %}
 					<div class="gestionar-fila">
-						<a href="{{ path('app_banda_show', {id: inv.banda.id}) }}" class="gestionar-fila-nombre">
+						<a href="{{ path('app_banda_show', {id: inv.banda.id}) }}" class="gestionar-fila-nombre mh-text-verde">
 							{{ inv.banda.nombre }}
 						</a>
 						<div class="gestionar-fila-acciones">

@@ -83,8 +83,8 @@
     <button class="btn-filtros-movil" onclick="
         var s = document.querySelector('.musicos-filtros-sidebar');
         s.classList.toggle('sidebar-visible');
-        this.textContent = s.classList.contains('sidebar-visible') ? '✕ Ocultar filtros' : '⚙ Filtros';
-    ">⚙ Filtros</button>
+        this.innerHTML = s.classList.contains('sidebar-visible') ? '<i class=\'fa-solid fa-xmark\'></i> Ocultar filtros' : '<i class=\'fa-regular fa-filter\'></i> Filtros';
+    "><i class="fa-regular fa-filter"></i> Filtros</button>
 
     {# ── Sidebar de filtros ── #}
     {% include '_filtros_sidebar.html.twig' with {
@@ -102,7 +102,7 @@
             {# Imagen #}
             <div class="mh-card-h-img">
                 {% if musico.imagenUrl %}
-                    <img src="{{ asset('uploads/perfiles/' ~ musico.imagenUrl) }}"
+                    <img loading="lazy" src="{{ asset('uploads/perfiles/' ~ musico.imagenUrl) }}"
                          alt="{{ musico.nombre }}">
                 {% else %}
                     <div class="mh-card-h-img-placeholder">

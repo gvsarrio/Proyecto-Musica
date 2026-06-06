@@ -27,6 +27,18 @@
     --font-body:        'Switzer', sans-serif;
 }
 
+html {
+    font-size: clamp(15px, 1.3vw, 18px);
+}
+
+h1 {
+    font-size: clamp(1.6rem, 3.2vw, 2.4rem);
+}
+
+h2 {
+    font-size: clamp(1.15rem, 2.2vw, 1.6rem);
+}
+
 /* ================== ANIMACIONES GLOBALES ================== */
 /* Usado en perfil.css y auth.css — definido aquí para no duplicar */
 @keyframes borderGlow {
@@ -132,7 +144,7 @@ a:hover { color: var(--mh-cyan); text-shadow: 0 0 8px rgba(0,212,232,0.4); }
 
 .nav-link {
     font-family: var(--font-body) !important;
-    font-size: 18px !important;
+    font-size: clamp(16px, 1.6vw, 20px) !important;
     font-weight: 600 !important;
     color: rgba(240,240,255,0.75) !important;
     position: relative;
@@ -237,6 +249,13 @@ a:hover { color: var(--mh-cyan); text-shadow: 0 0 8px rgba(0,212,232,0.4); }
     color: #ffffff !important;
 }
 
+.nav-admin-usuarios {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    white-space: nowrap;
+}
+
 /* Ocultar la línea inferior de nav-link en estos iconos */
 .nav-campana::before,
 .nav-chat::before {
@@ -260,6 +279,8 @@ a:hover { color: var(--mh-cyan); text-shadow: 0 0 8px rgba(0,212,232,0.4); }
         border-bottom: 1px solid rgba(155, 48, 255, 0.15);
         margin: 4px 0;
         padding: 8px 0;
+        flex-direction: column; /* apilar iconos solo en pantallas pequeñas */
+        gap: 8px;
     }
     .nav-campana,
     .nav-chat {
@@ -315,10 +336,39 @@ a:hover { color: var(--mh-cyan); text-shadow: 0 0 8px rgba(0,212,232,0.4); }
     font-family: var(--font-body);
     font-size: 14px;
     display: flex !important;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-start;
     gap: 10px;
     color: #e8e0ff !important;
     padding: 0.9rem 1rem;
+}
+
+.nav-notif-nombre {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
+.nav-notif-acciones {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.nav-notif-acciones .btn-confirmar,
+.nav-notif-acciones .btn-editar {
+    padding: 0.34rem 0.8rem;
+    font-size: 11px;
+}
+
+.mh-text-verde {
+    color: #34d399 !important;
+    text-shadow: 0 0 8px rgba(52, 211, 153, 0.35);
+}
+
+.mh-text-verde:hover {
+    color: #5ef0b0 !important;
 }
 
 .nav-notif-icono {
@@ -450,4 +500,157 @@ a:hover { color: var(--mh-cyan); text-shadow: 0 0 8px rgba(0,212,232,0.4); }
     .btn-filtros-movil {
         display: flex;
     }
+}
+
+/* ================== NAVBAR MOBILE / TABLET IMPROVEMENTS ================== */
+@media (max-width: 991px) {
+    .navbar {
+        padding: 12px 16px !important;
+    }
+    .btn-navbar-toggler {
+        border: 1px solid rgba(155,48,255,0.22) !important;
+        background: rgba(0,0,0,0.12) !important;
+        color: var(--mh-text) !important;
+        border-radius: 10px !important;
+        padding: 8px 10px !important;
+    }
+
+/* Custom toggler: three bars -> morph to X when expanded */
+.btn-navbar-toggler {
+    position: relative;
+    width: 48px;
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+}
+.btn-navbar-toggler .navbar-toggler-icon {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: var(--mh-cyan);
+    position: relative;
+    transition: transform 220ms ease, background 220ms ease;
+}
+.btn-navbar-toggler .navbar-toggler-icon::before,
+.btn-navbar-toggler .navbar-toggler-icon::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 22px;
+    height: 2px;
+    background: var(--mh-cyan);
+    transition: transform 220ms ease, top 220ms ease, opacity 220ms ease;
+}
+.btn-navbar-toggler .navbar-toggler-icon::before { top: -7px; }
+.btn-navbar-toggler .navbar-toggler-icon::after { top: 7px; }
+
+/* State when expanded: use aria-expanded attribute */
+.btn-navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
+    background: transparent;
+}
+.btn-navbar-toggler[aria-expanded="true"] .navbar-toggler-icon::before {
+    transform: rotate(45deg);
+    top: 0;
+}
+.btn-navbar-toggler[aria-expanded="true"] .navbar-toggler-icon::after {
+    transform: rotate(-45deg);
+    top: 0;
+}
+
+    .navbar-collapse {
+        position: fixed;
+        top: 64px;
+        left: 12px;
+        right: 12px;
+        background: linear-gradient(180deg, rgba(8,3,24,0.92), rgba(12,6,36,0.88));
+        border-radius: 14px;
+        padding: 1.2rem 1rem;
+        z-index: 1050;
+        box-shadow: 0 18px 40px rgba(0,0,0,0.5), 0 0 30px rgba(155,48,255,0.06);
+        backdrop-filter: blur(12px);
+    }
+
+    .navbar-collapse .navbar-nav {
+        display: flex !important;
+        flex-direction: column;
+        align-items: center;
+        gap: 14px !important;
+        padding: 6px 4px;
+    }
+
+    .navbar-collapse .nav-link {
+        font-size: 18px !important;
+        padding: 8px 6px !important;
+        display: block;
+        text-align: center;
+        width: 100%;
+    }
+
+
+    .nav-iconos-grupo {
+        justify-content: center;
+        gap: 18px;
+        flex-direction: column;
+        padding: 8px 0 4px;
+        width: 100%;
+    }
+    .nav-campana,
+    .nav-chat {
+        height: 48px;
+        min-width: 44px;
+        padding: 8px 12px !important;
+        font-size: 18px;
+        border-radius: 10px;
+    }
+
+
+    .navbar-collapse .dropdown-menu {
+        position: static !important;
+        transform: none !important;
+        box-shadow: none !important;
+        background: transparent !important;
+        border: none !important;
+        width: 100% !important;
+        padding: 0 !important;
+    }
+
+    .navbar-collapse .dropdown-item {
+        padding: 10px 12px !important;
+        border-radius: 10px !important;
+        width: calc(100% - 8px) !important;
+        margin: 4px auto !important;
+        background: rgba(16,5,38,0.45) !important;
+        border: 1px solid rgba(155,48,255,0.12) !important;
+        color: var(--mh-text) !important;
+    }
+
+
+    .navbar-collapse .nav-dropdown-bandas,
+    .navbar-collapse .nav-dropdown-notificaciones {
+        min-width: auto !important;
+        padding: 6px !important;
+        background: transparent !important;
+    }
+
+
+    body.menu-opened {
+        padding-top: 14px !important;
+    }
+}
+
+/* Accessibility: visible focus for keyboard and touch users */
+:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(0, 212, 255, 0.12);
+    border-radius: 8px;
+}
+
+a:focus-visible,
+button:focus-visible,
+.nav-link:focus-visible,
+.dropdown-item:focus-visible,
+.btn:focus-visible {
+    box-shadow: 0 0 0 4px rgba(0, 212, 255, 0.14);
 }
