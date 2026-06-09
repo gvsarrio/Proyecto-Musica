@@ -378,6 +378,18 @@ final class BandaController extends AbstractController
         }
 
         if ($this->isCsrfTokenValid('delete' . $banda->getId(), $request->getPayload()->getString('_token'))) {
+            $miembrosAceptados = $banda->getMiembroBandas()->filter(
+                fn($mb) => $mb->getEstado() === 'aceptado'
+            );
+
+            if ($miembrosAceptados->count() > 1) {
+                $this->addFlash('error', 'Debes eliminar a todos los miembros antes de borrar la banda.');
+                return $this->redirectToRoute('app_banda_show', ['id' => $banda->getId()], Response::HTTP_SEE_OTHER);
+            }
+
+            foreach ($banda->getMiembroBandas() as $miembro) {
+                $entityManager->remove($miembro);
+            }
             $entityManager->remove($banda);
             $entityManager->flush();
         }
