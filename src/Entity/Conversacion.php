@@ -33,6 +33,7 @@ class Conversacion
      * @var Collection<int, Mensaje>
      */
     #[ORM\OneToMany(targetEntity: Mensaje::class, mappedBy: 'conversacion')]
+    #[ORM\OrderBy(['fechaEnvio' => 'ASC'])]
     private Collection $mensajes;
 
     public function __construct()

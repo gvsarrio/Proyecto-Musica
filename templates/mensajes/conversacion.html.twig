@@ -30,4 +30,16 @@
 
     {% endfor %}
 
+    <h2>Responder</h2>
+
+    {{ form_start(form) }}
+
+        {{ form_row(form.contenido) }}
+
+        <button type="submit">
+            Enviar
+        </button>
+
+    {{ form_end(form) }}
+
 {% endblock %}

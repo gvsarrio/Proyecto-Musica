@@ -83,7 +83,7 @@ final class MensajesController extends AbstractController
     }
 
     #[Route('/mensajes/conversacion/{id}', name: 'mensaje_conversacion')]
-    public function conversacion(Conversacion $conversacion): Response
+    public function conversacion(Request $request, Conversacion $conversacion, EntityManagerInterface $entityManager): Response
     {
         $usuarioActual = $this->getUser();
 
@@ -100,10 +100,41 @@ final class MensajesController extends AbstractController
             );
         }
 
+        $mensaje = new Mensaje();
+
+        $form = $this->createForm(
+            MensajeType::class,
+            $mensaje
+        );
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $mensaje->setConversacion($conversacion);
+            $mensaje->setRemitente($usuarioActual);
+
+            $conversacion->setFechaUltimoMensaje(
+                $mensaje->getFechaEnvio()
+            );
+
+            $entityManager->persist($mensaje);
+
+            $entityManager->flush();
+
+            return $this->redirectToRoute(
+                'mensaje_conversacion',
+                [
+                    'id' => $conversacion->getId(),
+                ]
+            );
+        }
+
         return $this->render(
             'mensajes/conversacion.html.twig',
             [
                 'conversacion' => $conversacion,
+                'form' => $form,
             ]
         );
     }
