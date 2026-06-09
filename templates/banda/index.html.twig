@@ -2,7 +2,7 @@
 
 {% extends 'base.html.twig' %}
 
-{% block title %}Ver Bandas — Music Hub{% endblock %}
+{% block title %}Bandas — Music Hub{% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
@@ -16,12 +16,12 @@
         (function () {
             var bg = document.getElementById('perfil-background');
             var colors = [
-                'rgba(175, 79, 254, 0.7)',
-                'rgba(0, 242 255, 0.7)',
-                'rgba(66,0,255,0.7)',
-                'rgba(222, 106, 251, 0.7)',
-                'rgba(0, 255, 136, 0.7)',
-                'rgba(155,48,255,0.7)'
+                'rgba(155, 48, 255, 0.85)',
+                'rgba(255, 0, 255, 0.75)',
+                'rgba(0, 212, 255, 0.85)',
+                'rgba(100, 0, 255, 0.8)',
+                'rgba(217, 102, 255, 0.75)',
+                'rgba(0, 255, 200, 0.7)'
             ];
             function createBlob() {
                 var blob = document.createElement('div');
@@ -78,8 +78,15 @@
         <h1 class="musicos-titulo">BANDAS</h1>
     </div>
 
-    {# ── Layout filtros + grid ── #}
+    {# ── Layout filtros + lista ── #}
     <div class="musicos-layout">
+
+    {# ── Botón mostrar filtros en móvil ── #}
+    <button class="btn-filtros-movil" onclick="
+        var s = document.querySelector('.musicos-filtros-sidebar');
+        s.classList.toggle('sidebar-visible');
+        this.innerHTML = s.classList.contains('sidebar-visible') ? '<i class=\'fa-solid fa-xmark\'></i> Ocultar filtros' : '<i class=\'fa-regular fa-filter\'></i> Filtros';
+    "><i class="fa-regular fa-filter"></i> Filtros</button>
 
     {# ── Sidebar de filtros ── #}
     {% include '_filtros_sidebar.html.twig' with {
@@ -88,19 +95,19 @@
         filtros: filtros
     } only %}
 
-    {# ── Grid de tarjetas ── #}
-    <div class="musicos-grid">
+    {# ── Lista de tarjetas horizontales ── #}
+    <div class="musicos-lista">
         {% for banda in bandas %}
-        <div class="musico-card">
+        <div class="mh-card-h">
 
             {# Imagen #}
-            <div class="musico-card-img">
+            <div class="mh-card-h-img">
                 {% if banda.imagenUrl %}
-                    <img src="{{ asset('uploads/bandas/' ~ banda.imagenUrl) }}"
+                    <img loading="lazy" src="{{ asset('uploads/bandas/' ~ banda.imagenUrl) }}"
                          alt="Imagen de banda">
                 {% else %}
-                    <div class="musico-card-img-placeholder">
-                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none"
+                    <div class="mh-card-h-img-placeholder">
+                        <svg width="36" height="36" viewBox="0 0 24 24" fill="none"
                              stroke="#9b30ff" stroke-width="1.2">
                             <path d="M9 18V5l12-2v13"/>
                             <circle cx="6" cy="18" r="3"/>
@@ -110,39 +117,37 @@
                 {% endif %}
             </div>
 
-            {# Info #}
-            <div class="musico-card-info">
-                <h2 class="musico-card-nombre">{{ banda.nombre }}</h2>
-
-                <p class="musico-card-tags">
-                    {% if banda.ubicacion %}
-                        <span>{{ banda.ubicacion }}</span>
-                    {% endif %}
-                    {% if banda.anyoFormacion %}
-                        <span>Desde {{ banda.anyoFormacion }}</span>
-                    {% endif %}
-                    {% if banda.id in distancias|keys %}
-                        <span class="musico-card-distancia-tag">{{ distancias[banda.id] }} km</span>
-                    {% endif %}
-                </p>
-
-                {# Géneros — máximo 3 #}
-                {% if banda.generosMusicales|length > 0 %}
-                <div class="musico-card-instrumentos">
-                    {% for genero in banda.generosMusicales|slice(0, 3) %}
-                        <span class="musico-card-instrumento-tag">{{ genero.nombre }}</span>
-                    {% endfor %}
-                    {% if banda.generosMusicales|length > 3 %}
-                        <span class="musico-card-instrumento-tag">+{{ banda.generosMusicales|length - 3 }}</span>
+            {# Contenido #}
+            <div class="mh-card-h-body">
+                <div class="mh-card-h-top">
+                    <h2 class="musico-card-nombre">{{ banda.nombre }}</h2>
+                    <p class="musico-card-tags">
+                        {% if banda.ubicacion %}
+                            <span>{{ banda.ubicacion }}</span>
+                        {% endif %}
+                        {% if banda.anyoFormacion %}
+                            <span>Desde {{ banda.anyoFormacion }}</span>
+                        {% endif %}
+                        {% if banda.id in distancias|keys %}
+                            <span class="musico-card-distancia-tag">{{ distancias[banda.id] }} km</span>
+                        {% endif %}
+                    </p>
+                    {# Géneros — máximo 4 #}
+                    {% if banda.generosMusicales|length > 0 %}
+                    <div class="musico-card-instrumentos">
+                        {% for genero in banda.generosMusicales|slice(0, 4) %}
+                            <span class="musico-card-instrumento-tag">{{ genero.nombre }}</span>
+                        {% endfor %}
+                        {% if banda.generosMusicales|length > 4 %}
+                            <span class="musico-card-instrumento-tag">+{{ banda.generosMusicales|length - 4 }}</span>
+                        {% endif %}
+                    </div>
                     {% endif %}
                 </div>
-                {% endif %}
-            </div>
-
-            {# Botones #}
-            <div class="musico-card-footer">
-                <a href="{{ path('app_banda_show', {'id': banda.id}) }}" class="btn-confirmar">Ver Banda</a>
-                <a href="#" class="btn-chat" title="Próximamente">Chat</a>
+                <div class="mh-card-h-actions">
+                    <a href="{{ path('app_banda_show', {'id': banda.id}) }}" class="btn-confirmar btn-sm">Ver Banda</a>
+                    <a href="#" class="btn-chat btn-sm" title="Próximamente">Chat</a>
+                </div>
             </div>
 
         </div>

@@ -14,12 +14,12 @@
         (function () {
             var bg = document.getElementById('perfil-background');
             var colors = [
-                'rgba(175, 79, 254, 0.7)',
-                'rgba(0, 242, 255, 0.7)',
-                'rgba(66,0,255,0.7)',
-                'rgba(222, 106, 251, 0.7)',
-                'rgba(0, 255, 136, 0.7)',
-                'rgba(155,48,255,0.7)'
+                'rgba(155, 48, 255, 0.85)',
+				'rgba(255, 0, 255, 0.75)',
+				'rgba(0, 212, 255, 0.85)',
+				'rgba(100, 0, 255, 0.8)',
+				'rgba(217, 102, 255, 0.75)',
+				'rgba(0, 255, 200, 0.7)'
             ];
             function createBlob() {
                 var blob = document.createElement('div');
@@ -182,7 +182,7 @@
                     <p class="mh-modal-titulo">¿Salir de la banda?</p>
                     <p class="mh-modal-texto">Abandonarás {{ banda.nombre }}. Podrás solicitar unirte de nuevo en el futuro.</p>
                     <div class="mh-modal-acciones">
-                        <button type="button" class="btn-eliminar" onclick="document.getElementById('form-salir-banda').submit()">Salir de la Banda</button>
+                        <button type="button" class="btn-eliminar" onclick="document.getElementById('form-salir-banda').submit()">Salir</button>
                         <button type="button" class="btn-principal" onclick="document.getElementById('modal-salir-banda').style.display='none'">Cancelar</button>
                     </div>
                 </div>
@@ -193,9 +193,9 @@
         {# Botones de acción #}
         <div class="d-flex justify-content-center gap-3 mt-4 flex-wrap">
             {% if es_admin %}
-                <a href="{{ path('app_banda_edit', {'id': banda.id}) }}" class="btn-editar">Editar Banda</a>
+                <a href="{{ path('app_banda_edit', {'id': banda.id}) }}" class="btn-editar">Editar</a>
                 <a href="{{ path('app_banda_solicitudes', {'id': banda.id}) }}" class="btn-principal">
-                    Gestionar Banda
+                    Gestionar
                     {% set n_pendientes = banda.miembroBandas|filter(mb => mb.estado == 'pendiente')|length %}
                     {% if n_pendientes > 0 %}({{ n_pendientes }}){% endif %}
                 </a>
@@ -208,12 +208,12 @@
                     <form id="form-salir-banda" method="post" action="{{ path('app_banda_salir', {id: banda.id}) }}" style="display: inline;">
                         <input type="hidden" name="_token" value="{{ csrf_token('salir_banda_' ~ banda.id) }}">
                         <button type="button" class="btn-eliminar" onclick="document.getElementById('modal-salir-banda').style.display='flex'">
-                            Salir de la Banda
+                            Salir
                         </button>
                     </form>
                 {% endif %}
             {% endif %}
-            <a href="{{ path('app_banda_index') }}" class="btn-confirmar">Ver Bandas</a>
+            <a href="{{ path('app_banda_index') }}" class="btn-confirmar">Bandas</a>
         </div>
 
         {% if es_admin %}

@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Ver Músicos — Music Hub{% endblock %}
+{% block title %}Músicos — Music Hub{% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
@@ -14,12 +14,12 @@
         (function () {
             var bg = document.getElementById('perfil-background');
             var colors = [
-                'rgba(175, 79, 254, 0.7)',
-                'rgba(0, 242, 255, 0.7)',
-                'rgba(66,0,255,0.7)',
-                'rgba(222, 106, 251, 0.7)',
-                'rgba(0, 255, 136, 0.7)',
-                'rgba(155,48,255,0.7)'
+                'rgba(155, 48, 255, 0.85)',
+                'rgba(255, 0, 255, 0.75)',
+                'rgba(0, 212, 255, 0.85)',
+                'rgba(100, 0, 255, 0.8)',
+                'rgba(217, 102, 255, 0.75)',
+                'rgba(0, 255, 200, 0.7)'
             ];
             function createBlob() {
                 var blob = document.createElement('div');
@@ -76,8 +76,15 @@
         <h1 class="musicos-titulo">MÚSICOS</h1>
     </div>
 
-    {# ── Layout filtros + grid ── #}
+    {# ── Layout filtros + lista ── #}
     <div class="musicos-layout">
+
+    {# ── Botón mostrar filtros en móvil ── #}
+    <button class="btn-filtros-movil" onclick="
+        var s = document.querySelector('.musicos-filtros-sidebar');
+        s.classList.toggle('sidebar-visible');
+        this.innerHTML = s.classList.contains('sidebar-visible') ? '<i class=\'fa-solid fa-xmark\'></i> Ocultar filtros' : '<i class=\'fa-regular fa-filter\'></i> Filtros';
+    "><i class="fa-regular fa-filter"></i> Filtros</button>
 
     {# ── Sidebar de filtros ── #}
     {% include '_filtros_sidebar.html.twig' with {
@@ -87,19 +94,19 @@
         instrumentos: instrumentos
     } only %}
 
-    {# ── Grid de tarjetas ── #}
-    <div class="musicos-grid">
+    {# ── Lista de tarjetas horizontales ── #}
+    <div class="musicos-lista">
         {% for musico in musicos %}
-        <div class="musico-card">
+        <div class="mh-card-h">
 
             {# Imagen #}
-            <div class="musico-card-img">
+            <div class="mh-card-h-img">
                 {% if musico.imagenUrl %}
-                    <img src="{{ asset('uploads/perfiles/' ~ musico.imagenUrl) }}"
+                    <img loading="lazy" src="{{ asset('uploads/perfiles/' ~ musico.imagenUrl) }}"
                          alt="{{ musico.nombre }}">
                 {% else %}
-                    <div class="musico-card-img-placeholder">
-                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none"
+                    <div class="mh-card-h-img-placeholder">
+                        <svg width="36" height="36" viewBox="0 0 24 24" fill="none"
                              stroke="#9b30ff" stroke-width="1.2">
                             <path d="M9 18V5l12-2v13"/>
                             <circle cx="6" cy="18" r="3"/>
@@ -109,51 +116,48 @@
                 {% endif %}
             </div>
 
-            {# Info #}
-            <div class="musico-card-info">
-                <h2 class="musico-card-nombre">{{ musico.nombre }}</h2>
-
-                <p class="musico-card-tags">
-                    {% if musico.ubicacion %}
-                        <span>{{ musico.ubicacion }}</span>
+            {# Contenido #}
+            <div class="mh-card-h-body">
+                <div class="mh-card-h-top">
+                    <h2 class="musico-card-nombre">{{ musico.nombre }}</h2>
+                    <p class="musico-card-tags">
+                        {% if musico.ubicacion %}
+                            <span>{{ musico.ubicacion }}</span>
+                        {% endif %}
+                        {% if musico.anyosExperiencia is not null %}
+                            <span>{{ musico.anyosExperiencia }} años exp.</span>
+                        {% endif %}
+                        {% if musico.id in distancias|keys %}
+                            <span class="musico-card-distancia-tag">{{ distancias[musico.id] }} km</span>
+                        {% endif %}
+                    </p>
+                    {# Instrumentos — máximo 4 #}
+                    {% if musico.instrumentos|length > 0 %}
+                    <div class="musico-card-instrumentos">
+                        {% for instrumento in musico.instrumentos|slice(0, 4) %}
+                            <span class="musico-card-instrumento-tag">{{ instrumento.nombre }}</span>
+                        {% endfor %}
+                        {% if musico.instrumentos|length > 4 %}
+                            <span class="musico-card-instrumento-tag">+{{ musico.instrumentos|length - 4 }}</span>
+                        {% endif %}
+                    </div>
                     {% endif %}
-                    {% if musico.anyosExperiencia is not null %}
-                        <span>{{ musico.anyosExperiencia }} años exp.</span>
-                    {% endif %}
-                    {% if musico.id in distancias|keys %}
-                        <span class="musico-card-distancia-tag">{{ distancias[musico.id] }} km</span>
-                    {% endif %}
-                </p>
-
-                {# Instrumentos — máximo 3 #}
-                {% if musico.instrumentos|length > 0 %}
-                <div class="musico-card-instrumentos">
-                    {% for instrumento in musico.instrumentos|slice(0, 3) %}
-                        <span class="musico-card-instrumento-tag">{{ instrumento.nombre }}</span>
-                    {% endfor %}
-                    {% if musico.instrumentos|length > 3 %}
-                        <span class="musico-card-instrumento-tag">+{{ musico.instrumentos|length - 3 }}</span>
+                    {# Géneros — máximo 3 #}
+                    {% if musico.generosMusicales|length > 0 %}
+                    <div class="musico-card-instrumentos mt-1">
+                        {% for genero in musico.generosMusicales|slice(0, 3) %}
+                            <span class="musico-card-instrumento-tag">{{ genero.nombre }}</span>
+                        {% endfor %}
+                        {% if musico.generosMusicales|length > 3 %}
+                            <span class="musico-card-instrumento-tag">+{{ musico.generosMusicales|length - 3 }}</span>
+                        {% endif %}
+                    </div>
                     {% endif %}
                 </div>
-                {% endif %}
-
-                {# Géneros — máximo 3 #}
-                {% if musico.generosMusicales|length > 0 %}
-                <div class="musico-card-instrumentos">
-                    {% for genero in musico.generosMusicales|slice(0, 3) %}
-                        <span class="musico-card-instrumento-tag">{{ genero.nombre }}</span>
-                    {% endfor %}
-                    {% if musico.generosMusicales|length > 3 %}
-                        <span class="musico-card-instrumento-tag">+{{ musico.generosMusicales|length - 3 }}</span>
-                    {% endif %}
+                <div class="mh-card-h-actions">
+                    <a href="{{ path('app_musico_show', {'id': musico.id}) }}" class="btn-confirmar btn-sm">Ver Perfil</a>
+                    <a href="#" class="btn-chat btn-sm" title="Próximamente">Chat</a>
                 </div>
-                {% endif %}
-            </div>
-
-            {# Botones Ver perfil + Chat #}
-            <div class="musico-card-footer">
-                <a href="{{ path('app_musico_show', {'id': musico.id}) }}" class="btn-confirmar">Ver Perfil</a>
-               <a href="#" class="btn-chat" title="Próximamente">Chat</a>
             </div>
 
         </div>

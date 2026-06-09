@@ -14,12 +14,12 @@
 		(function () {
 			var bg = document.getElementById('perfil-background');
 			var colors = [
-				'rgba(175, 79, 254, 0.7)',
-				'rgba(0, 242, 255, 0.7)',
-				'rgba(66,0,255,0.7)',
-				'rgba(222, 106, 251, 0.7)',
-				'rgba(0, 255, 136, 0.7)',
-				'rgba(155,48,255,0.7)'
+				'rgba(155, 48, 255, 0.85)',
+				'rgba(255, 0, 255, 0.75)',
+				'rgba(0, 212, 255, 0.85)',
+				'rgba(100, 0, 255, 0.8)',
+				'rgba(217, 102, 255, 0.75)',
+				'rgba(0, 255, 200, 0.7)'
 			];
 
 		function createBlob() {
@@ -175,7 +175,7 @@
 					<p class="gestionar-seccion-label">Invitaciones pendientes</p>
 					{% for inv in invitaciones %}
 					<div class="gestionar-fila">
-						<a href="{{ path('app_banda_show', {id: inv.banda.id}) }}" class="gestionar-fila-nombre">
+						<a href="{{ path('app_banda_show', {id: inv.banda.id}) }}" class="gestionar-fila-nombre mh-text-verde">
 							{{ inv.banda.nombre }}
 						</a>
 						<div class="gestionar-fila-acciones">
@@ -185,7 +185,7 @@
 							</form>
 							<form method="post" action="{{ path('app_banda_rechazar_invitacion', {id: inv.id}) }}">
 								<input type="hidden" name="_token" value="{{ csrf_token('rechazar_invitacion_' ~ inv.id) }}">
-								<button type="submit" class="btn-editar btn-sm">Rechazar</button>
+								<button type="submit" class="btn-eliminar btn-sm">Rechazar</button>
 							</form>
 						</div>
 					</div>
@@ -197,20 +197,20 @@
 			<div class="d-flex justify-content-center gap-2 mt-4 flex-wrap">
 				{# Solo se muestra el botón para EDITAR cuando el perfil es del propio usuario logueado #}
 				{% if app.user == musico.usuario %}
-					<a href="{{ path('app_musico_edit', {'id': musico.id}) }}" class="btn-editar">Editar Perfil</a>
+					<a href="{{ path('app_musico_edit', {'id': musico.id}) }}" class="btn-editar">Editar</a>
 				{% endif %}
 
 				{# Botones de invitar a banda (visible para admins viendo el perfil de otro músico) #}
 				{% for banda in bandas_para_invitar %}
 					<form method="post" action="{{ path('app_banda_invitar', {banda: banda.id, musico: musico.id}) }}">
 						<input type="hidden" name="_token" value="{{ csrf_token('invitar_' ~ banda.id ~ '_' ~ musico.id) }}">
-						<button type="submit" class="btn-confirmar btn-sm">
+						<button type="submit" class="btn-editar">
 							Invitar a {{ banda.nombre }}
 						</button>
 					</form>
 				{% endfor %}
 
-				<a href="{{ path('app_musico_index') }}" class="btn-confirmar">Ver Músicos</a>
+				<a href="{{ path('app_musico_index') }}" class="btn-confirmar">Músicos</a>
 			</div>
 
 			{# Solo se muestra el botón para BORRAR cuando el perfil es del propio usuario logueado #}
