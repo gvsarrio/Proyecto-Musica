@@ -222,17 +222,20 @@ a:hover { color: var(--mh-cyan); text-shadow: 0 0 8px rgba(0,212,232,0.4); }
 .saludo-usuario:hover::before { width: 0; }
 
 /* ================== ICONOS DE ACCIÓN EN NAVBAR (campana y chat) ================== */
-/* Base compartida para campana y chat */
+
 .nav-campana,
 .nav-chat {
     position: relative;
     padding: 0 10px !important;
+    margin: 0 10px !important;
     display: flex !important;
     align-items: center;
     justify-content: center;
     height: 100%;
     font-size: 16px;
     color: rgba(240, 240, 255, 0.75) !important;
+    transition: all 0.2s;
+}
     margin: 0 2px !important;
     line-height: 1;
 }
@@ -243,10 +246,30 @@ a:hover { color: var(--mh-cyan); text-shadow: 0 0 8px rgba(0,212,232,0.4); }
     color: var(--mh-magenta) !important;
 }
 
-/* Hover — blanco */
+/* Hover — blanco igual que .nav-link */
 .nav-campana:hover,
 .nav-chat:hover {
     color: #ffffff !important;
+}
+
+/* Subrayado cian en hover igual que .nav-link */
+.nav-campana::after,
+.nav-chat::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 1px;
+    background: var(--mh-cyan);
+    box-shadow: 0 0 6px var(--mh-cyan);
+    transition: width 0.3s ease;
+}
+
+.nav-campana:hover::after,
+.nav-chat:hover::after {
+    width: 60%;
 }
 
 .nav-admin-usuarios {
@@ -502,7 +525,7 @@ a:hover { color: var(--mh-cyan); text-shadow: 0 0 8px rgba(0,212,232,0.4); }
     }
 }
 
-/* ================== NAVBAR MOBILE / TABLET IMPROVEMENTS ================== */
+/* ================== NAVBAR MOVIL/ TABLET ================== */
 @media (max-width: 991px) {
     .navbar {
         padding: 12px 16px !important;
@@ -515,7 +538,7 @@ a:hover { color: var(--mh-cyan); text-shadow: 0 0 8px rgba(0,212,232,0.4); }
         padding: 8px 10px !important;
     }
 
-/* Custom toggler: three bars -> morph to X when expanded */
+
 .btn-navbar-toggler {
     position: relative;
     width: 48px;
@@ -546,7 +569,7 @@ a:hover { color: var(--mh-cyan); text-shadow: 0 0 8px rgba(0,212,232,0.4); }
 .btn-navbar-toggler .navbar-toggler-icon::before { top: -7px; }
 .btn-navbar-toggler .navbar-toggler-icon::after { top: 7px; }
 
-/* State when expanded: use aria-expanded attribute */
+
 .btn-navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
     background: transparent;
 }
@@ -590,19 +613,22 @@ a:hover { color: var(--mh-cyan); text-shadow: 0 0 8px rgba(0,212,232,0.4); }
 
 
     .nav-iconos-grupo {
-        justify-content: center;
-        gap: 18px;
-        flex-direction: column;
-        padding: 8px 0 4px;
-        width: 100%;
+        display: contents !important;
     }
     .nav-campana,
     .nav-chat {
-        height: 48px;
-        min-width: 44px;
-        padding: 8px 12px !important;
-        font-size: 18px;
-        border-radius: 10px;
+        font-size: 18px !important;
+        padding: 8px 6px !important;
+        display: block !important;
+        text-align: center !important;
+        width: 100% !important;
+        height: auto !important;
+        color: rgba(240,240,255,0.75) !important;
+        margin: 0 !important;
+    }
+    .nav-campana::before,
+    .nav-chat::before {
+        display: none !important;
     }
 
 
@@ -640,7 +666,7 @@ a:hover { color: var(--mh-cyan); text-shadow: 0 0 8px rgba(0,212,232,0.4); }
     }
 }
 
-/* Accessibility: visible focus for keyboard and touch users */
+
 :focus-visible {
     outline: none;
     box-shadow: 0 0 0 4px rgba(0, 212, 255, 0.12);

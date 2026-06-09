@@ -1,5 +1,3 @@
-{# templates/banda/index.html.twig #}
-
 {% extends 'base.html.twig' %}
 
 {% block title %}Bandas — Music Hub{% endblock %}
@@ -81,12 +79,14 @@
     {# ── Layout filtros + lista ── #}
     <div class="musicos-layout">
 
-    {# ── Botón mostrar filtros en móvil ── #}
+    {# ── Botón mostrar/ocultar filtros en móvil ── #}
     <button class="btn-filtros-movil" onclick="
         var s = document.querySelector('.musicos-filtros-sidebar');
         s.classList.toggle('sidebar-visible');
-        this.innerHTML = s.classList.contains('sidebar-visible') ? '<i class=\'fa-solid fa-xmark\'></i> Ocultar filtros' : '<i class=\'fa-regular fa-filter\'></i> Filtros';
-    "><i class="fa-regular fa-filter"></i> Filtros</button>
+        this.innerHTML = s.classList.contains('sidebar-visible')
+            ? '<i class=\'fa-solid fa-xmark\'></i> Ocultar filtros'
+            : '<i class=\'fa-solid fa-sliders\'></i> Filtros';
+    "><i class="fa-solid fa-sliders"></i> Filtros</button>
 
     {# ── Sidebar de filtros ── #}
     {% include '_filtros_sidebar.html.twig' with {
