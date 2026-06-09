@@ -31,6 +31,12 @@ class Mensaje
     #[ORM\Column]
     private bool $leido = false;
 
+    public function __construct()
+    {
+        $this->fechaEnvio = new \DateTimeImmutable();
+        $this->leido = false;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

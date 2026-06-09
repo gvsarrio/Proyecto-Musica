@@ -38,6 +38,7 @@ class Conversacion
     public function __construct()
     {
         $this->mensajes = new ArrayCollection();
+        $this->fechaCreacion = new \DateTimeImmutable();
     }
 
     public function getId(): ?int

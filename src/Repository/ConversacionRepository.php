@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Conversacion;
+use App\Entity\Usuario;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -40,4 +41,20 @@ class ConversacionRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
+    public function buscarEntreUsuarios(
+        Usuario $usuarioA,
+        Usuario $usuarioB
+    ): ?Conversacion {
+        return $this->createQueryBuilder('c')
+            ->where(
+                '(c.usuarioUno = :usuarioA AND c.usuarioDos = :usuarioB)
+             OR
+             (c.usuarioUno = :usuarioB AND c.usuarioDos = :usuarioA)'
+            )
+            ->setParameter('usuarioA', $usuarioA)
+            ->setParameter('usuarioB', $usuarioB)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }

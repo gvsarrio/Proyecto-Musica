@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <h1>Conversación</h1>
+
+    {% for mensaje in conversacion.mensajes %}
+
+        <div>
+            <strong>
+                {{ mensaje.remitente.musico.nombre }}
+            </strong>
+
+            <br>
+
+            {{ mensaje.contenido }}
+
+            <br>
+
+            <small>
+                {{ mensaje.fechaEnvio|date('d/m/Y H:i', 'Europe/Madrid') }}
+            </small>
+        </div>
+
+        <hr>
+
+    {% else %}
+
+        <p>No hay mensajes.</p>
+
+    {% endfor %}
+
+{% endblock %}
