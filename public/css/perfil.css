@@ -1323,13 +1323,15 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 100%;
+    width: 200px;
+    margin-left: auto;
+    margin-right: auto;
     background: var(--mh-purple);
     color: #fff;
     border: none;
     border-radius: 50px;
-    padding: 0 0;
-    min-height: 35px;
+    padding: 0.5rem 1.5rem;
+    min-height: 38px;
     font-size: 12px;
     font-weight: 600;
     cursor: pointer;
@@ -1346,20 +1348,22 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 100%;
+    width: 200px;
+    margin-left: auto;
+    margin-right: auto;
     background: transparent;
     color: var(--mh-text);
     border: 2px solid rgba(155, 48, 255, 0.28);
     border-radius: 50px;
-    padding: 0;
-    font-size: 12px; 
+    padding: 0.5rem 1.5rem;
+    font-size: 12px;
     font-weight: 600;
     cursor: pointer;
     margin-top: 0.6rem;
     text-decoration: none;
     transition: all 0.2s;
     box-sizing: border-box;
-    min-height: 35px; 
+    min-height: 38px;
 }
 
 .filtros-btn-limpiar:hover {
@@ -1396,10 +1400,10 @@
 .musicos-lista {
     flex: 1;
     min-width: 0;
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     gap: 1.25rem;
-    padding-left: 6px; 
+    align-content: start;
 }
 
 /* ================== TARJETA HORIZONTAL ================== */
@@ -1498,8 +1502,8 @@
     }
 }
 
-@media (max-width: 600px) {
-    /* En móvil la tarjeta se vuelve vertical */
+@media (max-width: 768px) {
+    /* Tarjeta vertical en móvil y tablet */
     .mh-card-h {
         flex-direction: column;
         height: auto;
@@ -1528,16 +1532,24 @@
         align-items: center;
         padding: 0.5rem 0 !important;
     }
-    /* Sidebar en móvil — ocultar por defecto */
+    /* Sidebar en móvil — ocultar por defecto, mostrar inline al hacer clic */
     .musicos-filtros-sidebar {
         display: none;
+        width: 100% !important;
+        position: relative !important;
+        margin-bottom: 1rem;
     }
     .musicos-filtros-sidebar.sidebar-visible {
         display: block;
     }
-    /* Botón mostrar filtros en móvil */
+    /* Botón filtros visible en móvil */
     .btn-filtros-movil {
         display: flex !important;
+        justify-content: center;
+        align-self: center;
+        width: auto;
+        min-width: 160px;
+        max-width: 240px;
     }
     .musicos-filtros-titulo i,
     .btn-filtros-movil i {
@@ -1546,11 +1558,43 @@
     /* Layout en columna en móvil */
     .musicos-layout {
         flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+    }
+    /* 1 tarjeta por fila en móvil */
+    .musicos-lista {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
     }
     .musicos-wrapper {
-        padding: 1rem 0.75rem;
+        padding: 0.75rem 0.25rem;
     }
-    .musicos-lista {
-        gap: 0.75rem;
+}
+
+/* ================== BOTÓN CERRAR OVERLAY FILTROS (solo móvil) ================== */
+.btn-filtros-cerrar {
+    display: none;
+}
+
+@media (max-width: 600px) {
+    .btn-filtros-cerrar {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 50px;
+        color: #e8e0ff;
+        font-family: var(--font-body);
+        font-size: 13px;
+        font-weight: 600;
+        padding: 8px 20px;
+        cursor: pointer;
+        margin-bottom: 1.5rem;
+        transition: all 0.2s;
+    }
+    .btn-filtros-cerrar:hover {
+        border-color: rgba(155, 48, 255, 0.5);
+        background: rgba(155, 48, 255, 0.1);
     }
 }
