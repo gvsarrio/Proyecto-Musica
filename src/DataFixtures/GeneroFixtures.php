@@ -18,6 +18,9 @@ class GeneroFixtures extends Fixture
         ];
 
         foreach ($nombres as $nombre) {
+            if ($manager->getRepository(Genero::class)->findOneBy(['nombre' => $nombre])) {
+                continue;
+            }
             $genero = new Genero();
             $genero->setNombre($nombre);
             $manager->persist($genero);
