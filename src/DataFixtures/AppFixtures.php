@@ -17,6 +17,9 @@ class AppFixtures extends Fixture
         ];
 
         foreach ($nombres as $nombre) {
+            if ($manager->getRepository(InstrumentoSistema::class)->findOneBy(['nombre' => $nombre])) {
+                continue;
+            }
             $instrumento = new InstrumentoSistema();
             $instrumento->setNombre($nombre);
             $manager->persist($instrumento);

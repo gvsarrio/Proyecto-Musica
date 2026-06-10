@@ -51,7 +51,7 @@
                                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                         Bandas
                                     </a>
-                                    <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end">
+                                    <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end nav-dropdown-menu nav-dropdown-bandas">
                                         <li><a class="dropdown-item" href="{{ path('app_banda_index') }}">Ver Bandas</a></li>
                                         {% if app.user.musico is not null %}
                                             <li><hr class="dropdown-divider"></li>
@@ -92,7 +92,7 @@
                                                 <span class="nav-campana-badge">{{ n_invitaciones }}</span>
                                             {% endif %}
                                         </a>
-                                        <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end">
+                                        <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end nav-dropdown-menu nav-dropdown-notificaciones">
                                             {% if n_invitaciones == 0 %}
                                                 <li><span class="dropdown-item-text nav-notif-vacia">Sin notificaciones</span></li>
                                             {% else %}
