@@ -75,7 +75,7 @@
         0 0 50px rgba(123, 47, 247, 0.2),
         inset 0 1px 0 rgba(217, 102, 255, 0.1);
     position: relative;
-    overflow: visible;  /* visible para no crear segunda scrollbar */
+    overflow: visible;
 }
 
 .perfil-accent-bar {
@@ -190,10 +190,9 @@
     display: flex;
     flex-direction: row;
     justify-content: center;
-    gap: 0.85rem; /* más espacio entre botones */
+    gap: 0.85rem;
 }
 
-/* Unifica el tamaño de los botones */
 .musico-card-footer .btn-confirmar,
 .musico-card-footer .btn-chat {
     display: inline-flex;
@@ -202,8 +201,8 @@
     flex: 1 1 140px;
     min-width: 0;
     max-width: 180px;
-    min-height: 50px; 
-    padding: 8px 28px; 
+    min-height: 50px;
+    padding: 8px 28px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -408,7 +407,7 @@
     background: transparent;
     border: none;
     padding: 8px 0;
-    max-height: 158px;   /* 3 filas visibles antes del scroll */
+    max-height: 158px;
     overflow-y: auto;
     overflow-x: hidden;
     display: flex;
@@ -421,7 +420,7 @@
     display: inline-flex !important;
     align-items: center;
     justify-content: center;
-    flex: 1 0 calc(25% - 10px);   /* 4 por fila */
+    flex: 1 0 calc(25% - 10px);
     min-width: 130px;
     max-width: 200px;
     padding: 0 !important;
@@ -522,14 +521,12 @@
     border-radius: 10px;
 }
 
-/* Evitar barras de scroll duplicadas: ocultar scrollbars de cualquier
-   elemento hijo dentro del contenedor*/
 .perfil-instrumentos-container *::-webkit-scrollbar {
     display: none;
 }
 .perfil-instrumentos-container * {
-    -ms-overflow-style: none; /* IE/Edge */
-    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
 
 
@@ -993,14 +990,12 @@
 
 @media (max-width: 1024px) {
     .musicos-wrapper {
-        /* menos padding lateral en tablet para aprovechar más ancho */
         padding: 1.5rem 0.9rem;
     }
 }
 
 @media (max-width: 991px) {
     .musicos-wrapper {
-        /* permitir fluidez en tablet pequeño: no limitar ancho rígidamente */
         margin: 0 auto;
         padding-left: 12px;
         padding-right: 12px;
@@ -1015,7 +1010,7 @@
         grid-template-columns: 1fr;
     }
     .perfil-instrumentos-container .form-check {
-        flex: 1 0 calc(50% - 10px);   /* 2 por fila en tablet */
+        flex: 1 0 calc(50% - 10px);
         max-width: 100%;
     }
     .gestionar-fila {
@@ -1047,7 +1042,7 @@
         max-width: 100%;
     }
     .perfil-instrumentos-container .form-check {
-        flex: 1 0 100%;   /* 1 por fila en móvil */
+        flex: 1 0 100%;
         max-width: 100%;
     }
     .instrumento-add-wrap {
@@ -1092,7 +1087,7 @@
 
 .musicos-layout {
     display: flex;
-    gap: 2.5rem; 
+    gap: 2.5rem;
     align-items: flex-start;
 }
 
@@ -1134,7 +1129,7 @@
 .filtros-grupo-titulo {
     font-size: 10px;
     font-weight: 700;
-    color: var(--mh-magenta); 
+    color: var(--mh-magenta);
     letter-spacing: 1.5px;
     text-transform: uppercase;
     margin: 0 0 0.6rem 0;
@@ -1237,9 +1232,9 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 8px;
-    font-size: 12px; 
+    font-size: 12px;
     font-weight: 700;
-    color: var(--mh-text); 
+    color: var(--mh-text);
     letter-spacing: 1.5px;
     text-transform: uppercase;
 }
@@ -1253,10 +1248,9 @@
     text-transform: none;
 }
 
-/* Icono junto al título de filtros */
 .musicos-filtros-titulo .filtros-icon {
     margin-right: 10px;
-    font-size: 18px; 
+    font-size: 18px;
     color: var(--mh-cyan);
     vertical-align: middle;
     display: inline-block;
@@ -1266,7 +1260,7 @@
     width: 100%;
     -webkit-appearance: none;
     appearance: none;
-    height: 6px; 
+    height: 6px;
     border-radius: 6px;
     outline: none;
     cursor: pointer;
@@ -1279,7 +1273,7 @@
 .filtros-radio-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    width: 20px; 
+    width: 20px;
     height: 20px;
     border-radius: 50%;
     background: var(--mh-purple);
@@ -1316,7 +1310,7 @@
     justify-content: space-between;
     margin-top: 6px;
     font-size: 11px;
-    color: rgba(192, 176, 224, 0.7); 
+    color: rgba(192, 176, 224, 0.7);
 }
 
 .filtros-btn-aplicar {
@@ -1340,7 +1334,7 @@
 }
 
 .filtros-btn-aplicar:hover {
-    background: rgba(113, 5, 214, 0.904); 
+    background: rgba(113, 5, 214, 0.904);
     box-shadow: 0 6px 18px rgba(155, 48, 255, 0.18), inset 0 0 10px rgba(155,48,255,0.06);
 }
 
@@ -1417,7 +1411,7 @@
     transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    height: 200px;
+    min-height: 200px;
 }
 
 .mh-card-h:hover {
@@ -1433,10 +1427,10 @@
 .mh-card-h-img {
     width: 200px;
     min-width: 200px;
-    height: 100%;
     overflow: hidden;
     background: rgba(10, 3, 28, 0.9);
     flex-shrink: 0;
+    align-self: stretch;
 }
 
 .mh-card-h-img img {
@@ -1503,7 +1497,6 @@
 }
 
 @media (max-width: 768px) {
-    /* Tarjeta vertical en móvil y tablet */
     .mh-card-h {
         flex-direction: column;
         height: auto;
@@ -1532,7 +1525,6 @@
         align-items: center;
         padding: 0.5rem 0 !important;
     }
-    /* Sidebar en móvil — ocultar por defecto, mostrar inline al hacer clic */
     .musicos-filtros-sidebar {
         display: none;
         width: 100% !important;
@@ -1542,7 +1534,6 @@
     .musicos-filtros-sidebar.sidebar-visible {
         display: block;
     }
-    /* Botón filtros visible en móvil */
     .btn-filtros-movil {
         display: flex !important;
         justify-content: center;
@@ -1555,13 +1546,11 @@
     .btn-filtros-movil i {
         display: none;
     }
-    /* Layout en columna en móvil */
     .musicos-layout {
         flex-direction: column;
         align-items: stretch;
         gap: 0;
     }
-    /* 1 tarjeta por fila en móvil */
     .musicos-lista {
         grid-template-columns: 1fr;
         gap: 0.75rem;
