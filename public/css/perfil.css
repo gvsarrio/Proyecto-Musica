@@ -17,9 +17,11 @@
 
 /* ================== WRAPPER INDEX (grid de músicos) ================== */
 .musicos-wrapper {
-    padding: 2rem 2rem;
-    max-width: 1400px;
+    padding: 2rem 1.5rem;
+    max-width: 1600px;
+    width: 100%;
     margin: 0 auto;
+    box-sizing: border-box;
 }
 
 .musicos-header {
@@ -1087,7 +1089,7 @@
 
 .musicos-layout {
     display: flex;
-    gap: 2.5rem;
+    gap: 1.5rem;
     align-items: flex-start;
 }
 
@@ -1097,7 +1099,7 @@
     background: rgba(16, 5, 38, 0.55);
     border: 1px solid rgba(155, 48, 255, 0.35);
     border-radius: 16px;
-    padding: 20px 16px;
+    padding: 20px 18px;
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     position: sticky;
@@ -1106,7 +1108,7 @@
 
 .musicos-filtros-titulo {
     font-family: var(--font-display);
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 700;
     color: var(--mh-cyan);
     letter-spacing: 2px;
@@ -1127,7 +1129,7 @@
 }
 
 .filtros-grupo-titulo {
-    font-size: 10px;
+    font-size: 11px;
     font-weight: 700;
     color: var(--mh-magenta);
     letter-spacing: 1.5px;
@@ -1150,7 +1152,7 @@
 }
 
 .filtros-grupo .form-check-label {
-    font-size: 12px;
+    font-size: 13px;
     color: #c0b0e0;
     cursor: pointer;
     line-height: 1.3;
@@ -1411,7 +1413,7 @@
     transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    min-height: 200px;
+    height: 260px;
 }
 
 .mh-card-h:hover {
@@ -1425,12 +1427,15 @@
 
 /* ================== IMAGEN IZQUIERDA ================== */
 .mh-card-h-img {
-    width: 200px;
-    min-width: 200px;
+    width: 220px;
+    min-width: 220px;
+    height: 100%;
+    align-self: stretch;
+    margin: 0;
+    border-radius: 0;
     overflow: hidden;
     background: rgba(10, 3, 28, 0.9);
     flex-shrink: 0;
-    align-self: stretch;
 }
 
 .mh-card-h-img img {
@@ -1448,7 +1453,6 @@
 .mh-card-h-img-placeholder {
     width: 100%;
     height: 100%;
-    min-height: 140px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1458,11 +1462,12 @@
 /* ================== CONTENIDO DERECHA ================== */
 .mh-card-h-body {
     flex: 1;
-    padding: 1.25rem 1.5rem;
+    padding: 1.25rem 1.5rem 1.25rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     min-width: 0;
+    overflow: hidden;
 }
 
 .mh-card-h-top {
@@ -1474,7 +1479,8 @@
     display: flex;
     gap: 1rem;
     flex-wrap: wrap;
-    margin-top: 0.75rem;
+    margin-top: auto;
+    padding-top: 0.75rem;
 }
 
 .mh-card-h-actions .btn-confirmar,
@@ -1491,8 +1497,8 @@
 
 @media (max-width: 900px) {
     .mh-card-h-img {
-        width: 160px;
-        min-width: 160px;
+        width: 120px;
+        min-width: 120px;
     }
 }
 
@@ -1505,6 +1511,7 @@
         width: 100%;
         min-width: unset;
         height: 180px;
+        margin: 0;
     }
     .mh-card-h-img-placeholder {
         min-height: 180px;
