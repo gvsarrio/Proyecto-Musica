@@ -14,9 +14,12 @@ class MensajeType extends AbstractType
     {
         $builder
             ->add('contenido', TextareaType::class, [
-                'label' => 'Mensaje',
+                'label' => false,
                 'attr' => [
-                    'rows' => 6,
+                    'class' => 'chat-textarea',
+                    'rows' => 5,
+                    'maxlength' => 2000,
+                    'placeholder' => 'Escribe tu mensaje...',
                 ],
             ]);
     }

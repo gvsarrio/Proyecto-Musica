@@ -124,4 +124,13 @@ class Conversacion
 
         return $this;
     }
+
+    public function getUltimoMensaje(): ?Mensaje
+    {
+        if ($this->mensajes->isEmpty()) {
+            return null;
+        }
+
+        return $this->mensajes->last() ?: null;
+    }
 }

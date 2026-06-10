@@ -49,7 +49,7 @@ final class MensajesController extends AbstractController
     }
 
     #[Route('/mensajes/nuevo/{id}', name: 'mensaje_nuevo')]
-    public function nuevo(Request $request, Usuario $destinatario, ConversacionRepository $conversacionRepository, EntityManagerInterface $entityManager): Response
+    public function nuevo(Usuario $destinatario, ConversacionRepository $conversacionRepository, EntityManagerInterface $entityManager): Response
     {
         $usuarioActual = $this->getUser();
 
@@ -78,57 +78,20 @@ final class MensajesController extends AbstractController
             );
         }
 
-        $mensaje = new Mensaje();
+        $conversacion = new Conversacion();
 
-        $form = $this->createForm(
-            MensajeType::class,
-            $mensaje
+        $conversacion->setUsuarioUno($usuarioActual);
+        $conversacion->setUsuarioDos($destinatario);
+
+        $entityManager->persist($conversacion);
+        $entityManager->flush();
+
+        return $this->redirectToRoute(
+            'mensaje_conversacion',
+            [
+                'id' => $conversacion->getId(),
+            ]
         );
-
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            $conversacion = $conversacionRepository
-                ->buscarEntreUsuarios(
-                    $usuarioActual,
-                    $destinatario
-                );
-
-            if (!$conversacion) {
-
-                $conversacion = new Conversacion();
-
-                $conversacion->setUsuarioUno($usuarioActual);
-                $conversacion->setUsuarioDos($destinatario);
-
-                $entityManager->persist($conversacion);
-            }
-
-            $mensaje->setConversacion($conversacion);
-            $mensaje->setRemitente($usuarioActual);
-            $mensaje->setLeido(false);
-
-            $conversacion->setFechaUltimoMensaje(
-                $mensaje->getFechaEnvio()
-            );
-
-            $entityManager->persist($mensaje);
-
-            $entityManager->flush();
-
-            return $this->redirectToRoute(
-                'mensaje_conversacion',
-                [
-                    'id' => $conversacion->getId(),
-                ]
-            );
-        }
-
-        return $this->render('mensajes/nuevo.html.twig', [
-            'destinatario' => $destinatario,
-            'form' => $form,
-        ]);
     }
 
     #[Route('/mensajes/conversacion/{id}', name: 'mensaje_conversacion')]

@@ -22,17 +22,39 @@
                 {{ otroUsuario.musico.nombre }}
 
                 {% if noLeidosPorConversacion[conversacion.id] > 0 %}
-                    ({{ noLeidosPorConversacion[conversacion.id] }})
+                    <span class="badge-mensajes">
+                        {{ noLeidosPorConversacion[conversacion.id] }}
+                    </span>
                 {% endif %}
             </a>
         </h3>
 
+        {% if conversacion.ultimoMensaje %}
+            <p class="preview-mensaje">
+
+                {% if conversacion.ultimoMensaje.remitente == app.user %}
+                    <strong>Tú:</strong>
+                {% endif %}
+
+                {{ conversacion.ultimoMensaje.contenido|slice(0, 60) }}
+                {% if conversacion.ultimoMensaje.contenido|length > 60 %}
+                    ...
+                {% endif %}
+
+            </p>
+        {% endif %}
+
         <p>
             Última actividad:
-            {{ conversacion.fechaUltimoMensaje|date(
-                'd/m/Y H:i',
-                'Europe/Madrid'
-            ) }}
+
+            {% if conversacion.fechaUltimoMensaje %}
+                {{ conversacion.fechaUltimoMensaje|date(
+                    'd/m/Y H:i',
+                    'Europe/Madrid'
+                ) }}
+            {% else %}
+                Sin mensajes todavía.
+            {% endif %}
         </p>
 
     </div>
