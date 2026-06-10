@@ -9,6 +9,7 @@ use App\Repository\GeneroRepository;
 use App\Repository\InstrumentoSistemaRepository;
 use App\Repository\MusicoRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,7 +24,8 @@ final class MusicoController extends AbstractController
         MusicoRepository $musicoRepository,
         GeneroRepository $generoRepository,
         InstrumentoSistemaRepository $instrumentoSistemaRepository,
-        Request $request
+        Request $request,
+        PaginatorInterface $paginator
     ): Response {
         $filtros = $request->query->all('filtros');
 
@@ -51,8 +53,10 @@ final class MusicoController extends AbstractController
             }
         }
 
+        $pagination = $paginator->paginate($musicos, $request->query->getInt('page', 1), 12);
+
         return $this->render('musico/index.html.twig', [
-            'musicos'      => $musicos,
+            'musicos'      => $pagination,
             'generos'      => $generoRepository->findBy([], ['nombre' => 'ASC']),
             'instrumentos' => $instrumentoSistemaRepository->findBy([], ['nombre' => 'ASC']),
             'filtros'      => $filtros,

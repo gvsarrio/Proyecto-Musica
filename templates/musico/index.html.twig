@@ -166,6 +166,8 @@
         {% else %}
         <p class="musicos-vacio">No hay músicos registrados todavía.</p>
         {% endfor %}
+
+        {{ knp_pagination_render(musicos) }}
     </div>
 
     </div>{# fin musicos-layout #}

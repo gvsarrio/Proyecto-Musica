@@ -1,0 +1,17 @@
+{% if last > 1 %}
+<div style="grid-column:1/-1;display:flex;align-items:center;justify-content:center;gap:1rem;margin-top:2rem;margin-bottom:1rem;">
+    {% if current > 1 %}
+        <a href="{{ path(route, query|merge({(pageParameterName): current - 1})) }}" class="btn-principal btn-sm">← Anterior</a>
+    {% else %}
+        <a class="btn-principal btn-sm" style="opacity:0.4;pointer-events:none;">← Anterior</a>
+    {% endif %}
+
+    <span style="color:#ccc;font-size:0.9rem;">Página {{ current }} de {{ last }}</span>
+
+    {% if current < last %}
+        <a href="{{ path(route, query|merge({(pageParameterName): current + 1})) }}" class="btn-principal btn-sm">Siguiente →</a>
+    {% else %}
+        <a class="btn-principal btn-sm" style="opacity:0.4;pointer-events:none;">Siguiente →</a>
+    {% endif %}
+</div>
+{% endif %}
