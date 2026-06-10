@@ -12,9 +12,42 @@ use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Conversacion;
 use App\Repository\ConversacionRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\MensajeRepository;
 
 final class MensajesController extends AbstractController
 {
+    #[Route('/mensajes', name: 'app_mensajes')]
+    public function index(ConversacionRepository $conversacionRepository, MensajeRepository $mensajeRepository): Response
+    {
+        $usuarioActual = $this->getUser();
+
+        if (!$usuarioActual instanceof Usuario) {
+            throw $this->createAccessDeniedException();
+        }
+
+        $conversaciones = $conversacionRepository
+            ->buscarPorUsuario($usuarioActual);
+
+        $noLeidosPorConversacion = [];
+
+        foreach ($conversaciones as $conversacion) {
+
+            $noLeidosPorConversacion[$conversacion->getId()] =
+                $mensajeRepository->contarNoLeidosEnConversacion(
+                    $conversacion,
+                    $usuarioActual
+                );
+        }
+
+        return $this->render(
+            'mensajes/index.html.twig',
+            [
+                'conversaciones' => $conversaciones,
+                'noLeidosPorConversacion' => $noLeidosPorConversacion,
+            ]
+        );
+    }
+
     #[Route('/mensajes/nuevo/{id}', name: 'mensaje_nuevo')]
     public function nuevo(Request $request, Usuario $destinatario, ConversacionRepository $conversacionRepository, EntityManagerInterface $entityManager): Response
     {
@@ -27,6 +60,21 @@ final class MensajesController extends AbstractController
         if ($usuarioActual === $destinatario) {
             throw $this->createAccessDeniedException(
                 'No puedes enviarte mensajes a ti mismo.'
+            );
+        }
+
+        $conversacionExistente = $conversacionRepository
+            ->buscarEntreUsuarios(
+                $usuarioActual,
+                $destinatario
+            );
+
+        if ($conversacionExistente) {
+            return $this->redirectToRoute(
+                'mensaje_conversacion',
+                [
+                    'id' => $conversacionExistente->getId(),
+                ]
             );
         }
 
@@ -59,6 +107,7 @@ final class MensajesController extends AbstractController
 
             $mensaje->setConversacion($conversacion);
             $mensaje->setRemitente($usuarioActual);
+            $mensaje->setLeido(false);
 
             $conversacion->setFechaUltimoMensaje(
                 $mensaje->getFechaEnvio()
@@ -99,6 +148,18 @@ final class MensajesController extends AbstractController
                 'No tienes acceso a esta conversación.'
             );
         }
+
+        foreach ($conversacion->getMensajes() as $mensaje) {
+
+            if (
+                $mensaje->getRemitente() !== $usuarioActual
+                && !$mensaje->isLeido()
+            ) {
+                $mensaje->setLeido(true);
+            }
+        }
+
+        $entityManager->flush();
 
         $mensaje = new Mensaje();
 

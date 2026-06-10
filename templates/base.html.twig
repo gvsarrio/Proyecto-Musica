@@ -42,6 +42,7 @@
                                     <a href="{{ path('app_musico_new') }}" class="nav-link {{ app.request.attributes.get('_route') == 'app_musico_new' ? 'active' : '' }}">Crear Perfil</a>
                                 {% else %}
                                     <a href="{{ path('app_musico_show', {id: app.user.musico.id}) }}" class="nav-link {{ app.request.attributes.get('_route') == 'app_musico_show' ? 'active' : '' }}">Mi Perfil</a>
+                                    <a href="{{ path('app_mensajes') }}" class="nav-link {{ app.request.attributes.get('_route') == 'app_mensajes' ? 'active' : '' }}">Mensajes</a>
                                 {% endif %}
                                 <a href="{{ path('app_musico_index') }}" class="nav-link {{ app.request.attributes.get('_route') == 'app_musico_index' ? 'active' : '' }}">Músicos</a>
                                 <a href="{{ path('app_banda_index') }}" class="nav-link {{ app.request.attributes.get('_route') == 'app_banda_index' ? 'active' : '' }}">Bandas</a>

@@ -34,7 +34,6 @@ class Mensaje
     public function __construct()
     {
         $this->fechaEnvio = new \DateTimeImmutable();
-        $this->leido = false;
     }
 
     public function getId(): ?int

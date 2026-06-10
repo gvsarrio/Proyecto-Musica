@@ -211,6 +211,13 @@
 				{% endfor %}
 
 				<a href="{{ path('app_musico_index') }}" class="btn-confirmar">Ver Músicos</a>
+
+				{# Solo se muestra el botón de CHAT cuando el perfil no es del propio usuario logueado #}
+				{% if musico.usuario != app.user %}
+					<a href="{{ path('mensaje_nuevo', {id: musico.usuario.id}) }}" class="btn-chat" title="Enviar mensaje de chat">
+						Chat
+					</a>
+				{% endif %}
 			</div>
 
 			{# Solo se muestra el botón para BORRAR cuando el perfil es del propio usuario logueado #}

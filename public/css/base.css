@@ -204,3 +204,22 @@ a:hover { color: var(--mh-cyan); text-shadow: 0 0 8px rgba(0,212,232,0.4); }
     color: magenta !important;
 }
 .saludo-usuario:hover::before { width: 0; }
+
+.chat-mensajes {
+    height: 300px;
+    overflow-y: scroll;
+    padding: 1rem;
+    border: 1px solid #ccc;
+    margin-bottom: 2rem;
+}
+.mensaje {
+    margin-bottom: 1rem;
+    padding: 0.75rem;
+    border-radius: 8px;
+}
+.mensaje-propio {
+    text-align: right;
+}
+.mensaje-ajeno {
+    text-align: left;
+}

@@ -4,31 +4,45 @@
 
     <h1>Conversación</h1>
 
-    {% for mensaje in conversacion.mensajes %}
+    <div class="chat-mensajes" id="chat-mensajes">
 
-        <div>
-            <strong>
-                {{ mensaje.remitente.musico.nombre }}
-            </strong>
+        {% for mensaje in conversacion.mensajes %}
 
-            <br>
+            {% if mensaje.remitente == app.user %}
 
-            {{ mensaje.contenido }}
+                <div class="mensaje mensaje-propio">
+                    <p>{{ mensaje.contenido }}</p>
 
-            <br>
+                    <small>
+                        {{ mensaje.fechaEnvio|date('d/m/Y H:i', 'Europe/Madrid') }}
+                    </small>
+                </div>
 
-            <small>
-                {{ mensaje.fechaEnvio|date('d/m/Y H:i', 'Europe/Madrid') }}
-            </small>
-        </div>
+            {% else %}
 
-        <hr>
+                <div class="mensaje mensaje-ajeno">
+                    <strong>
+                        {{ mensaje.remitente.musico.nombre }}
+                    </strong>
 
-    {% else %}
+                    <p>{{ mensaje.contenido }}</p>
 
-        <p>No hay mensajes.</p>
+                    <small>
+                        {{ mensaje.fechaEnvio|date('d/m/Y H:i', 'Europe/Madrid') }}
+                    </small>
+                </div>
 
-    {% endfor %}
+            {% endif %}
+
+        {% else %}
+
+            <p>No hay mensajes.</p>
+
+        {% endfor %}
+
+        <div id="ultimo-mensaje"></div>
+
+    </div>
 
     <h2>Responder</h2>
 
@@ -41,5 +55,24 @@
         </button>
 
     {{ form_end(form) }}
+
+    {# Código JS para mover el scroll de la conversación abajo del todo: #}
+    <script>
+    window.addEventListener('load', function () {
+
+        const chat = document.getElementById('chat-mensajes');
+
+        if (chat) {
+
+            chat.scrollTop = chat.scrollHeight;
+
+            setTimeout(() => {
+                console.log('scrollTop después:', chat.scrollTop);
+            }, 1000);
+
+        }
+
+    });
+    </script>
 
 {% endblock %}

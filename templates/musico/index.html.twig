@@ -153,7 +153,7 @@
             {# Botones Ver perfil + Chat #}
             <div class="musico-card-footer">
                 <a href="{{ path('app_musico_show', {'id': musico.id}) }}" class="btn-confirmar">Ver Perfil</a>
-               <a href="#" class="btn-chat" title="Próximamente">Chat</a>
+               <a href="{{ path('mensaje_nuevo', {id: musico.usuario.id}) }}" class="btn-chat" title="Enviar mensaje de chat">Chat</a>
             </div>
 
         </div>

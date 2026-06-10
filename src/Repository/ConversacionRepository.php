@@ -42,10 +42,8 @@ class ConversacionRepository extends ServiceEntityRepository
     //        ;
     //    }
 
-    public function buscarEntreUsuarios(
-        Usuario $usuarioA,
-        Usuario $usuarioB
-    ): ?Conversacion {
+    public function buscarEntreUsuarios(Usuario $usuarioA, Usuario $usuarioB): ?Conversacion
+    {
         return $this->createQueryBuilder('c')
             ->where(
                 '(c.usuarioUno = :usuarioA AND c.usuarioDos = :usuarioB)
@@ -56,5 +54,16 @@ class ConversacionRepository extends ServiceEntityRepository
             ->setParameter('usuarioB', $usuarioB)
             ->getQuery()
             ->getOneOrNullResult();
+    }
+
+    public function buscarPorUsuario(Usuario $usuario): array
+    {
+        return $this->createQueryBuilder('c')
+            ->where('c.usuarioUno = :usuario')
+            ->orWhere('c.usuarioDos = :usuario')
+            ->setParameter('usuario', $usuario)
+            ->orderBy('c.fechaUltimoMensaje', 'DESC')
+            ->getQuery()
+            ->getResult();
     }
 }
