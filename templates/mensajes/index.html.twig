@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<h1>Mis conversaciones</h1>
+
+{% for conversacion in conversaciones %}
+
+    {% if conversacion.usuarioUno == app.user %}
+        {% set otroUsuario = conversacion.usuarioDos %}
+    {% else %}
+        {% set otroUsuario = conversacion.usuarioUno %}
+    {% endif %}
+
+    <div>
+
+        <h3>
+            <a href="{{ path(
+                'mensaje_conversacion',
+                {id: conversacion.id}
+            ) }}">
+                {{ otroUsuario.musico.nombre }}
+
+                {% if noLeidosPorConversacion[conversacion.id] > 0 %}
+                    <span class="badge-mensajes">
+                        {{ noLeidosPorConversacion[conversacion.id] }}
+                    </span>
+                {% endif %}
+            </a>
+        </h3>
+
+        {% if conversacion.ultimoMensaje %}
+            <p class="preview-mensaje">
+
+                {% if conversacion.ultimoMensaje.remitente == app.user %}
+                    <strong>Tú:</strong>
+                {% endif %}
+
+                {{ conversacion.ultimoMensaje.contenido|slice(0, 60) }}
+                {% if conversacion.ultimoMensaje.contenido|length > 60 %}
+                    ...
+                {% endif %}
+
+            </p>
+        {% endif %}
+
+        <p>
+            Última actividad:
+
+            {% if conversacion.fechaUltimoMensaje %}
+                {{ conversacion.fechaUltimoMensaje|date(
+                    'd/m/Y H:i',
+                    'Europe/Madrid'
+                ) }}
+            {% else %}
+                Sin mensajes todavía.
+            {% endif %}
+        </p>
+
+    </div>
+
+    <hr>
+
+{% else %}
+
+    <p>No tienes conversaciones.</p>
+
+{% endfor %}
+
+{% endblock %}

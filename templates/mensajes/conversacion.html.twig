@@ -1,0 +1,85 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    {% if conversacion.usuarioUno == app.user %}
+        {% set otroUsuario = conversacion.usuarioDos %}
+    {% else %}
+        {% set otroUsuario = conversacion.usuarioUno %}
+    {% endif %}
+    <h1>
+        Conversación con {{ otroUsuario.musico.nombre }}
+    </h1>
+
+    <div class="chat-mensajes" id="chat-mensajes">
+
+        {% for mensaje in conversacion.mensajes %}
+
+            {% if mensaje.remitente == app.user %}
+
+                <div class="mensaje mensaje-propio">
+                    <p>{{ mensaje.contenido }}</p>
+
+                    <small>
+                        {{ mensaje.fechaEnvio|date('d/m/Y H:i', 'Europe/Madrid') }}
+                    </small>
+                </div>
+
+            {% else %}
+
+                <div class="mensaje mensaje-ajeno">
+                    <strong class="nombre-remitente">
+                        {{ mensaje.remitente.musico.nombre }}
+                    </strong>
+
+                    <p>{{ mensaje.contenido }}</p>
+
+                    <small>
+                        {{ mensaje.fechaEnvio|date('d/m/Y H:i', 'Europe/Madrid') }}
+                    </small>
+                </div>
+
+            {% endif %}
+
+        {% else %}
+
+            <p>No hay mensajes.</p>
+
+        {% endfor %}
+
+        <div id="ultimo-mensaje"></div>
+
+    </div>
+
+ 
+
+    {{ form_start(form) }}
+
+        {{ form_row(form.contenido) }}
+
+        <button type="submit" class="btn-enviar-mensaje">
+            Enviar
+        </button>
+
+    {{ form_end(form) }}
+
+    {# Código JS para mover el scroll de la conversación abajo del todo: #}
+    <script>
+    window.addEventListener('load', function () {
+
+        const chat = document.getElementById('chat-mensajes');
+
+        if (chat) {
+
+            chat.scrollTop = chat.scrollHeight;
+
+            setTimeout(() => {
+                console.log('scrollTop después:', chat.scrollTop);
+            }, 1000);
+
+        }
+
+    });
+    </script>
+
+{% endblock %}

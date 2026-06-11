@@ -77,9 +77,13 @@
                                 {# ── Iconos agrupados en fila — chat y campana ── #}
                                 <div class="nav-iconos-grupo">
 
-                                    {# ── Icono chat (futura implementación) ── #}
-                                    <a href="#" class="nav-link nav-chat" title="Chat">
+                                    {# ── Icono chat ── #}
+                                    {% set totalMensajes = mensajes_no_leidos() %}
+                                    <a href="{{ path('app_mensajes') }}" class="nav-link nav-chat {{ app.request.attributes.get('_route') starts with 'app_mensajes' ? 'active' : '' }}" title="Chat">
                                         <i class="fa-brands fa-weixin"></i>
+                                        {% if totalMensajes > 0 %}
+                                            <span class="nav-campana-badge">{{ totalMensajes }}</span>
+                                        {% endif %}
                                     </a>
 
                                     {# ── Campana de notificaciones — invitaciones pendientes ── #}
