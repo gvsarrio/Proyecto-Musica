@@ -198,6 +198,8 @@
 				{# Solo se muestra el botón para EDITAR cuando el perfil es del propio usuario logueado #}
 				{% if app.user == musico.usuario %}
 					<a href="{{ path('app_musico_edit', {'id': musico.id}) }}" class="btn-editar">Editar</a>
+				{% elseif app.user and app.user.musico is not null %}
+					<a href="{{ path('mensaje_nuevo', {'id': musico.usuario.id}) }}" class="btn-confirmar">Chat</a>
 				{% endif %}
 
 				{# Botones de invitar a banda (visible para admins viendo el perfil de otro músico) #}

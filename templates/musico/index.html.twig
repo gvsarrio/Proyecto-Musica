@@ -158,7 +158,9 @@
                 </div>
                 <div class="mh-card-h-actions">
                     <a href="{{ path('app_musico_show', {'id': musico.id}) }}" class="btn-confirmar btn-sm">Ver Perfil</a>
-                    <a href="#" class="btn-chat btn-sm" title="Próximamente">Chat</a>
+                    {% if app.user and app.user.musico is not null and app.user.musico != musico %}
+                        <a href="{{ path('mensaje_nuevo', {'id': musico.usuario.id}) }}" class="btn-chat btn-sm">Chat</a>
+                    {% endif %}
                 </div>
             </div>
 

@@ -1,5 +1,12 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Chat — Music Hub{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/perfil.css') }}">
+{% endblock %}
+
 {% block body %}
 
     {% if conversacion.usuarioUno == app.user %}
@@ -7,79 +14,81 @@
     {% else %}
         {% set otroUsuario = conversacion.usuarioUno %}
     {% endif %}
-    <h1>
-        Conversación con {{ otroUsuario.musico.nombre }}
-    </h1>
+
+<div class="chat-wrapper">
+
+    <div class="chat-header">
+        <a href="{{ path('app_mensajes') }}" class="chat-back" title="Volver">
+            <i class="fa-solid fa-arrow-left"></i>
+        </a>
+        <div class="chat-header-avatar">
+            {% if otroUsuario.musico and otroUsuario.musico.imagenUrl %}
+                <img src="{{ asset('uploads/perfiles/' ~ otroUsuario.musico.imagenUrl) }}"
+                     alt="{{ otroUsuario.musico.nombre }}">
+            {% else %}
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9b30ff" stroke-width="1.5">
+                    <path d="M9 18V5l12-2v13"/>
+                    <circle cx="6" cy="18" r="3"/>
+                    <circle cx="18" cy="16" r="3"/>
+                </svg>
+            {% endif %}
+        </div>
+        <span class="chat-header-nombre">
+            {{ otroUsuario.musico ? otroUsuario.musico.nombre : otroUsuario.email }}
+        </span>
+    </div>
 
     <div class="chat-mensajes" id="chat-mensajes">
 
         {% for mensaje in conversacion.mensajes %}
 
             {% if mensaje.remitente == app.user %}
-
                 <div class="mensaje mensaje-propio">
                     <p>{{ mensaje.contenido }}</p>
-
-                    <small>
-                        {{ mensaje.fechaEnvio|date('d/m/Y H:i', 'Europe/Madrid') }}
-                    </small>
+                    <small>{{ mensaje.fechaEnvio|date('d/m/Y H:i', 'Europe/Madrid') }}</small>
                 </div>
-
             {% else %}
-
                 <div class="mensaje mensaje-ajeno">
                     <strong class="nombre-remitente">
-                        {{ mensaje.remitente.musico.nombre }}
+                        {{ mensaje.remitente.musico ? mensaje.remitente.musico.nombre : mensaje.remitente.email }}
                     </strong>
-
                     <p>{{ mensaje.contenido }}</p>
-
-                    <small>
-                        {{ mensaje.fechaEnvio|date('d/m/Y H:i', 'Europe/Madrid') }}
-                    </small>
+                    <small>{{ mensaje.fechaEnvio|date('d/m/Y H:i', 'Europe/Madrid') }}</small>
                 </div>
-
             {% endif %}
 
         {% else %}
 
-            <p>No hay mensajes.</p>
+            <div class="chat-vacio">
+                <i class="fa-brands fa-weixin"></i>
+                <p>Aún no hay mensajes. ¡Sé el primero en escribir!</p>
+            </div>
 
         {% endfor %}
 
         <div id="ultimo-mensaje"></div>
-
     </div>
 
- 
+    <div class="chat-form-wrap">
+        {{ form_start(form, {'attr': {'class': 'chat-form'}}) }}
+            {{ form_widget(form.contenido, {'attr': {
+                'class': 'chat-input',
+                'placeholder': 'Escribe un mensaje...',
+                'rows': 1
+            }}) }}
+            <button type="submit" class="chat-send-btn" title="Enviar">
+                <i class="fa-solid fa-paper-plane"></i>
+            </button>
+        {{ form_end(form) }}
+    </div>
 
-    {{ form_start(form) }}
+</div>
 
-        {{ form_row(form.contenido) }}
-
-        <button type="submit" class="btn-enviar-mensaje">
-            Enviar
-        </button>
-
-    {{ form_end(form) }}
-
-    {# Código JS para mover el scroll de la conversación abajo del todo: #}
-    <script>
-    window.addEventListener('load', function () {
-
-        const chat = document.getElementById('chat-mensajes');
-
-        if (chat) {
-
-            chat.scrollTop = chat.scrollHeight;
-
-            setTimeout(() => {
-                console.log('scrollTop después:', chat.scrollTop);
-            }, 1000);
-
-        }
-
-    });
-    </script>
+<script>
+window.addEventListener('load', function () {
+    const chat = document.getElementById('chat-mensajes');
+    if (chat) chat.scrollTop = chat.scrollHeight;
+});
+</script>
 
 {% endblock %}
