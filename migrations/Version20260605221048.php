@@ -26,11 +26,6 @@ final class Version20260605221048 extends AbstractMigration
         $this->addSql('ALTER TABLE conversacion ADD CONSTRAINT FK_474049CF235DFC2A FOREIGN KEY (usuario_dos_id) REFERENCES usuario (id)');
         $this->addSql('ALTER TABLE mensaje ADD CONSTRAINT FK_9B631D01ABD5A1D6 FOREIGN KEY (conversacion_id) REFERENCES conversacion (id)');
         $this->addSql('ALTER TABLE mensaje ADD CONSTRAINT FK_9B631D011C3E945F FOREIGN KEY (remitente_id) REFERENCES usuario (id)');
-        $this->addSql('ALTER TABLE instrumento_personalizado RENAME INDEX idx_inst_pers_usuario TO IDX_9F716A96DB38439E');
-        $this->addSql('ALTER TABLE musico_instrumento_sistema RENAME INDEX idx_mis_musico TO IDX_5FD5519A79398F67');
-        $this->addSql('ALTER TABLE musico_instrumento_sistema RENAME INDEX idx_mis_instrumento TO IDX_5FD5519A6060A947');
-        $this->addSql('ALTER TABLE musico_instrumento_personalizado RENAME INDEX idx_mip_musico TO IDX_840AD3C879398F67');
-        $this->addSql('ALTER TABLE musico_instrumento_personalizado RENAME INDEX idx_mip_instrumento TO IDX_840AD3C827CFC36A');
     }
 
     public function down(Schema $schema): void
