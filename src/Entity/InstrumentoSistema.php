@@ -14,7 +14,7 @@ class InstrumentoSistema
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 50, unique: true)]
     private ?string $nombre = null;
 
     public function getId(): ?int { return $this->id; }
