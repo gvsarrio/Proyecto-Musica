@@ -10,6 +10,7 @@ use App\Form\BandaType;
 use App\Repository\BandaRepository;
 use App\Repository\GeneroRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,7 +24,8 @@ final class BandaController extends AbstractController
     public function index(
         BandaRepository $bandaRepository,
         GeneroRepository $generoRepository,
-        Request $request
+        Request $request,
+        PaginatorInterface $paginator
     ): Response {
         $filtros = $request->query->all('filtros');
 
@@ -50,8 +52,10 @@ final class BandaController extends AbstractController
             }
         }
 
+        $pagination = $paginator->paginate($bandas, $request->query->getInt('page', 1), 12);
+
         return $this->render('banda/index.html.twig', [
-            'bandas'     => $bandas,
+            'bandas'     => $pagination,
             'generos'    => $generoRepository->findBy([], ['nombre' => 'ASC']),
             'filtros'    => $filtros,
             'distancias' => $distancias,

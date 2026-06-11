@@ -154,6 +154,8 @@
         {% else %}
         <p class="musicos-vacio">No hay bandas registradas todavía.</p>
         {% endfor %}
+
+        {{ knp_pagination_render(bandas) }}
     </div>
 
     </div>{# fin musicos-layout #}
