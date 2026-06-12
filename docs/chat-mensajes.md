@@ -272,6 +272,7 @@ Vista de chat con:
 - Área de mensajes con scroll automático al último mensaje (JavaScript al `load`).
 - Burbujas diferenciadas: propias alineadas a la derecha con fondo morado, ajenas alineadas a la izquierda con fondo oscuro.
 - Input de texto y botón de envío circular con gradiente.
+- Envío con **Enter** (sin Shift): al pulsar Enter sin Shift se envía el formulario. Shift+Enter inserta un salto de línea.
 
 ---
 
