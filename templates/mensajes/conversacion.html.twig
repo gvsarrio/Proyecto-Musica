@@ -86,8 +86,10 @@
 
 <script>
 window.addEventListener('load', function () {
-    const chat = document.getElementById('chat-mensajes');
-    if (chat) chat.scrollTop = chat.scrollHeight;
+    setTimeout(function () {
+        const chat = document.getElementById('chat-mensajes');
+        if (chat) chat.scrollTop = chat.scrollHeight;
+    }, 0);
 
     const input = document.querySelector('.chat-input');
     if (input) {

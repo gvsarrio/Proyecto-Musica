@@ -272,7 +272,8 @@ Vista de chat con:
 - Área de mensajes con scroll automático al último mensaje (JavaScript al `load`).
 - Burbujas diferenciadas: propias alineadas a la derecha con fondo morado, ajenas alineadas a la izquierda con fondo oscuro.
 - Input de texto y botón de envío circular con gradiente.
-- Envío con **Enter** (sin Shift): al pulsar Enter sin Shift se envía el formulario. Shift+Enter inserta un salto de línea.
+- Envío con **Enter**: al pulsar Enter se envía el formulario directamente.
+- Scroll automático al mensaje más reciente al abrir la conversación, usando `setTimeout(0)` para diferir el `scrollTop = scrollHeight` al siguiente ciclo del navegador (necesario porque flexbox calcula las alturas después del evento `load`).
 
 ---
 
