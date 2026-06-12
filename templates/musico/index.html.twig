@@ -99,6 +99,7 @@
     {# ── Lista de tarjetas horizontales ── #}
     <div class="musicos-lista">
         {% for musico in musicos %}
+        {% if not (app.user and app.user.musico is not null and app.user.musico == musico) %}
         <div class="mh-card-h">
 
             {# Imagen #}
@@ -165,6 +166,7 @@
             </div>
 
         </div>
+        {% endif %}
         {% else %}
         <p class="musicos-vacio">No hay músicos registrados todavía.</p>
         {% endfor %}
