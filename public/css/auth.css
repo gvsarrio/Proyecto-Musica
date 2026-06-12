@@ -260,6 +260,18 @@
     border-color: #e8d6ff;
 }
 
+/* ================== ENLACE TÉRMINOS ================== */
+.terminos-link {
+    color: var(--mh-cyan-soft);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.terminos-link:hover {
+    color: var(--mh-cyan);
+}
+
 /* ================== LABEL DEL CHECKBOX ================== */
 .form-check-label,
 .auth-checkbox-label {
