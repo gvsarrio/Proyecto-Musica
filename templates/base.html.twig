@@ -77,16 +77,29 @@
                                 {# ── Mensaje y campana ── #}
                                 <div class="nav-iconos-grupo">
 
-                                    {# ── Mensajes — solo navegación ── #}
+                                    {# ── Mensajes — solo navegación, sin notificación propia ── #}
                                     <a href="{{ path('app_mensajes') }}" class="nav-link nav-chat {{ app.request.attributes.get('_route') starts with 'app_mensajes' ? 'active' : '' }}" title="Mensajes">
                                         Mensajes
                                     </a>
 
-                                    {# ── Campana de notificaciones — invitaciones pendientes + mensajes sin leer ── #}
+                                    {# ── Campana de notificaciones — mensajes + solicitudes de unión + invitaciones pendientes ── #}
                                     {% set invitaciones_nav = app.user.musico.miembroBandas|filter(mb => mb.estado == 'invitado') %}
                                     {% set n_invitaciones = invitaciones_nav|length %}
                                     {% set n_mensajes = mensajes_no_leidos() %}
-                                    {% set n_notificaciones = n_invitaciones + n_mensajes %}
+
+                                    {# Bandas en las que soy administrador, con solicitudes pendientes de aceptar #}
+                                    {% set bandas_admin = app.user.musico.miembroBandasAceptadas|filter(mb => mb.esAdministrador)|map(mb => mb.banda) %}
+                                    {% set solicitudes_nav = [] %}
+                                    {% set n_solicitudes = 0 %}
+                                    {% for banda_admin in bandas_admin %}
+                                        {% set pendientes_banda = banda_admin.miembroBandas|filter(mb2 => mb2.estado == 'pendiente') %}
+                                        {% if pendientes_banda|length > 0 %}
+                                            {% set solicitudes_nav = solicitudes_nav|merge([{ banda: banda_admin, count: pendientes_banda|length }]) %}
+                                            {% set n_solicitudes = n_solicitudes + pendientes_banda|length %}
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    {% set n_notificaciones = n_invitaciones + n_mensajes + n_solicitudes %}
                                     <div class="nav-item dropdown">
                                         <a class="nav-link nav-campana {{ n_notificaciones > 0 ? 'nav-campana-activa' : '' }}" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" title="Notificaciones">
                                             <i class="fa-solid fa-bell"></i>
@@ -98,6 +111,8 @@
                                             {% if n_notificaciones == 0 %}
                                                 <li><span class="dropdown-item-text nav-notif-vacia">Sin notificaciones</span></li>
                                             {% else %}
+                                                {% set mostrado_algo = false %}
+
                                                 {% if n_mensajes > 0 %}
                                                     <li><span class="dropdown-item-text nav-notif-titulo">Mensajes</span></li>
                                                     <li>
@@ -106,11 +121,26 @@
                                                             Tienes {{ n_mensajes }} mensaje{{ n_mensajes > 1 ? 's' : '' }} sin leer
                                                         </a>
                                                     </li>
-                                                    {% if n_invitaciones > 0 %}
-                                                        <li><hr class="dropdown-divider"></li>
-                                                    {% endif %}
+                                                    {% set mostrado_algo = true %}
                                                 {% endif %}
+
+                                                {% if solicitudes_nav|length > 0 %}
+                                                    {% if mostrado_algo %}<li><hr class="dropdown-divider"></li>{% endif %}
+                                                    <li><span class="dropdown-item-text nav-notif-titulo">Solicitudes de unión</span></li>
+                                                    {% for sol in solicitudes_nav %}
+                                                        <li>
+                                                            <a class="dropdown-item nav-notif-item" href="{{ path('app_banda_solicitudes', {id: sol.banda.id}) }}">
+                                                                <i class="fa-solid fa-user-plus nav-notif-icono"></i>
+                                                                {{ sol.banda.nombre }}
+                                                                <span class="text-muted">({{ sol.count }})</span>
+                                                            </a>
+                                                        </li>
+                                                    {% endfor %}
+                                                    {% set mostrado_algo = true %}
+                                                {% endif %}
+
                                                 {% if n_invitaciones > 0 %}
+                                                    {% if mostrado_algo %}<li><hr class="dropdown-divider"></li>{% endif %}
                                                     <li><span class="dropdown-item-text nav-notif-titulo">Invitaciones pendientes</span></li>
                                                     <li><hr class="dropdown-divider"></li>
                                                     {% for inv in invitaciones_nav %}
@@ -126,6 +156,7 @@
                                                 {% endif %}
                                             {% endif %}
                                         </ul>
+
                                     </div>
 
                                 </div>{# fin nav-iconos-grupo #}
