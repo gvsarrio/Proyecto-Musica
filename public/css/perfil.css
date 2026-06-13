@@ -303,7 +303,14 @@
     margin: 0 0 10px;
     display: flex;
     gap: 8px;
-    flex-wrap: wrap;
+    flex-wrap: nowrap; /* nunca pasa a 2 líneas */
+    overflow: hidden;
+}
+
+.musico-card-tags span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .musico-card-distancia-tag {
@@ -499,8 +506,9 @@
 /* ================== PASTILLAS INSTRUMENTOS (vista show / index) ================== */
 .musico-card-instrumentos {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap; /* siempre 1 línea, lo que no entra se recorta */
     gap: 6px;
+    overflow: hidden;
 }
 
 .musico-card-instrumento-tag {
@@ -510,6 +518,8 @@
     border: 1px solid rgba(0, 180, 255, 0.3);
     border-radius: 20px;
     padding: 3px 10px;
+    white-space: nowrap;
+    flex-shrink: 0; /* el navegador no intenta "achicar" las pastillas */
 }
 
 /* ================== SCROLLBAR ================== */
@@ -1473,6 +1483,7 @@
 
 .mh-card-h-top {
     flex: 1;
+    overflow: hidden; /* red de seguridad: el alto de la tarjeta nunca se ve afectado */
 }
 
 /* ================== BOTONES TARJETA HORIZONTAL ================== */
