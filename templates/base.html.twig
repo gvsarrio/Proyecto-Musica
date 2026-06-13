@@ -77,41 +77,53 @@
                                 {# ── Mensaje y campana ── #}
                                 <div class="nav-iconos-grupo">
 
-                                    {# ── Mensajes — solo navegación, no notifica ── #}
-                                    {% set totalMensajes = mensajes_no_leidos() %}
+                                    {# ── Mensajes — solo navegación ── #}
                                     <a href="{{ path('app_mensajes') }}" class="nav-link nav-chat {{ app.request.attributes.get('_route') starts with 'app_mensajes' ? 'active' : '' }}" title="Mensajes">
                                         Mensajes
-                                        {% if totalMensajes > 0 %}
-                                            <span class="nav-campana-badge">{{ totalMensajes }}</span>
-                                        {% endif %}
                                     </a>
 
-                                    {# ── Campana de notificaciones — invitaciones pendientes ── #}
+                                    {# ── Campana de notificaciones — invitaciones pendientes + mensajes sin leer ── #}
                                     {% set invitaciones_nav = app.user.musico.miembroBandas|filter(mb => mb.estado == 'invitado') %}
                                     {% set n_invitaciones = invitaciones_nav|length %}
+                                    {% set n_mensajes = mensajes_no_leidos() %}
+                                    {% set n_notificaciones = n_invitaciones + n_mensajes %}
                                     <div class="nav-item dropdown">
-                                        <a class="nav-link nav-campana {{ n_invitaciones > 0 ? 'nav-campana-activa' : '' }}" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" title="Notificaciones">
+                                        <a class="nav-link nav-campana {{ n_notificaciones > 0 ? 'nav-campana-activa' : '' }}" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" title="Notificaciones">
                                             <i class="fa-solid fa-bell"></i>
-                                            {% if n_invitaciones > 0 %}
-                                                <span class="nav-campana-badge">{{ n_invitaciones }}</span>
+                                            {% if n_notificaciones > 0 %}
+                                                <span class="nav-campana-badge">{{ n_notificaciones }}</span>
                                             {% endif %}
                                         </a>
                                         <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end nav-dropdown-menu nav-dropdown-notificaciones">
-                                            {% if n_invitaciones == 0 %}
+                                            {% if n_notificaciones == 0 %}
                                                 <li><span class="dropdown-item-text nav-notif-vacia">Sin notificaciones</span></li>
                                             {% else %}
-                                                <li><span class="dropdown-item-text nav-notif-titulo">Invitaciones pendientes</span></li>
-                                                <li><hr class="dropdown-divider"></li>
-                                                {% for inv in invitaciones_nav %}
+                                                {% if n_mensajes > 0 %}
+                                                    <li><span class="dropdown-item-text nav-notif-titulo">Mensajes</span></li>
                                                     <li>
-                                                        <a class="dropdown-item nav-notif-item" href="{{ path('app_banda_show', {id: inv.banda.id}) }}">
-                                                            <i class="fa-solid fa-music nav-notif-icono"></i>
-                                                            {{ inv.banda.nombre }}
+                                                        <a class="dropdown-item nav-notif-item" href="{{ path('app_mensajes') }}">
+                                                            <i class="fa-solid fa-comment nav-notif-icono"></i>
+                                                            Tienes {{ n_mensajes }} mensaje{{ n_mensajes > 1 ? 's' : '' }} sin leer
                                                         </a>
                                                     </li>
-                                                {% endfor %}
-                                                <li><hr class="dropdown-divider"></li>
-                                                <li><a class="dropdown-item nav-notif-ver-todas" href="{{ path('app_musico_show', {id: app.user.musico.id}) }}">Ver todas</a></li>
+                                                    {% if n_invitaciones > 0 %}
+                                                        <li><hr class="dropdown-divider"></li>
+                                                    {% endif %}
+                                                {% endif %}
+                                                {% if n_invitaciones > 0 %}
+                                                    <li><span class="dropdown-item-text nav-notif-titulo">Invitaciones pendientes</span></li>
+                                                    <li><hr class="dropdown-divider"></li>
+                                                    {% for inv in invitaciones_nav %}
+                                                        <li>
+                                                            <a class="dropdown-item nav-notif-item" href="{{ path('app_banda_show', {id: inv.banda.id}) }}">
+                                                                <i class="fa-solid fa-music nav-notif-icono"></i>
+                                                                {{ inv.banda.nombre }}
+                                                            </a>
+                                                        </li>
+                                                    {% endfor %}
+                                                    <li><hr class="dropdown-divider"></li>
+                                                    <li><a class="dropdown-item nav-notif-ver-todas" href="{{ path('app_musico_show', {id: app.user.musico.id}) }}">Ver todas</a></li>
+                                                {% endif %}
                                             {% endif %}
                                         </ul>
                                     </div>
