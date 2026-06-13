@@ -134,25 +134,25 @@
                             <span class="musico-card-distancia-tag">{{ distancias[musico.id] }} km</span>
                         {% endif %}
                     </p>
-                    {# Instrumentos — máximo 4 #}
+                    {# Instrumentos — máximo 3 #}
                     {% if musico.instrumentos|length > 0 %}
                     <div class="musico-card-instrumentos">
-                        {% for instrumento in musico.instrumentos|slice(0, 4) %}
+                        {% for instrumento in musico.instrumentos|slice(0, 3) %}
                             <span class="musico-card-instrumento-tag">{{ instrumento.nombre }}</span>
                         {% endfor %}
-                        {% if musico.instrumentos|length > 4 %}
-                            <span class="musico-card-instrumento-tag">+{{ musico.instrumentos|length - 4 }}</span>
+                        {% if musico.instrumentos|length > 3 %}
+                            <span class="musico-card-instrumento-tag">+{{ musico.instrumentos|length - 3 }}</span>
                         {% endif %}
                     </div>
                     {% endif %}
-                    {# Géneros — máximo 3 #}
+                    {# Géneros — máximo 2 #}
                     {% if musico.generosMusicales|length > 0 %}
                     <div class="musico-card-instrumentos mt-1">
-                        {% for genero in musico.generosMusicales|slice(0, 3) %}
+                        {% for genero in musico.generosMusicales|slice(0, 2) %}
                             <span class="musico-card-instrumento-tag">{{ genero.nombre }}</span>
                         {% endfor %}
-                        {% if musico.generosMusicales|length > 3 %}
-                            <span class="musico-card-instrumento-tag">+{{ musico.generosMusicales|length - 3 }}</span>
+                        {% if musico.generosMusicales|length > 2 %}
+                            <span class="musico-card-instrumento-tag">+{{ musico.generosMusicales|length - 2 }}</span>
                         {% endif %}
                     </div>
                     {% endif %}
@@ -164,7 +164,6 @@
                     {% endif %}
                 </div>
             </div>
-
         </div>
         {% endif %}
         {% else %}
@@ -173,9 +172,7 @@
 
         {{ knp_pagination_render(musicos) }}
     </div>
-
     </div>{# fin musicos-layout #}
-
 </div>
 
 {% include '_filtros_proximidad_script.html.twig' %}

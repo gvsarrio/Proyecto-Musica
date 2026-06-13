@@ -132,14 +132,14 @@
                             <span class="musico-card-distancia-tag">{{ distancias[banda.id] }} km</span>
                         {% endif %}
                     </p>
-                    {# Géneros — máximo 4 #}
+                    {# Géneros — máximo 3 #}
                     {% if banda.generosMusicales|length > 0 %}
                     <div class="musico-card-instrumentos">
-                        {% for genero in banda.generosMusicales|slice(0, 4) %}
+                        {% for genero in banda.generosMusicales|slice(0, 3) %}
                             <span class="musico-card-instrumento-tag">{{ genero.nombre }}</span>
                         {% endfor %}
-                        {% if banda.generosMusicales|length > 4 %}
-                            <span class="musico-card-instrumento-tag">+{{ banda.generosMusicales|length - 4 }}</span>
+                        {% if banda.generosMusicales|length > 3 %}
+                            <span class="musico-card-instrumento-tag">+{{ banda.generosMusicales|length - 3 }}</span>
                         {% endif %}
                     </div>
                     {% endif %}
