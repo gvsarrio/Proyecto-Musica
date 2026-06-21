@@ -41,6 +41,13 @@ final class MusicoController extends AbstractController
             ? $musicoRepository->findByFiltros($generoIds, $instrumentoIds, $lat, $lng, $radio)
             : $musicoRepository->findAll();
 
+        /** @var \App\Entity\Usuario|null $usuarioActual */
+        $usuarioActual = $this->getUser();
+        $musicoPropioId = $usuarioActual?->getMusico()?->getId();
+        if ($musicoPropioId !== null) {
+            $musicos = array_values(array_filter($musicos, fn($m) => $m->getId() !== $musicoPropioId));
+        }
+
         $distancias = [];
         if ($lat !== null && $lng !== null) {
             foreach ($musicos as $m) {
