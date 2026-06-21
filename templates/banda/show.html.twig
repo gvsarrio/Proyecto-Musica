@@ -117,12 +117,12 @@
                 <p class="show-dato-valor">{{ banda.anyoFormacion }}</p>
             </div>
 
-            {% if banda.generos %}
+            {% if banda.generosMusicales|length > 0 %}
             <div class="col-12">
                 <p class="perfil-form-label">Géneros:</p>
                 <div class="musico-card-instrumentos">
-                    {% for genero in banda.generos|split(',') %}
-                        <span class="musico-card-instrumento-tag">{{ genero|trim }}</span>
+                    {% for genero in banda.generosMusicales %}
+                        <span class="musico-card-instrumento-tag">{{ genero.nombre }}</span>
                     {% endfor %}
                 </div>
             </div>
