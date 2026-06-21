@@ -1,11 +1,9 @@
 /* ============================================
    PERFIL.CSS — Estilos para músico y banda
    ============================================ */
-
 /* ============================================
         LAYOUT — CONTENEDORES Y WRAPPERS
    ============================================ */
-
 /* ================== WRAPPER PERFIL (new / edit / show) ================== */
 .perfil-wrapper {
     display: flex;
@@ -14,21 +12,18 @@
     padding: 3rem 1rem 2rem;
     min-height: calc(100vh - 60px);
 }
-
 /* ================== WRAPPER INDEX (grid de músicos) ================== */
 .musicos-wrapper {
     padding: 2rem 2rem;
     max-width: 1400px;
     margin: 0 auto;
 }
-
 .musicos-header {
     display: flex;
     align-items: center;
     gap: 12px;
     margin-bottom: 2rem;
 }
-
 .musicos-header-bar {
     display: inline-block;
     width: 4px;
@@ -37,7 +32,6 @@
     border-radius: 4px;
     box-shadow: 0 0 12px rgba(0, 242, 255, 0.8);
 }
-
 .musicos-titulo {
     font-family: var(--font-display);
     font-size: 22px;
@@ -47,18 +41,14 @@
     margin: 0;
     text-shadow: 0 0 20px rgba(0, 242, 255, 0.4);
 }
-
 .musicos-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 2rem;
 }
-
-
 /* ============================================
            TARJETAS (Glassmorphism)
    ============================================ */
-
 /* ================== TARJETA PERFIL (new / edit / show) ================== */
 .perfil-card {
     background: rgba(16, 5, 38, 0.55);
@@ -77,7 +67,6 @@
     position: relative;
     overflow: hidden;
 }
-
 .perfil-accent-bar {
     height: 2px;
     background: linear-gradient(
@@ -99,7 +88,6 @@
         0 0 20px rgba(155, 48, 255, 0.8),
         0 0 40px rgba(0, 238, 255, 0.3);
 }
-
 /* ================== TARJETA MÚSICO (grid index) ================== */
 .musico-card {
     background: rgba(16, 5, 38, 0.7);
@@ -114,7 +102,6 @@
     transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.2, 1), box-shadow 0.35s ease, border-color 0.35s ease;
     backdrop-filter: blur(12px);
 }
-
 .musico-card::after {
     content: '';
     position: absolute;
@@ -129,7 +116,6 @@
     transition: opacity 0.45s ease, transform 0.45s ease;
     pointer-events: none;
 }
-
 .musico-card:hover {
     transform: translateY(-10px) scale(1.01);
     border-color: rgba(0, 242, 255, 0.95);
@@ -141,12 +127,10 @@
         0 0 58px rgba(0, 242, 255, 0.32),
         0 0 80px rgba(255, 0, 255, 0.14);
 }
-
 .musico-card:hover::after {
     opacity: 1;
     transform: translateY(-6px) scale(1.02);
 }
-
 .musico-card-img {
     width: 100%;
     aspect-ratio: 16 / 9;
@@ -155,7 +139,6 @@
     position: relative;
     z-index: 1;
 }
-
 .musico-card-img img {
     width: 100%;
     height: 100%;
@@ -163,11 +146,9 @@
     display: block;
     transition: transform 0.6s cubic-bezier(0.2, 0.9, 0.2, 1);
 }
-
 .musico-card:hover .musico-card-img img {
     transform: scale(1.08) translateZ(0);
 }
-
 .musico-card-img-placeholder {
     width: 100%;
     height: 100%;
@@ -176,23 +157,20 @@
     justify-content: center;
     background: rgba(155, 48, 255, 0.05);
 }
-
 .musico-card-info {
     padding: 1rem 1rem 0.5rem;
     flex: 1;
     position: relative;
     z-index: 1;
 }
-
 /* ================== FOOTER TARJETA — fila de botones ================== */
 .musico-card-footer {
     padding: 0.75rem 1rem 1rem;
     display: flex;
     flex-direction: row;
     justify-content: center;
-    gap: 0.85rem; /* más espacio entre botones */
+    gap: 0.85rem;
 }
-
 /* Unifica el tamaño de los botones */
 .musico-card-footer .btn-confirmar,
 .musico-card-footer .btn-chat {
@@ -202,18 +180,15 @@
     flex: 1 1 140px;
     min-width: 0;
     max-width: 180px;
-    min-height: 50px; 
-    padding: 8px 28px; 
+    min-height: 50px;
+    padding: 8px 28px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
-
-
 /* ============================================
                      AVATAR
    ============================================ */
-
 .perfil-avatar-wrap {
     display: flex;
     flex-direction: column;
@@ -221,7 +196,6 @@
     margin-bottom: 28px;
     width: 100%;
 }
-
 .perfil-avatar {
     width: 100px;
     height: 100px;
@@ -237,19 +211,15 @@
         0 0 50px rgba(155, 48, 255, 0.4);
     overflow: hidden;
 }
-
 .perfil-avatar img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     border-radius: 50%;
 }
-
-
 /* ============================================
                     TIPOGRAFÍA
    ============================================ */
-
 /* ================== TÍTULOS PERFIL ================== */
 .perfil-title {
     font-family: var(--font-display);
@@ -261,7 +231,6 @@
     margin-top: 8px;
     margin-bottom: 6px;
 }
-
 .perfil-subtitle {
     font-family: var(--font-body);
     font-size: 13px;
@@ -269,7 +238,6 @@
     text-shadow: 0 0 8px rgba(0, 212, 232, 0.4);
     margin-bottom: 20px;
 }
-
 .perfil-divider {
     height: 1px;
     background: linear-gradient(
@@ -283,7 +251,6 @@
     box-shadow: 0 0 8px rgba(155, 48, 255, 0.4);
     margin: 0 0 24px;
 }
-
 /* ================== TÍTULOS TARJETA MÚSICO ================== */
 .musico-card-nombre {
     font-family: var(--font-display);
@@ -295,7 +262,6 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
-
 .musico-card-tags {
     font-family: var(--font-body);
     font-size: 12px;
@@ -303,30 +269,25 @@
     margin: 0 0 10px;
     display: flex;
     gap: 8px;
-    flex-wrap: nowrap; /* nunca pasa a 2 líneas */
+    flex-wrap: nowrap;
     overflow: hidden;
 }
-
 .musico-card-tags span {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
-
 .musico-card-distancia-tag {
     color: var(--mh-cyan) !important;
     font-weight: 600;
 }
-
 .musico-card-tags span::after {
     content: " •";
     color: rgba(155, 48, 255, 0.6);
 }
-
 .musico-card-tags span:last-child::after {
     content: "";
 }
-
 /* ================== ESTADO VACÍO ================== */
 .musicos-vacio {
     color: var(--mh-text-muted);
@@ -335,7 +296,6 @@
     text-align: center;
     padding: 3rem 0;
 }
-
 /* ================== VALOR DE DATO (vista show) ================== */
 .show-dato-valor {
     font-family: var(--font-body);
@@ -343,12 +303,9 @@
     color: #e8e0ff;
     margin: 0;
 }
-
-
 /* ============================================
    FORMULARIO — ETIQUETAS E INPUTS
    ============================================ */
-
 /* ================== ETIQUETAS ================== */
 .perfil-form-label {
     font-family: var(--font-body);
@@ -361,7 +318,6 @@
     display: block;
     margin-bottom: 7px;
 }
-
 /* ================== INPUTS ================== */
 .perfil-card .form-control,
 .perfil-card input[type="email"],
@@ -386,13 +342,11 @@
     outline: none;
     backdrop-filter: blur(8px);
 }
-
 .perfil-card .form-control::placeholder,
 .perfil-card input::placeholder {
     color: rgba(200, 180, 255, 0.5);
     font-style: italic;
 }
-
 .perfil-card .form-control:focus,
 .perfil-card input[type="text"]:focus,
 .perfil-card input[type="number"]:focus,
@@ -404,12 +358,9 @@
         0 0 0 1px rgba(155, 48, 255, 0.3),
         0 0 20px rgba(155, 48, 255, 0.3) !important;
 }
-
-
 /* ============================================
   INSTRUMENTOS (sección especial del formulario)
    ============================================ */
-
 /* ================== CONTENEDOR ================== */
 .perfil-instrumentos-container {
     background: transparent;
@@ -423,7 +374,6 @@
     gap: 10px;
     justify-content: flex-start;
 }
-
 .perfil-instrumentos-container .form-check {
     display: inline-flex !important;
     align-items: center;
@@ -434,12 +384,10 @@
     padding: 0 !important;
     margin: 0 !important;
 }
-
 /* ================== CHECKBOX (oculto, la label hace de botón) ================== */
 .perfil-instrumentos-container input[type="checkbox"] {
     display: none !important;
 }
-
 .perfil-instrumentos-container label {
     font-family: var(--font-body);
     font-size: 13px;
@@ -459,19 +407,16 @@
     box-sizing: border-box;
     line-height: 1.2;
 }
-
 .perfil-instrumentos-container input[type="checkbox"]:checked + label {
     background: var(--mh-purple) !important;
     color: #fff !important;
     border-color: #d966ff !important;
     box-shadow: 0 0 15px rgba(155, 48, 255, 0.5);
 }
-
 .perfil-instrumentos-container label:hover {
     background: rgba(155, 48, 255, 0.2);
     border-color: var(--mh-purple);
 }
-
 /* ================== INPUT + BOTÓN AÑADIR INSTRUMENTO ================== */
 .instrumento-add-wrap {
     display: flex;
@@ -479,7 +424,6 @@
     margin-top: 10px;
     align-items: center;
 }
-
 .instrumento-add-input {
     flex: 1;
     font-family: var(--font-body);
@@ -492,46 +436,40 @@
     outline: none;
     transition: border-color 0.25s, box-shadow 0.25s;
 }
-
 .instrumento-add-input:focus {
     border-color: var(--mh-purple) !important;
     box-shadow: 0 0 0 1px rgba(155, 48, 255, 0.3), 0 0 12px rgba(155, 48, 255, 0.2) !important;
 }
-
 .instrumento-add-input::placeholder {
     color: rgba(200, 180, 255, 0.5);
     font-style: italic;
 }
-
 /* ================== PASTILLAS INSTRUMENTOS (vista show / index) ================== */
 .musico-card-instrumentos {
     display: flex;
-    flex-wrap: nowrap; /* siempre 1 línea, lo que no entra se recorta */
-    gap: 6px;
+    flex-wrap: nowrap;
+    gap: 4px;
     overflow: hidden;
 }
-
 .musico-card-instrumento-tag {
-    font-size: 11px;
+    font-size: 10px;
     color: #00b4ff;
     background: rgba(0, 180, 255, 0.1);
     border: 1px solid rgba(0, 180, 255, 0.3);
     border-radius: 20px;
-    padding: 3px 10px;
+    padding: 2px 8px;
     white-space: nowrap;
-    flex-shrink: 0; /* el navegador no intenta "achicar" las pastillas */
+    flex-shrink: 0;
+    line-height: 1.3;
 }
-
 /* ================== SCROLLBAR ================== */
 .perfil-instrumentos-container::-webkit-scrollbar {
     width: 6px;
 }
-
 .perfil-instrumentos-container::-webkit-scrollbar-thumb {
     background: rgba(155, 48, 255, 0.3);
     border-radius: 10px;
 }
-
 /* Evitar barras de scroll duplicadas: ocultar scrollbars de cualquier
    elemento hijo dentro del contenedor*/
 .perfil-instrumentos-container *::-webkit-scrollbar {
@@ -541,12 +479,9 @@
     -ms-overflow-style: none; /* IE/Edge */
     scrollbar-width: none; /* Firefox */
 }
-
-
 /* ============================================
                     BOTONES
    ============================================ */
-
 /* ================== BASE COMPARTIDA ================== */
 .btn-principal,
 .btn-confirmar,
@@ -568,7 +503,6 @@
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
 }
-
 /* --- BOTÓN PRINCIPAL (Púrpura Translúcido) --- */
 .btn-principal {
     color: #e8e0ff;
@@ -583,7 +517,6 @@
     box-shadow: 0 0 25px rgba(155, 48, 255, 0.6), inset 0 0 12px rgba(155, 48, 255, 0.4);
     transform: translateY(-2px);
 }
-
 /* --- BOTÓN CONFIRMAR / GUARDAR (Cian Translúcido) --- */
 .btn-confirmar {
     color: #d1f7ff;
@@ -598,7 +531,6 @@
     box-shadow: 0 0 25px rgba(0, 242, 255, 0.6), inset 0 0 12px rgba(0, 242, 255, 0.4);
     transform: translateY(-2px);
 }
-
 /* --- BOTÓN EDITAR (Magenta Translúcido) --- */
 .btn-editar {
     color: #ffd6ff;
@@ -613,7 +545,6 @@
     box-shadow: 0 0 25px rgba(255, 0, 255, 0.6), inset 0 0 12px rgba(255, 0, 255, 0.4);
     transform: translateY(-2px);
 }
-
 /* --- BOTÓN ELIMINAR (Hot Pink Translúcido) --- */
 .btn-eliminar {
     color: #ffdaea;
@@ -628,7 +559,6 @@
     box-shadow: 0 0 25px rgba(255, 42, 133, 0.6), inset 0 0 12px rgba(255, 42, 133, 0.4);
     transform: translateY(-2px);
 }
-
 /* --- BOTÓN CHAT (Verde Translúcido) --- */
 .btn-chat {
     color: #fff;
@@ -643,7 +573,6 @@
     box-shadow: 0 0 30px rgba(34, 197, 94, 0.55), inset 0 0 14px rgba(34, 197, 94, 0.25);
     transform: translateY(-2px);
 }
-
 /* ================== BOTÓN VER PERFIL (tarjeta músico) ================== */
 .musico-card-btn {
     display: block;
@@ -662,26 +591,21 @@
     box-sizing: border-box;
     line-height: 1.2;
 }
-
 .musico-card-btn:hover {
     background: linear-gradient(135deg, #b040ff, #6e20dd);
     box-shadow: 0 0 35px rgba(155, 48, 255, 0.7);
     transform: translateY(-1px);
     color: #fff;
 }
-
 /* ================== BOTONES PEQUEÑOS (acciones en filas de gestión) ================== */
 .btn-sm {
     padding: 0.3rem 1rem !important;
     font-size: 12px !important;
     letter-spacing: 0.5px !important;
 }
-
-
 /* ============================================
                      ALERTAS
    ============================================ */
-
 .alert-perfil-success {
     font-family: var(--font-body);
     font-size: 13px;
@@ -694,7 +618,6 @@
     text-shadow: 0 0 10px rgba(0, 240, 255, 0.6);
     backdrop-filter: blur(4px);
 }
-
 .alert-perfil-info {
     font-family: var(--font-body);
     font-size: 13px;
@@ -706,7 +629,6 @@
     margin-bottom: 16px;
     backdrop-filter: blur(4px);
 }
-
 .alert-perfil-warning {
     font-family: var(--font-body);
     font-size: 13px;
@@ -718,7 +640,6 @@
     margin-bottom: 16px;
     backdrop-filter: blur(4px);
 }
-
 .alert-perfil-error {
     font-family: var(--font-body);
     font-size: 13px;
@@ -730,7 +651,6 @@
     margin-bottom: 16px;
     backdrop-filter: blur(4px);
 }
-
 /* ================== MENSAJE INSTRUMENTO AÑADIDO ================== */
 .instrumento-add {
     font-family: var(--font-body);
@@ -740,12 +660,9 @@
     margin-top: 6px;
     transition: opacity 1s ease;
 }
-
-
 /* ============================================
    GESTIÓN DE BANDA (solicitudes y miembros)
    ============================================ */
-
 /* ================== ETIQUETA DE SECCIÓN ================== */
 .gestionar-seccion-label {
     font-family: var(--font-body);
@@ -756,7 +673,6 @@
     letter-spacing: 2px;
     margin-bottom: 12px;
 }
-
 /* ================== FILA DE MIEMBRO / SOLICITUD ================== */
 .gestionar-fila {
     display: flex;
@@ -768,36 +684,30 @@
     border-radius: 8px;
     border: 1px solid rgba(255, 255, 255, 0.08);
 }
-
 .gestionar-fila + .gestionar-fila {
     margin-top: 8px;
 }
-
 /* ================== INFO DEL MIEMBRO (nombre + rol + ubicación) ================== */
 .gestionar-fila-info {
     display: flex;
     flex-direction: column;
     gap: 2px;
 }
-
 .gestionar-fila-nombre {
     font-family: var(--font-body);
     font-weight: 600;
     color: var(--mh-purple-light);
     text-decoration: none;
 }
-
 .gestionar-fila-nombre:hover {
     color: var(--mh-purple-light);
     text-shadow: 0 0 8px rgba(217, 102, 255, 0.4);
 }
-
 .gestionar-fila-meta {
     font-family: var(--font-body);
     font-size: 12px;
     color: var(--mh-text-muted);
 }
-
 /* ================== ACCIONES DEL MIEMBRO (botones) ================== */
 .gestionar-fila-acciones {
     display: flex;
@@ -805,7 +715,6 @@
     flex-wrap: wrap;
     justify-content: flex-end;
 }
-
 /* ================== BADGE ADMIN ================== */
 .badge-admin {
     color: #f0c040;
@@ -813,52 +722,44 @@
     font-weight: 700;
     margin-left: 6px;
 }
-
 /* ================== EXPULSAR (variante roja del btn-editar) ================== */
 .btn-expulsar {
     color: #ff6b6b !important;
     border-color: rgba(255, 107, 107, 0.4) !important;
 }
-
 /* ================== DETAILS DE INSTRUMENTOS ================== */
 .gestionar-details {
     margin-top: 4px;
     padding-left: 1rem;
 }
-
 .gestionar-details summary {
     font-family: var(--font-body);
     font-size: 12px;
     color: var(--mh-text-muted);
     cursor: pointer;
 }
-
 .gestionar-details-form {
     display: flex;
     gap: 0.5rem;
     align-items: center;
     margin-top: 8px;
 }
-
 .gestionar-details-input {
     max-width: 220px;
     font-size: 13px !important;
 }
-
 /* ================== LISTA DE MIEMBROS (vista show banda) ================== */
 .banda-miembros-lista {
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
-
 .banda-miembro-fila {
     display: flex;
     align-items: center;
     gap: 12px;
     flex-wrap: wrap;
 }
-
 .banda-miembro-nombre {
     font-family: var(--font-body);
     font-weight: 600;
@@ -867,11 +768,9 @@
     min-width: 120px;
     font-size: 14px;
 }
-
 .banda-miembro-nombre:hover {
     color: #e8e0ff;
 }
-
 /* ================== MENSAJES DE ESTADO SOLICITUD ================== */
 .solicitud-pendiente-msg {
     font-family: var(--font-body);
@@ -879,19 +778,15 @@
     color: var(--mh-text-muted);
     text-align: center;
 }
-
 .solicitud-rechazada-msg {
     font-family: var(--font-body);
     font-size: 13px;
     color: #ff6b6b;
     text-align: center;
 }
-
-
 /* ============================================
              FONDO LÍQUIDO Y BLOBS
    ============================================ */
-
 #perfil-background {
     position: fixed;
     top: 0;
@@ -903,7 +798,6 @@
     overflow: hidden;
     background: linear-gradient(135deg, rgb(1, 5, 46) 0%, rgb(0, 1, 82) 50%, rgb(0, 2, 121) 100%);
 }
-
 .perfil-blob {
     position: absolute;
     border-radius: 50%;
@@ -912,12 +806,9 @@
     mix-blend-mode: screen;
     transition: all 6s cubic-bezier(0.23, 1, 0.32, 1);
 }
-
-
 /* ============================================
             VENTANA CONFIRMACIÓN
    ============================================ */
-
 /* ================== OVERLAY ================== */
 .mh-modal-overlay {
     position: fixed;
@@ -932,7 +823,6 @@
     justify-content: center;
     padding: 1rem;
 }
-
 /* ================== TARJETA ================== */
 .mh-modal-card {
     background: rgba(16, 5, 38, 0.95);
@@ -946,7 +836,6 @@
         0 8px 32px rgba(0, 0, 0, 0.6),
         0 0 50px rgba(123, 47, 247, 0.2);
 }
-
 /* ================== BARRA SUPERIOR ANIMADA ================== */
 /* borderGlow está definido en base.css */
 .mh-modal-accent-bar {
@@ -968,7 +857,6 @@
         0 0 20px rgba(155, 48, 255, 0.8),
         0 0 40px rgba(0, 238, 255, 0.3);
 }
-
 /* ================== TEXTOS ================== */
 .mh-modal-titulo {
     font-family: var(--font-display);
@@ -978,7 +866,6 @@
     margin: 0 0 12px;
     text-align: center;
 }
-
 .mh-modal-texto {
     font-family: var(--font-body);
     font-size: 14px;
@@ -987,7 +874,6 @@
     margin: 0 0 28px;
     line-height: 1.6;
 }
-
 /* ================== BOTONES ================== */
 .mh-modal-acciones {
     display: flex;
@@ -995,22 +881,16 @@
     justify-content: center;
     flex-wrap: wrap;
 }
-
-
 /* ============================================
                     RESPONSIVE
    ============================================ */
-
 @media (max-width: 1024px) {
     .musicos-wrapper {
-        /* menos padding lateral en tablet para aprovechar más ancho */
         padding: 1.5rem 0.9rem;
     }
 }
-
 @media (max-width: 991px) {
     .musicos-wrapper {
-        /* permitir fluidez en tablet pequeño: no limitar ancho rígidamente */
         margin: 0 auto;
         padding-left: 12px;
         padding-right: 12px;
@@ -1040,7 +920,6 @@
         align-items: flex-start;
     }
 }
-
 @media (max-width: 480px) {
     .musicos-wrapper {
         padding: 1.5rem 0.75rem;
@@ -1067,7 +946,6 @@
         width: 100%;
         text-align: center;
     }
-
     .mh-card-h-actions .btn-confirmar,
     .mh-card-h-actions .btn-chat {
         min-height: 44px;
@@ -1078,16 +956,13 @@
         gap: 8px;
         border-radius: 10px;
     }
-
     .btn-filtros-movil {
         min-height: 44px;
         padding: 10px 18px;
     }
-
     .btn-filtros-movil i {
         display: none;
     }
-
     .mh-card-h-actions .btn-confirmar:focus-visible,
     .mh-card-h-actions .btn-chat:focus-visible,
     .btn-filtros-movil:focus-visible {
@@ -1095,17 +970,14 @@
         outline: none;
     }
 }
-
 /* ============================================
    FILTROS SIDEBAR (músicos / bandas)
    ============================================ */
-
 .musicos-layout {
     display: flex;
-    gap: 2.5rem; 
+    gap: 2.5rem;
     align-items: flex-start;
 }
-
 .musicos-filtros-sidebar {
     width: 240px;
     flex-shrink: 0;
@@ -1118,7 +990,6 @@
     position: sticky;
     top: 1rem;
 }
-
 .musicos-filtros-titulo {
     font-family: var(--font-display);
     font-size: 12px;
@@ -1128,28 +999,24 @@
     text-transform: uppercase;
     margin: 0 0 1.2rem 0;
 }
-
 .filtros-grupo {
     margin-bottom: 1.2rem;
     padding-bottom: 1.2rem;
     border-bottom: 1px solid rgba(155, 48, 255, 0.15);
 }
-
 .filtros-grupo:last-of-type {
     border-bottom: none;
     margin-bottom: 0.5rem;
     padding-bottom: 0;
 }
-
 .filtros-grupo-titulo {
     font-size: 10px;
     font-weight: 700;
-    color: var(--mh-magenta); 
+    color: var(--mh-magenta);
     letter-spacing: 1.5px;
     text-transform: uppercase;
     margin: 0 0 0.6rem 0;
 }
-
 .filtros-grupo .form-check {
     padding: 0;
     margin-bottom: 5px;
@@ -1157,36 +1024,30 @@
     align-items: center;
     gap: 7px;
 }
-
 .filtros-grupo .form-check-input {
     accent-color: var(--mh-purple);
     margin: 0;
     flex-shrink: 0;
 }
-
 .filtros-grupo .form-check-label {
     font-size: 12px;
     color: #c0b0e0;
     cursor: pointer;
     line-height: 1.3;
 }
-
 .filtros-grupo .form-check-input:checked + .form-check-label {
     color: #fff;
 }
-
 .filtros-grupo-scroll {
     max-height: 140px;
     overflow-y: auto;
     padding-right: 4px;
 }
-
 .filtros-grupo-scroll::-webkit-scrollbar { width: 4px; }
 .filtros-grupo-scroll::-webkit-scrollbar-thumb {
     background: rgba(155, 48, 255, 0.3);
     border-radius: 4px;
 }
-
 .filtros-ubicacion-input {
     width: 100%;
     background: rgba(155, 48, 255, 0.08);
@@ -1198,13 +1059,11 @@
     margin-bottom: 8px;
     box-sizing: border-box;
 }
-
 .filtros-ubicacion-input::placeholder { color: rgba(192, 176, 224, 0.5); }
 .filtros-ubicacion-input:focus {
     outline: none;
     border-color: var(--mh-purple);
 }
-
 .filtros-geolocate-btn {
     display: flex;
     align-items: center;
@@ -1221,39 +1080,33 @@
     letter-spacing: 0.3px;
     font-family: var(--font-body);
 }
-
 .filtros-geolocate-btn:hover {
     opacity: 1;
     text-shadow: 0 0 8px rgba(0, 242, 255, 0.5);
 }
-
 .filtros-geolocate-btn:disabled {
     opacity: 0.4;
     cursor: not-allowed;
 }
-
 .filtros-radio-wrap {
     margin-top: 8px;
 }
-
 .filtros-radio-wrap.filtros-radio-disabled {
     opacity: 0.35;
     pointer-events: none;
     cursor: not-allowed;
 }
-
 .filtros-radio-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 8px;
-    font-size: 12px; 
+    font-size: 12px;
     font-weight: 700;
-    color: var(--mh-text); 
+    color: var(--mh-text);
     letter-spacing: 1.5px;
     text-transform: uppercase;
 }
-
 .filtros-radio-valor {
     font-size: 13px;
     font-weight: 800;
@@ -1262,21 +1115,19 @@
     letter-spacing: 0;
     text-transform: none;
 }
-
 /* Icono junto al título de filtros */
 .musicos-filtros-titulo .filtros-icon {
     margin-right: 10px;
-    font-size: 18px; 
+    font-size: 18px;
     color: var(--mh-cyan);
     vertical-align: middle;
     display: inline-block;
 }
-
 .filtros-radio-slider {
     width: 100%;
     -webkit-appearance: none;
     appearance: none;
-    height: 6px; 
+    height: 6px;
     border-radius: 6px;
     outline: none;
     cursor: pointer;
@@ -1285,11 +1136,10 @@
     border: none;
     background: linear-gradient(90deg, rgba(155,48,255,0.18), rgba(0,242,255,0.08));
 }
-
 .filtros-radio-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    width: 20px; 
+    width: 20px;
     height: 20px;
     border-radius: 50%;
     background: var(--mh-purple);
@@ -1298,12 +1148,10 @@
     cursor: pointer;
     transition: transform 0.12s ease, box-shadow 0.12s ease;
 }
-
 .filtros-radio-slider::-webkit-slider-thumb:hover {
     transform: scale(1.2);
     box-shadow: 0 0 16px rgba(155, 48, 255, 0.9);
 }
-
 .filtros-radio-slider::-moz-range-thumb {
     width: 16px;
     height: 16px;
@@ -1314,21 +1162,18 @@
     cursor: pointer;
     border: none;
 }
-
 .filtros-radio-slider::-moz-range-track {
     height: 4px;
     border-radius: 4px;
     background: transparent;
 }
-
 .filtros-radio-marks {
     display: flex;
     justify-content: space-between;
     margin-top: 6px;
     font-size: 11px;
-    color: rgba(192, 176, 224, 0.7); 
+    color: rgba(192, 176, 224, 0.7);
 }
-
 .filtros-btn-aplicar {
     display: flex;
     align-items: center;
@@ -1348,12 +1193,10 @@
     margin-top: 1rem;
     transition: all 0.2s;
 }
-
 .filtros-btn-aplicar:hover {
-    background: rgba(113, 5, 214, 0.904); 
+    background: rgba(113, 5, 214, 0.904);
     box-shadow: 0 6px 18px rgba(155, 48, 255, 0.18), inset 0 0 10px rgba(155,48,255,0.06);
 }
-
 .filtros-btn-limpiar {
     display: flex;
     align-items: center;
@@ -1375,18 +1218,15 @@
     box-sizing: border-box;
     min-height: 38px;
 }
-
 .filtros-btn-limpiar:hover {
     color: #fff;
     border-color: var(--mh-purple);
 }
-
 .musicos-layout .musicos-grid {
     flex: 1;
     min-width: 0;
     grid-template-columns: repeat(2, 1fr);
 }
-
 @media (max-width: 900px) {
     .musicos-layout {
         gap: 1.5rem;
@@ -1395,17 +1235,14 @@
         width: 220px;
     }
 }
-
 @media (max-width: 480px) {
     .musicos-layout .musicos-grid {
         grid-template-columns: 1fr;
     }
 }
-
 /* ============================================
    TARJETA HORIZONTAL (índice músicos / bandas)
    ============================================ */
-
 /* ================== LISTA CONTENEDORA ================== */
 .musicos-lista {
     flex: 1;
@@ -1415,7 +1252,6 @@
     gap: 1.25rem;
     align-content: start;
 }
-
 /* ================== TARJETA HORIZONTAL ================== */
 .mh-card-h {
     display: flex;
@@ -1429,7 +1265,6 @@
     -webkit-backdrop-filter: blur(12px);
     height: 200px;
 }
-
 .mh-card-h:hover {
     transform: translateY(-3px);
     border-color: rgba(0, 242, 255, 0.7);
@@ -1438,7 +1273,6 @@
         0 0 20px rgba(0, 242, 255, 0.3),
         0 0 40px rgba(155, 48, 255, 0.2);
 }
-
 /* ================== IMAGEN IZQUIERDA ================== */
 .mh-card-h-img {
     width: 200px;
@@ -1448,7 +1282,6 @@
     background: rgba(10, 3, 28, 0.9);
     flex-shrink: 0;
 }
-
 .mh-card-h-img img {
     width: 100%;
     height: 100%;
@@ -1456,11 +1289,9 @@
     display: block;
     transition: transform 0.5s ease;
 }
-
 .mh-card-h:hover .mh-card-h-img img {
     transform: scale(1.06);
 }
-
 .mh-card-h-img-placeholder {
     width: 100%;
     height: 100%;
@@ -1470,7 +1301,6 @@
     justify-content: center;
     background: rgba(155, 48, 255, 0.05);
 }
-
 /* ================== CONTENIDO DERECHA ================== */
 .mh-card-h-body {
     flex: 1;
@@ -1480,12 +1310,10 @@
     justify-content: space-between;
     min-width: 0;
 }
-
 .mh-card-h-top {
     flex: 1;
-    overflow: hidden; /* red de seguridad: el alto de la tarjeta nunca se ve afectado */
+    overflow: hidden;
 }
-
 /* ================== BOTONES TARJETA HORIZONTAL ================== */
 .mh-card-h-actions {
     display: flex;
@@ -1493,7 +1321,6 @@
     flex-wrap: wrap;
     margin-top: 0.75rem;
 }
-
 .mh-card-h-actions .btn-confirmar,
 .mh-card-h-actions .btn-chat,
 .mh-card-h-actions .btn-editar {
@@ -1501,18 +1328,15 @@
     font-size: 13px !important;
     letter-spacing: 0.6px !important;
 }
-
 /* ============================================
    RESPONSIVE TARJETA HORIZONTAL
    ============================================ */
-
 @media (max-width: 900px) {
     .mh-card-h-img {
         width: 160px;
         min-width: 160px;
     }
 }
-
 @media (max-width: 768px) {
     /* Tarjeta vertical en móvil y tablet */
     .mh-card-h {
@@ -1581,12 +1405,10 @@
         padding: 0.75rem 0.25rem;
     }
 }
-
 /* ================== BOTÓN CERRAR OVERLAY FILTROS (solo móvil) ================== */
 .btn-filtros-cerrar {
     display: none;
 }
-
 @media (max-width: 600px) {
     .btn-filtros-cerrar {
         display: flex;
@@ -1609,23 +1431,19 @@
         background: rgba(155, 48, 255, 0.1);
     }
 }
-
 /* =====================================================================
    MENSAJES — Lista de conversaciones
    ===================================================================== */
-
 .mensajes-wrapper {
     max-width: 760px;
     margin: 0 auto;
     padding: 2rem 1rem;
 }
-
 .mensajes-lista {
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
 }
-
 .mensajes-item {
     display: flex;
     align-items: center;
@@ -1639,18 +1457,15 @@
     color: var(--mh-text);
     transition: border-color 0.2s, background 0.2s, transform 0.15s;
 }
-
 .mensajes-item:hover {
     border-color: var(--mh-purple);
     background: rgba(155, 48, 255, 0.08);
     transform: translateY(-1px);
     color: var(--mh-text);
 }
-
 .mensajes-item-noleido {
     border-color: rgba(155, 48, 255, 0.55);
 }
-
 .mensajes-item-avatar {
     width: 52px;
     height: 52px;
@@ -1663,25 +1478,21 @@
     justify-content: center;
     flex-shrink: 0;
 }
-
 .mensajes-item-avatar img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
-
 .mensajes-item-body {
     flex: 1;
     min-width: 0;
 }
-
 .mensajes-item-top {
     display: flex;
     align-items: center;
     gap: 0.5rem;
     margin-bottom: 0.2rem;
 }
-
 .mensajes-item-nombre {
     font-weight: 600;
     font-size: 0.95rem;
@@ -1691,7 +1502,6 @@
     text-overflow: ellipsis;
     color: var(--mh-text);
 }
-
 .mensajes-item-badge {
     background: #ff2a55;
     color: #fff;
@@ -1707,13 +1517,11 @@
     box-shadow: 0 0 8px rgba(255, 42, 85, 0.7);
     flex-shrink: 0;
 }
-
 .mensajes-item-fecha {
     font-size: 0.72rem;
     color: var(--mh-text-muted);
     flex-shrink: 0;
 }
-
 .mensajes-item-preview {
     font-size: 0.82rem;
     color: var(--mh-text-muted);
@@ -1722,16 +1530,13 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
-
 .mensajes-item-tu {
     color: var(--mh-cyan-soft);
     font-weight: 600;
 }
-
 .mensajes-item-preview-vacio {
     font-style: italic;
 }
-
 .mensajes-vacio {
     text-align: center;
     padding: 4rem 2rem;
@@ -1742,17 +1547,14 @@
     gap: 0.75rem;
     font-size: 0.9rem;
 }
-
 .mensajes-vacio i {
     font-size: 2.5rem;
     color: var(--mh-purple);
     opacity: 0.5;
 }
-
 /* =====================================================================
    CHAT — Vista de conversación
    ===================================================================== */
-
 .chat-wrapper {
     max-width: 760px;
     margin: 0 auto;
@@ -1761,7 +1563,6 @@
     flex-direction: column;
     height: calc(100vh - 90px);
 }
-
 .chat-header {
     display: flex;
     align-items: center;
@@ -1774,7 +1575,6 @@
     margin-bottom: 0.75rem;
     flex-shrink: 0;
 }
-
 .chat-back {
     color: var(--mh-text-muted);
     font-size: 1rem;
@@ -1782,12 +1582,10 @@
     padding: 4px 6px;
     line-height: 1;
 }
-
 .chat-back:hover {
     color: var(--mh-cyan);
     text-shadow: none;
 }
-
 .chat-header-avatar {
     width: 40px;
     height: 40px;
@@ -1800,19 +1598,16 @@
     justify-content: center;
     flex-shrink: 0;
 }
-
 .chat-header-avatar img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
-
 .chat-header-nombre {
     font-weight: 700;
     font-size: 1rem;
     color: var(--mh-text);
 }
-
 .chat-mensajes {
     flex: 1;
     overflow-y: auto;
@@ -1826,42 +1621,35 @@
     backdrop-filter: blur(14px);
     margin-bottom: 0.75rem;
 }
-
 .mensaje {
     max-width: 72%;
     padding: 0.6rem 0.95rem;
     border-radius: 16px;
     word-break: break-word;
 }
-
 .mensaje p {
     margin: 0 0 0.2rem;
     font-size: 0.9rem;
     line-height: 1.5;
 }
-
 .mensaje small {
     font-size: 0.68rem;
     opacity: 0.55;
     display: block;
 }
-
 .mensaje-propio {
     align-self: flex-end;
     background: linear-gradient(135deg, rgba(155, 48, 255, 0.32), rgba(100, 0, 200, 0.28));
     border: 1px solid rgba(155, 48, 255, 0.38);
     border-bottom-right-radius: 4px;
 }
-
 .mensaje-propio small { text-align: right; }
-
 .mensaje-ajeno {
     align-self: flex-start;
     background: rgba(16, 5, 38, 0.65);
     border: 1px solid rgba(155, 48, 255, 0.18);
     border-bottom-left-radius: 4px;
 }
-
 .nombre-remitente {
     font-size: 0.75rem;
     color: var(--mh-cyan-soft);
@@ -1869,7 +1657,6 @@
     margin-bottom: 0.2rem;
     font-weight: 600;
 }
-
 .chat-vacio {
     text-align: center;
     padding: 2rem;
@@ -1881,21 +1668,17 @@
     font-size: 0.9rem;
     margin: auto;
 }
-
 .chat-vacio i {
     font-size: 2rem;
     color: var(--mh-purple);
     opacity: 0.5;
 }
-
 .chat-form-wrap { flex-shrink: 0; }
-
 .chat-form {
     display: flex;
     gap: 0.6rem;
     align-items: flex-end;
 }
-
 .chat-input {
     flex: 1;
     background: var(--mh-bg-input);
@@ -1911,14 +1694,11 @@
     min-height: 48px;
     max-height: 120px;
 }
-
 .chat-input:focus {
     border-color: var(--mh-purple);
     box-shadow: 0 0 0 3px rgba(155, 48, 255, 0.12);
 }
-
 .chat-input::placeholder { color: var(--mh-placeholder); }
-
 .chat-send-btn {
     width: 48px;
     height: 48px;
@@ -1935,12 +1715,10 @@
     transition: opacity 0.2s, transform 0.15s;
     box-shadow: 0 0 16px rgba(155, 48, 255, 0.4);
 }
-
 .chat-send-btn:hover {
     opacity: 0.85;
     transform: scale(1.06);
 }
-
 @media (max-width: 600px) {
     .mensaje { max-width: 88%; }
     .chat-wrapper { height: calc(100vh - 75px); }
